@@ -1,0 +1,86 @@
+<script type="text/tiscript">
+function MarkAsSecure() {
+ $(#scanstat).style["background-color"]="#62e973";
+ $(#scanstat).value="Secure";
+ $(#scanstat).style["foreground-image"]="@ICON_CHECKED";
+ $(#scanstat).enabled = true;
+}
+function MarkAsVulnerable() {
+ $(#scanstat).style["background-color"]="#f87070";
+ $(#scanstat).value="Vulnerable";
+ $(#scanstat).style["foreground-image"]="@ICON_CHECKED_RED";
+ $(#scanstat).enabled = true;
+}
+function MarkReset() {
+ $(#scanstat).style["background-color"]="transparent";
+ $(#scanstat).value="";
+ $(#scanstat).style["foreground-image"]="@ICON_BLANK";
+ $(#scanstat).enabled = false;
+}
+function MarkAsScanning() {
+ MarkReset();
+ $(#scanstat).value="Scanning";
+}
+
+$(#search).onKey = function(evt) {
+ if( evt.type == Event.KEY_UP && evt.keyCode == Event.VK_RETURN) {
+ Sandcat.RunLua("SyhuntCode:Search()");
+ }
+}
+$(#scancode).onClick = function() { Sandcat.RunLua("SyhuntCode:ScanFile(tab.sourcefilename)"); }
+</script>
+  
+<div id="toolbar" class="toolbar" style="vertical-align:middle;">
+  <div class="button" style="foreground-image: url(SyHybrid.scx#images\16\newcodescan.png)" onclick="SyhuntCode:NewScan()" titleid="for_new"/>
+  <div .sepv />
+  <div #scanstat .button ismain="true" style="foreground-position:5% 50%; foreground-image: @ICON_BLANK;border-radius: 4px 0px 0px 4px;padding-left:26px;padding-right:10px;width:50px;margin-right:0;" titleid="for_scanstat" disabled="disabled"></div>
+	<div .inputbox style="min-width:50px;width:100%%;margin-left:0;margin-right:0;">
+		<input id=dir type=text style="width:100%%;border-radius: 0px 0px 0px 0px;border-right:0px;border-left:0px;" titleid="for-dir" novalue="" value="" readonly="true">
+	</div>
+	<div #scanfold .button ismain="true" style="foreground-image: url(SyHybrid.scx#images\16\scanfolder.png);border-radius: 0px 4px 4px 0px;" onclick="SyhuntCode:ScanFolder('')" titleid="for_scanfold"/>
+	<div .sepv />
+	<div .button style="foreground-image: @ICON_SAVE" onclick="SyhuntCode:SaveFile()" titleid="for_save"/>
+	<div .sepv />
+  <div #scancode .button style="foreground-image: url(Syhunt.scx#images\icon_repeat.png)" titleid="for_rescan"/>
+	<div .sepv />
+	<div .button style="foreground-image: @ICON_CUT" onclick="tab:runsrccmd('cut')" titleid="for_cut"/>
+	<div .button style="foreground-image: @ICON_COPY" onclick="tab:runsrccmd('copy')" titleid="for_copy"/>
+	<div .button style="foreground-image: @ICON_PASTE" onclick="tab:runsrccmd('paste')" titleid="for_paste"/>
+	<div .button style="foreground-image: @ICON_UNDO" onclick="tab:runsrccmd('undo')" titleid="for_undo"/>
+	<div .button style="foreground-image: @ICON_REDO" onclick="tab:runsrccmd('redo')" titleid="for_redo"/>
+	<div .sep />
+	<div .inputbox style="min-width:50px;width:200px;margin-left:0;">
+		<input id=search type=text style="width:100%%;border-radius: 4px 4px 4px 4px;" titleid="for-search" novalue="Search" value="">
+	</div>
+	<div .sepv />
+	<div #srcmenu .button style="foreground-image: url(Resources.pak#16\icon_page.png); behavior: ~ popup-menu;" titleid="for-srcmenu">6
+   <menu.popup id="srcmenu-list">
+   <li style="foreground-image: url(SyHybrid.scx#images\16\scanfolder.png);" onclick="SyhuntCode:ScanFolder('')">Scan a Code Folder...</li>
+   <li style="foreground-image: url(SyHybrid.scx#images\16\scanfolder.png);">Scan for Specific Flaws 
+    <menu>
+     <li style="foreground-image: url(Syhunt.scx#images\icon_injection_sql.png);" onclick="SyhuntCode:ScanFolder('sqli')">SQL Injection</li>
+     <li style="foreground-image: url(Syhunt.scx#images\icon_injectxss.png);" onclick="SyhuntCode:ScanFolder('xss')">XSS (Cross-Site Scripting)</li>
+    </menu>
+   </li>
+   <include src="SyHybrid.scx#code\toolbar\sourcemenu.html"/>
+   <hr/>
+   <li onclick="Syhunt:PageFind()">Search Source...</li>
+   </menu>
+	</div>
+	<div #navbarmenu .button style="foreground-image: url(Resources.pak#16\icon_menu.png); behavior: ~ popup-menu;" titleid="for-navbarmenu" >
+    <include src="SyHybrid.scx#code\toolbar\menu.html"/>
+	</div>
+</div>
+
+<popup id="for-srcmenu">Source Menu</popup>
+<popup id="for-navbarmenu">Menu</popup>
+<popup id="for_new">New Scan</popup>
+<popup id="for_rescan">Re-Scan Source</popup>
+<popup id="for_scanfold">Scan a Code Folder...</popup>
+<popup id="for_clear">Clear</popup>
+<popup id="for_save">Save</popup>
+<popup id="for_undo">Undo</popup>
+<popup id="for_redo">Redo</popup>
+<popup id="for_copy">Copy</popup>
+<popup id="for_paste">Paste</popup>
+<popup id="for_cut">Cut</popup>

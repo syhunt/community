@@ -1,0 +1,20 @@
+<script type="text/tiscript">
+</script>
+  
+<div id="toolbar" class="toolbar" style="vertical-align:middle;">
+	<div .button style="foreground-image: url(Resources.pak#16\icon_bookmarks.png);" titleid="for_bookmarks" onclick="PageMenu:ViewBookmarks()"/>
+  <div .button style="foreground-image: url(Syhunt.scx#images\icon_clock.png);" titleid="for_pastses" onclick="SyHybrid:SessionManager()"/>
+	<div style="min-width:50px;width:100%%;margin-left:0;margin-right:0;">
+	</div>
+	<div .sepv />
+	<div #navbarmenu .button style="foreground-image: url(Resources.pak#16\icon_menu.png); behavior: ~ popup-menu;" titleid="for-navbarmenu" >
+    <include src="SyHybrid.scx#hybrid\launcher\menu.html"/>
+	</div>
+</div>
+
+<popup id="for-navbarmenu">Menu</popup>
+<popup id="for_pastses">Past Sessions</popup>
+<popup id="for_dast">Syhunt Dynamic</popup>
+<popup id="for_sast">Syhunt Code</popup>
+<popup id="for_tracer">Syhunt Tracer</popup>
+<popup id="for_bookmarks">Bookmarks</popup>

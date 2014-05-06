@@ -1,0 +1,41 @@
+
+    caption
+    {
+      active-on!: self:checked = !self:checked;
+      background:white white threedface threedface threedface threedface;
+      border: 1px solid threedshadow;
+    }
+    
+    caption + div
+    {
+      visibility:collapse;
+      height:0px;
+      background-color:white;
+      color:white;
+      padding:4px;
+    }
+    
+    caption:checked
+    {
+      border:0px;
+      color:white;
+      background:#001c40 #001c40 #1c4281 #1c4281 #1c4281 #1c4281;
+    }
+    
+    caption:checked + div
+    {
+      visibility:visible;    
+      height:auto;
+      background-color:white;
+      color:#000;
+      transition: height(quad-out,0.4s)
+                  background-color(linear,0.4s)
+                  color(linear,0.4s);
+      border: 1px solid #1c4281;            
+    }
+        
+    div:animating
+    {
+      visibility:visible; // while animating it still should be visible
+      overflow-y:hidden;  // and clip content
+    }

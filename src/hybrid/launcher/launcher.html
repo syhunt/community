@@ -1,0 +1,41 @@
+<head>
+<style>
+ body {
+ margin:0;
+ }
+</style>
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#hybrid\launcher\launcher.css">
+<script type="text/tiscript">
+type launchbox
+{
+ function run(code) {
+  Sandcat.RunLuaQ(code)
+ }
+}
+   
+function handleshortcutclick(evt) {
+    if (evt.type == Event.MOUSE_DCLICK) {
+     if (evt.mainButton == true) {
+         launchbox.run(this.attributes["value"]); 
+     }
+    }
+}
+
+   
+for(var e in $$(option.link)) e.onMouse = handleshortcutclick;
+</script>
+</head>
+<body>
+
+<widget id="objlist" type="select" .desktop-list .large>
+<option.link style="foreground-image:url(SyHybrid.scx#images\32\dynscan.png)" value="SyhuntDynamic:NewTab()">Syhunt Dynamic</option>
+<option.link style="foreground-image:url(SyHybrid.scx#images\32\codescan.png)" value="SyhuntCode:NewTab()">Syhunt Code</option>
+<option.link style="foreground-image:url(SyHybrid.scx#images\32\tracer.png)" value="app.showmessage('Not installed.')">Syhunt Tracer</option>
+<option.link style="foreground-image:url(SyHybrid.scx#images\32\hardener.png)" value="app.showmessage('Not installed.')">Syhunt Hardener</option>
+<!--option.link style="foreground-image:url(Resources.pak#32\icon_sandcat.png)" value="browser.newtab()">Syhunt Sandcat</option-->
+<option.link style="foreground-image:url(Resources.pak#32\icon_console.png)" value="SyHybrid:NewConsoleTab('sc')">Syhunt Console</option>
+<option.link style="foreground-image:url(Resources.pak#32\icon_lua.png)" value="SyHybrid:NewConsoleTab('lua')">Lua Console</option>
+<!--option.link style="foreground-image:url(SyHybrid.scx#images\32\ruby.png)" value="browser.options.showconsole = true SyCommands:RubyConsole()">Ruby Console</option-->
+</widget>
+
+</body>

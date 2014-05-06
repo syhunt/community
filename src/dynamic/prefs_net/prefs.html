@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>Network Preferences</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#dynamic\prefs_net\prefs.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+      }
+ }
+
+ $(#ok).onClick = function() { view.close(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-proxy" accesskey="P" selected><center><img #icon_tools><br>Proxy</center></div>
+<div panel="panel-socks" accesskey="S"><center><img #icon_tools><br>SOCKS</center></div>
+</div>
+
+<!-- proxy tab begin-->
+<div name="panel-proxy" class="tab" selected>
+<button type="checkbox" cid="syhunt.dynamic.network.proxy.enabled">Enable proxy server</button>
+<div .sep/>
+<fieldset><br>
+<div .optgroup>
+Server:<br><input type="text" style="width:150px;" cid="syhunt.dynamic.network.proxy.server"> : <input cid="syhunt.dynamic.network.proxy.port" type="number" step=1 minvalue="1" maxvalue="65525" value="80" size="10">
+</div>
+</fieldset>
+<fieldset><legend>Authentication</legend>
+<div .optgroup>
+<select class="tag-list" type="select" cid="syhunt.dynamic.network.proxy.auth.type">
+<option value="None" selected>None</option>
+<option value="Basic">Basic</option>
+<option value="NTLM">NTLM</option>
+</select><br><br>
+Username:<br><input type="text" style="width:150px;" cid="syhunt.dynamic.network.proxy.auth.username">
+<div .sep/>
+Password:<br><input type="password" style="width:150px;" cid="syhunt.dynamic.network.proxy.auth.password">
+</div>
+</fieldset>
+</div>
+<!-- proxy tab end-->
+
+<!-- socks tab begin-->
+<div name="panel-socks" class="tab">
+<button type="checkbox" cid="syhunt.dynamic.network.socks.enabled">Enable SOCKS server</button>
+<div .sep/>
+<fieldset><br>
+<div .optgroup>
+Server:<br><input type="text" style="width:150px;" cid="syhunt.dynamic.network.socks.server"> : <input cid="syhunt.dynamic.network.socks.port" type="number" step=1 minvalue="1" maxvalue="65525" value="80" size="10">
+<div .sep/>
+Level:<br>
+<select class="tag-list" type="select" cid="syhunt.dynamic.network.socks.level">
+<option value="5" selected>5</option>
+<option value="4A">4A</option>
+<option value="4">4</option>
+</select>
+</div>
+</fieldset>
+<fieldset><legend>Authentication</legend>
+<div .optgroup>
+<select class="tag-list" type="select" cid="syhunt.dynamic.network.socks.auth.type">
+<option value="None" selected>None</option>
+<option value="Usercode">Usercode</option>
+</select><br><br>
+Usercode:<br><input type="text" style="width:150px;" cid="syhunt.dynamic.network.socks.auth.usercode">
+<div .sep/>
+Password:<br><input type="password" style="width:150px;" cid="syhunt.dynamic.network.socks.auth.password">
+</div>
+</fieldset>
+</div>
+<!-- socks tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>

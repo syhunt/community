@@ -1,0 +1,29 @@
+<div class="button" style="behavior: ~ popup-menu;foreground-image: url(Syhunt.scx#images\icon_dast.png);" titleid="for-syhunthybrid">6
+ <menu.popup>
+  <li style="foreground-image: url(Syhunt.scx#images\icon_scan.png);" onclick="SyhuntDynamic:ScanThisSite('appscan')">Scan This Site</li>
+  <li style="foreground-image: url(SyHybrid.scx#images\16\spider.png);" onclick="SyhuntDynamic:ScanThisSite('spider')">Spider Only</li>
+  <li style="foreground-image: url(Syhunt.scx#images\icon_scan.png);">Scan for Specific Flaws
+    <menu>
+     <li style="foreground-image: url(Syhunt.scx#images\icon_injection_sql.png);" onclick="SyhuntDynamic:ScanThisSite('sqlinj')">SQL Injection</li>
+     <li style="foreground-image: url(Syhunt.scx#images\icon_injectxss.png);" onclick="SyhuntDynamic:ScanThisSite('xss')">XSS (Cross-Site Scripting)</li>
+     <li style="foreground-image: url(Syhunt.scx#images\injection.png);" onclick="SyhuntDynamic:ScanThisSite('faultinj')">Fault Injection</li>
+     <hr/>
+     <li onclick="SyhuntDynamic:ScanThisSite('phptop5')">OWASP PHP Top 5</li>
+     <li onclick="SyhuntDynamic:ScanThisSite('structbf')">Structure Brute Force</li>
+    </menu>
+  </li>
+  <hr/>
+  <li id='tsiteprefs' onclick='SyhuntDynamic:EditSitePreferences()'>Site Preferences...</li>
+  <hr/>
+  <li onclick="SyhuntDynamic:EditPreferences()">Dynamic Preferences...</li>
+  <li onclick="SyhuntCode:EditPreferences()">Code Preferences...</li>
+  <hr/>
+  <li>Miscellaneous
+    <menu>
+     <li onclick="SyHybrid:CaptureURLs()">Capture URLs</li>
+    </menu>
+  </li>
+ </menu>
+</div>
+
+<popup id="for-syhunthybrid">Syhunt Hybrid</popup>

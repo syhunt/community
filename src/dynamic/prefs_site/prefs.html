@@ -1,0 +1,143 @@
+<html>
+<head>
+<title>Site Preferences</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#dynamic\prefs_site\prefs.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+      }
+ }
+
+ $(#ok).onClick = function() { view.close(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-general" accesskey="G" selected><center><img #icon_general><br>General</center></div>
+<div panel="panel-auth" accesskey="U"><center><img #icon_auth><br>Authentication</center></div>
+<div panel="panel-certs" accesskey="C"><center><img #icon_certs><br>Certificates</center></div>
+<div panel="panel-ignore" accesskey="N"><center><img #icon_ignore><br>Exclusions</center></div>
+<div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
+</div>
+
+<div name="panel-general" class="tab" selected>
+<button type="checkbox" cid="site.enabled"><b>Enabled</b></button>
+<fieldset><legend>Source</legend>
+<div .optgroup>
+Directory: <input type="folder-path" novalue="Select Folder..." cid="site.syhunt.code.srcdir"><br><br>
+Note: Be sure to specify a directory where the index files of your web content are located.
+<p align=right style="margin:0;padding:0;">
+<button #btnsrcexts onclick="Sandcat:EditList('site.syhunt.code.lists.srcexts','Source Extensions','Example: .myext=.php')">Extensions...</button>
+</p>
+</div>
+</fieldset>
+<fieldset><br>
+<div .optgroup>
+<button #btnstarturls onclick="Sandcat:EditList('site.syhunt.dynamic.lists.starturls','Start URLs','Example: /url.php')">Start URLs...</button> 
+<button #btnalerts onclick="Sandcat:EditList('site.syhunt.dynamic.lists.emailalerts','Email Alerts','Example: admin@domain.com')">Email Alerts...</button> 
+<button #btncookies onclick="Sandcat:EditList('site.syhunt.dynamic.lists.cookies','Cookies','')">Cookies...</button>
+</div>
+</fieldset>
+</div>
+
+<!-- ignore tab begin-->
+<div name="panel-ignore" class="tab">
+<fieldset><legend>Objects to ignore</legend>
+<div .optgroup>
+<button #btnignurls onclick="Sandcat:EditList('site.syhunt.dynamic.lists.ignore.urls','Paths to ignore','Example: /about.php')">URLs...</button> 
+<button #btnlouturls onclick="Sandcat:EditList('site.syhunt.dynamic.lists.ignore.logoutpaths','Logout paths to ignore','Example: /logout.php')">Logout URLs...</button> 
+<button #btnignformnames onclick="Sandcat:EditList('site.syhunt.dynamic.lists.ignore.form.names','Forms to ignore (by name)','Example: search')">Forms...</button>
+</div>
+</fieldset>
+</div>
+<!-- ignore tab end-->
+
+<!-- auth tab begin-->
+<div name="panel-auth" class="tab">
+<fieldset><legend>Form Authentication</legend>
+<div .optgroup>
+Username:<br><input type="text" style="width:150px;" cid="site.syhunt.dynamic.formauth.username">
+<div .sep/>
+Password:<br><input type="password" style="width:150px;" cid="site.syhunt.dynamic.formauth.password">
+</div>
+</fieldset>
+<fieldset><legend>Server Authentication</legend>
+<div .optgroup>
+<select class="tag-list" type="select" cid="site.syhunt.dynamic.servauth.type">
+<option value="None" selected>None</option>
+<option value="Basic">Basic</option>
+<option value="NTLM">NTLM</option>
+</select><br><br>
+Username:<br><input type="text" style="width:150px;" cid="site.syhunt.dynamic.servauth.username">
+<div .sep/>
+Password:<br><input type="password" style="width:150px;" cid="site.syhunt.dynamic.servauth.password">
+</div>
+</fieldset>
+</div>
+<!-- auth tab end-->
+
+<!-- certs tab begin-->
+<div name="panel-certs" class="tab">
+<fieldset><br>
+<div .optgroup>
+<table style="padding:0;margin:0;">
+<tr><td valign="top" style="padding-right:10px;">
+Certificate File:<br><input type="file-path" novalue="Select File..." filter="Cert files:*.pem;All files:*.*" style="width:150px;" cid="site.syhunt.dynamic.cert.file">
+</td><td valign="top">
+Pass Phrase:<br><input type="text" style="width:150px;" cid="site.syhunt.dynamic.cert.passphrase">
+</td></tr></table>
+<div .sep/>
+Private Key File:<br><input type="file-path" novalue="Select File..." filter="Cert files:*.pem;All files:*.*" style="width:150px;" cid="site.syhunt.dynamic.cert.privkeyfile">
+<div .sep/>
+<table style="padding:0;margin:0;">
+<tr><td valign="top" style="padding-right:10px;">
+CA Certificate File:<br><input type="file-path" novalue="Select File..." filter="Cert files:*.pem;All files:*.*" style="width:150px;" cid="site.syhunt.dynamic.cert.cafile">
+</td><td valign="top">
+CA Directory:<br><input type="folder-path" novalue="Select Folder..." style="width:150px;" cid="site.syhunt.dynamic.cert.cadir">
+</td></tr></table>
+<div .sep/>
+<button type="checkbox" cid="site.syhunt.dynamic.cert.verifypeer">Verify Peer</button>
+</div>
+</fieldset>
+</div>
+<!-- certs tab end-->
+
+<!-- advanced tab begin-->
+<div name="panel-advanced" class="tab">
+<fieldset><legend>Detection Signatures</legend>
+<div .optgroup>
+<button #btnerrorsigs onclick="Sandcat:EditList('site.syhunt.dynamic.lists.errorpagesigs','Error Page Detection Signatures','Example: 404 Not Found')">Error Page...</button> 
+<button #btnloutsigs onclick="Sandcat:EditList('site.syhunt.dynamic.lists.signatures.logout','Logout Detection Signatures','Example: Your Session Has Expired!')">Logout...</button>
+</div>
+</fieldset>
+<fieldset><legend>Base Path</legend>
+<div .optgroup>
+Path (eg. /members): <input type="text" cid="site.syhunt.dynamic.basepath"><br>
+<button type="checkbox" cid="site.syhunt.dynamic.limittobase">Limit crawling to Base Path</button>
+</div>
+</fieldset>
+<fieldset><legend>Custom Virtual Host</legend>
+<div .optgroup>
+Host: <input type="text" cid="site.syhunt.dynamic.virtualhost">
+</div>
+</fieldset>
+</div>
+<!-- advanced tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>

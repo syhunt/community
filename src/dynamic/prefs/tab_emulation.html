@@ -1,0 +1,46 @@
+<!-- emulation tab begin-->
+<div name="panel-emulation" class="tab">
+<fieldset><legend>Default Browser Emulation Mode</legend>
+<div .optgroup>
+<select class="tag-list" type="select" cid="syhunt.dynamic.emulation.mode">
+<option value="Chrome">Chrome</option>
+<option value="Firefox">Firefox</option>
+<option value="MSIE" selected>Internet Explorer</option>
+<option value="Opera">Opera</option>
+<option value="Safari">Safari</option>
+</select><br>
+<div .sep/>
+<button .adv type="checkbox" cid="syhunt.dynamic.emulation.javascript.execution">Enable JavaScript emulation</button><button #btnadvjs>Advanced...</button><br>
+<popup #advjs>
+<button type="checkbox" cid="syhunt.dynamic.emulation.javascript.simuser">Simulate user interaction (key press, mouse click, etc)</button><br>
+<button type="checkbox" cid="syhunt.dynamic.emulation.javascript.loadexternal">Load external JavaScript files</button><br>
+<button type="checkbox" cid="syhunt.dynamic.emulation.doxhrcalls">Perform XHR calls</button>
+</popup>
+<div .sep/>
+<button .adv type="checkbox" cid="syhunt.dynamic.emulation.cookies.accept">Accept cookies</button><button #btnadvcookie>Advanced...</button><br>
+<popup #advcookie>
+<input cid="syhunt.dynamic.emulation.cookies.maxsize" type="number" step=1 minvalue="1" value="4" size="10"> Maximum cookie size (kb)<br>
+<input cid="syhunt.dynamic.emulation.cookies.maxnumber" type="number" step=1 minvalue="1" value="50" size="10"> Maximum number of cookies per site<br>
+</popup>
+<div .sep/>
+<button .adv type="checkbox" cid="syhunt.dynamic.emulation.autofill.forms">Automatically fill forms</button> <button #btnaddinps onclick="Sandcat:EditList('syhunt.dynamic.lists.form.values','Form Values','Example: phone=555-6842')">Values...</button> <button #btnadvffill>Advanced...</button>
+<popup #advffill>
+<button type="checkbox" cid="syhunt.dynamic.emulation.autofill.loginforms">Auto fill login web forms</button><br>
+<button type="checkbox" cid="syhunt.dynamic.options.logout.prevent">Prevent logout</button><br>
+<button type="checkbox" cid="syhunt.dynamic.options.logout.detect">Relogin when needed</button>
+</popup>
+<div .sep/>
+<button type="checkbox" cid="syhunt.dynamic.emulation.autofollowredir">Automatically follow redirects</button>
+<div .sep/>
+<button type="checkbox" cid="syhunt.dynamic.emulation.intelparser">Use intelligent HTML parsing</button> (Handles malformed HTML)
+<div .sep/>
+<button type="checkbox" cid="syhunt.dynamic.emulation.usenavbehavior">Use browser behavior</button>
+<div .sep/>
+User agent: <input type="text" cid="syhunt.dynamic.emulation.useragent"> <button #btnadvuagent>Advanced...</button>
+<popup #advuagent>
+<button type="checkbox" cid="syhunt.dynamic.emulation.forceuseragent">Force this user agent in all situations</button><br>
+</popup>
+</div>
+</fieldset>
+</div>
+<!-- emulation tab end-->

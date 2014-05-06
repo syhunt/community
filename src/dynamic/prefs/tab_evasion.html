@@ -1,0 +1,53 @@
+<!-- evasion tab begin-->
+<div name="panel-evasion" class="tab">
+<fieldset><br>
+<div .optgroup>
+<button .adv type="checkbox" cid="syhunt.dynamic.evasion.evadeflt">Use filter evasion</button><button #btnfiltev>Techniques...</button>
+<popup #advfiltev>
+<button type="checkbox" cid="syhunt.dynamic.checks.sub.xssev">Common XSS filter evasion techniques</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.sub.utf8dev">UTF-8 Decode</button>
+</popup>
+<div .sep/>
+<button .adv type="checkbox" cid="syhunt.dynamic.evasion.evadeids">Use IDS evasion</button><button #btnidsev>Techniques...</button>
+<popup #advidsev>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.urlencode">URL Encoding</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.upper">Uppercase Characters (when possible)</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.uencode">%u Encoding (when possible)</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.casesen">Case Sensitivity (when possible)</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.oldhttp">Old HTTP Version (when possible)</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.dblslash">Double Slashes</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.revtrav">Reverse Traversal</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.selfref">Self-Reference</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.longurl">Long URL</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.paramhid">Parameter Hiding</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.dwparam">DOS/Windows Parameter</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.null">Null Session</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.dblbkslash">Double Back Slashes</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.tplbkslash">Triple Back Slashes</button><br>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.tplslash">Triple Slashes</button>
+<hr>
+<button type="checkbox" cid="syhunt.dynamic.evasion.ids.autoconfig">Re-configure techniques (if necessary)</button>
+</popup>
+<div .sep/>
+<button type="checkbox" cid="syhunt.dynamic.evasion.detection.honeypot">Detect honeypot</button><br>
+<div .sep/>
+<button type="checkbox" cid="syhunt.dynamic.evasion.reqdistrand">Distribute requests randomly during crawling</button>
+<div .sep/>
+<button type="checkbox" cid="syhunt.dynamic.options.delay.enabled">Use delay between requests</button>&nbsp;&nbsp;&nbsp;
+Delay (ms): <input cid="syhunt.dynamic.options.delay.value" type="number" step="1000" minvalue="0" value="3000" size="10">&nbsp;&nbsp;&nbsp;
+<button type="checkbox" cid="syhunt.dynamic.options.delay.userandom">Random delay</button>
+</div>
+</fieldset>
+<fieldset><legend>WAF Evasion</legend>
+<div .optgroup>
+<button .adv type="checkbox" cid="syhunt.dynamic.evasion.evadewaf">Use application firewall evasion</button><button #btnwafev>Techniques...</button>
+<popup #advwafev>
+<button type="checkbox" cid="syhunt.dynamic.checks.sub.wafev_ms">mod_security (&lt;= 2.1.0)</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.sub.wafev_msmisc">mod_security (Misc)</button>
+</popup>
+<div .sep/>
+<button type="checkbox" cid="syhunt.dynamic.evasion.detection.waf">Detect application firewall (if installed)</button>
+</div>
+</fieldset>
+</div>
+<!-- evasion tab end-->

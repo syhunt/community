@@ -1,0 +1,56 @@
+<html>
+<head>
+<include src="Resources.pak#head_plus.html"/>
+<include src="Resources.pak#head.html"/>
+<style>
+body { margin:0;}
+</style>
+<script type="text/tiscript">
+  var lv = $("#results");
+  
+ function ClearResults() {
+  for(var e in $$("tr[role=option]")) e.remove();
+  view.update()
+ }
+
+ function AddItem(j) {
+   var row = new Element("tr");
+   //row.onMouse = HandleRowMouseEvent;
+   //row.onKey = HandleRowKeyEvent;
+   row.attributes["role"]="option";
+   row.attributes["class"]="blank";
+   if (j.risk == "200") row.attributes["class"]="fnd";
+   if (j.risk == "404") row.attributes["class"]="red";
+   if (j.risk == "500") row.attributes["class"]="red";
+   row.insert(new Element("td"));
+   row.insert(new Element("td"));
+   row.insert(new Element("td"));
+   row.insert(new Element("td"));
+   row.insert(new Element("td"));
+   row[0].text = j.line;
+   row[1].text = j.desc;
+   row[2].text = j.type;
+   row[3].text = j.risk;
+   lv.insert(row);
+   row.update(true);
+   row.scrollToView();
+ }
+ 
+$(#clearall).onClick = function() { ClearResults(); }
+</script>
+</head>
+<body engine="tab.liveheaders">
+
+<widget type="select" style="padding:0;context-menu: selector(#resultsmenu);">
+
+<table #results name="reportview" width="100%" cellspacing=-1px fixedrows=1>
+<tr><th .line>Line</th><th .desc>Description</th><th .type>Type</th><th .risk>Risk</th><th></th></tr>
+</table>
+</widget>
+ 
+<menu.context id="resultsmenu">
+<li #clearall style="foreground-image: @ICON_BLANK;">Clear Results</li>
+</menu>
+
+</body>
+</html>

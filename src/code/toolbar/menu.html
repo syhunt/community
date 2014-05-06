@@ -1,0 +1,21 @@
+<menu.popup id="navbarmenu-list">
+		  <li id="tnewtab" style="foreground-image: @ICON_PLUS" onclick="SyhuntCode:NewTab()">New Tab</li>
+		  <li id="tnewtab" style="foreground-image: @ICON_SANDCAT" onclick="browser.newtab()">New Browser Tab</li>
+		  <li id="tnewwindow" onclick="browser.newwindow('mode:syhuntcode')">New Window</li>
+		  <hr/>
+			<li id="ttasks" style="foreground-image: url(Resources.pak#16\icon_tasks.png);" onclick="PageMenu:ViewTasks()">Tasks</li>
+      <hr/>
+      <li>Import & Export
+        <menu id="tsetiemenu">
+         <li onclick="Sandcat:ImportPreferences()">Import Preferences...</li>
+         <hr id="tsetiesep"/>
+         <li onclick="Sandcat:ExportPreferences()">Export Preferences...</li>
+        </menu>
+      </li>
+		  <hr/>
+		  <li style="foreground-image: url(Syhunt.scx#images\icon_clock.png);" onclick="SyHybrid:SessionManager()">Past Sessions</li>
+			<li id="tprefs" onclick="SyhuntCode:EditPreferences()">Preferences...</li>
+			<include src="SyHybrid.scx#code\toolbar\menuhelp.html"/>
+			<hr/>
+			<li id="texit" onclick="browser.exit()">Exit</li>
+</menu>

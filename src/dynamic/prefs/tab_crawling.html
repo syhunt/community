@@ -1,0 +1,38 @@
+<!-- crawling tab begin-->
+<div name="panel-crawling" class="tab">
+<fieldset><legend>Depth</legend>
+<div .optgroup>
+<table style="padding:0;margin:0;">
+<tr>
+<td valign="top" style="line-height:19px;">
+Maximum number of links per server<br>
+Maximum links per page<br>
+Maximum URL length (bytes)<br>
+Maximum response size (kb)<br>
+<button type="checkbox" cid="syhunt.dynamic.crawling.depth.uselimit">Use depth limit</button>&nbsp;&nbsp;&nbsp;Maximum depth: 
+</td>
+<td valign="top">
+<input cid="syhunt.dynamic.crawling.max.linkspersite" type="number" step=1000 minvalue="0" value="10000" size="10"><br>
+<input cid="syhunt.dynamic.crawling.max.linksnumber" type="number" step=50 minvalue="0" value="250" size="10"><br>
+<input cid="syhunt.dynamic.crawling.max.urlsize" type="number" step=1000 minvalue="0" value="16384" size="10"><br>
+<input cid="syhunt.dynamic.crawling.max.filesize" type="number" step=1000 minvalue="0" value="1024" size="10"><br>
+<div .sep/><div .sep/>
+<input cid="syhunt.dynamic.crawling.depth.maxnumber" type="number" step=10 minvalue="0" value="1" size="10">
+</td>
+</tr>
+</table>
+<button .adv type="checkbox" cid="syhunt.dynamic.crawling.ignoremediafiles">Ignore common unnecessary extensions</button> <button #btnignexts onclick="Sandcat:EditList('syhunt.dynamic.lists.ignore.extensions','Extensions to ignore','Example: .zip')">Extensions...</button>
+</div>
+</fieldset>
+<fieldset><legend>Extended Analysis</legend>
+<div .optgroup>
+<button .adv type="checkbox" cid="syhunt.dynamic.emulation.javascript.analyzejs">Analyze JavaScript code</button><button #btnadvextjs>Advanced...</button>
+<popup #advextjs>
+<button type="checkbox" cid="syhunt.dynamic.emulation.javascript.analyzexhr">Analyze XHR calls</button>
+</popup>
+<div .sep/>
+<button type="checkbox" cid="syhunt.dynamic.crawling.analyze.robots">Analyze robots.txt (if available)</button>
+</div>
+</fieldset>
+</div>
+<!-- crawling tab end-->

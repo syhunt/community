@@ -1,0 +1,38 @@
+<!-- protocol tab begin-->
+<div name="panel-protocol" class="tab">
+<fieldset><legend>Version</legend>
+<div .optgroup>
+<select class="tag-list" type="select" cid="syhunt.dynamic.protocol.version">
+<option value="HTTP/1.0">HTTP 1.0</option>
+<option value="HTTP/1.1" selected>HTTP 1.1</option><br>
+</select>
+</div>
+</fieldset>
+<fieldset><br>
+<div .optgroup>
+<button type="checkbox" cid="syhunt.dynamic.protocol.keepalive">Enable Keep-Alive</button><br>
+<button type="checkbox" cid="syhunt.dynamic.protocol.usegzip">Enable GZIP compression support</button><br>
+<button type="checkbox" cid="syhunt.dynamic.protocol.mknocache">Make no-cache requests</button>
+<p align=right style="margin:0;padding:0;">
+<button #btnaddhdr onclick="Sandcat:EditList('syhunt.dynamic.lists.protocol.customhdr','Request Headers','Example: X-Custom: AValue')">Request Headers...</button> <button #btnhttps>HTTPS Options...</button> <button #btnproxyprefs onclick="SyhuntDynamic:EditNetworkPreferences()">Proxy...</button> <button #btnreqthreads>Threads...</button>
+</p>
+<popup #httpsoptions>
+<button type="checkbox" cid="syhunt.dynamic.protocol.ssl.v3">Enable SSL 3</button><br>
+<button type="checkbox" cid="syhunt.dynamic.protocol.ssl.v2">Enable SSL 2</button><br>
+<button type="checkbox" cid="syhunt.dynamic.protocol.tls.v1">Enable TLS 1</button>
+</popup>
+<popup #reqthreads>
+<button type="checkbox" cid="syhunt.dynamic.options.threads.multi">Enable multithreaded requests</button><br>
+<button type="checkbox" cid="syhunt.dynamic.options.threads.autoadjust">Dynamically adjust the number of threads</button><br>
+Maximum number of threads: <input cid="syhunt.dynamic.options.threads.maxnumber" type="number" step=1 minvalue="1" value="14" size="10">
+</popup>
+</div>
+</fieldset>
+<fieldset><legend>Timeout (ms)</legend>
+<div .optgroup>
+<input cid="syhunt.dynamic.protocol.timeout.value" type="number" step=1000 minvalue="0" value="8000" size="10">&nbsp;&nbsp;&nbsp;
+Number of retries: <input .adv cid="syhunt.dynamic.protocol.retries" type="number" step=1 minvalue="0" value="2" size="10">&nbsp;&nbsp;&nbsp;
+</div>
+</fieldset>
+</div>
+<!-- protocol tab end-->

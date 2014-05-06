@@ -1,0 +1,58 @@
+<!-- checks tab begin-->
+<div name="panel-checks" class="tab" >
+<fieldset><legend><button type="checkbox" cid="syhunt.dynamic.checks.enabled">Enable application checks</button></legend>
+<div .optgroup>
+<popup #appchecks>
+<button type="checkbox" cid="syhunt.dynamic.checks.commonexp">Common Exposures</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.efhijack">Email Form Hijacking</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.hidprice">Hidden Price Form Field</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.disclosure.path">Path Disclosure</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.disclosure.src">Source Code Disclosure</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.unenclogin">Unencrypted Login</button>
+</popup>
+<div .sep/>
+<button .subopt .adv type="checkbox" cid="syhunt.dynamic.checks.extensions.enabled">Enable extension checks</button> <button #btnextchecks>Checks...</button><br>
+<popup #extchecks>
+<button type="checkbox" cid="syhunt.dynamic.checks.extensions.backup">Check for common backup extensions</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.extensions.double">Perform double extension checking</button><br><br>
+<button #btnextbkp onclick="Sandcat:EditList('syhunt.dynamic.lists.extensions.bkp','Backup Extensions','Example: .bak')">Backup Extensions...</button> <button #btnextapp onclick="Sandcat:EditList('syhunt.dynamic.lists.extensions.app','Application Extensions','Example: .php')">App. Extensions...</button>
+</popup>
+<div .sep/>
+<button .subopt .adv type="checkbox" cid="syhunt.dynamic.injection.enabled">Enable injection checks</button><button #btninjchecks>Checks...</button><br>
+<popup #injchecks>
+<button type="checkbox" cid="syhunt.dynamic.checks.manipulate.form">Manipulate form parameters</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.manipulate.url">Manipulate URL parameters</button><br>
+<button type="checkbox" cid="syhunt.dynamic.options.ignunparams">Ignore common unnecessary URL/form parameters</button><br><br>
+<button onclick="Sandcat:EditList('syhunt.dynamic.lists.ignore.params','URL/form parameters to ignore','Example: __VIEWSTATE')">Parameter Exclusions...</button>
+</popup>
+<div .sep/>
+<button .subopt .adv type="checkbox" cid="syhunt.dynamic.checks.files.structure">Enable structure brute force checks</button><button #btnedtstructchecks>Checks...</button><br>
+<popup #structchecks>
+<button type="checkbox" cid="syhunt.dynamic.checks.files.backdoors">Backdoors</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.files.common">Common Files</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.files.vulnscripts">Common Vulnerable Scripts (ASP & PHP)</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.files.custom">Custom Files</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.disclosure.database">Database Disclosure</button><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.files.extra">Extra Files</button>
+</popup>
+<div .sep/>
+<button .subopt .adv type="checkbox" cid="syhunt.dynamic.checks.htmlcomments">Enable HTML comment checks</button> <button #btnsuskey onclick="Sandcat:EditList('syhunt.dynamic.lists.signatures.suspectwords','Suspicious Strings','Example: password')">Signatures...</button>
+<div .sep/>
+<button .subopt type="checkbox" cid="syhunt.hybrid.checks.enabled">Enable hybrid checks</button>
+<button #btnedtappchecks style="float:right;">Additional Checks...</button>
+</div>
+</fieldset>
+<fieldset><br>
+<div .optgroup>
+<button .adv type="checkbox" cid="syhunt.dynamic.cgiscan.checks.enabled">Enable classic CGI & server checks</button><button #btnadvcgi>Advanced...</button><br>
+<popup #advcgi>
+<button type="checkbox" cid="syhunt.dynamic.cgiscan.recon">Perform reconnaissance</button><br>
+<button type="checkbox" cid="syhunt.dynamic.cgiscan.optimizescan">Use fast CGI scanning method</button><br>
+<button type="checkbox" cid="syhunt.dynamic.cgiscan.maxopt">Use the maximum optimization level</button><br>
+<button type="checkbox" cid="syhunt.dynamic.cgiscan.filtredir">Use anti-redirect filtering</button><br>
+<button type="checkbox" cid="syhunt.dynamic.cgiscan.triplechk.enabled">Enable triple checking (beta)</button>
+</popup>
+</div>
+</fieldset>
+</div>
+<!-- checks tab end-->

@@ -1,0 +1,10 @@
+{
+ "name": "Syhunt Hybrid Pack",
+ "version": "file:SyHybrid.dll",
+ "author": "Syhunt",
+ "script": {
+  "filename": "hybrid.lua",
+  "init": "SyHybrid:Init()",
+  "afterinit": "SyHybrid:AfterInit()"
+ }
+}
