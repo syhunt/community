@@ -415,7 +415,6 @@ function ReportMaker:show_options()
 end
 
 function ReportMaker:loadtab(s)
-	require 'Sandcat'
 	require 'SyHybrid'
 	self.session_name = s
 	self.session_dir = session_getsessionsdir()..'\\'..s..'\\'

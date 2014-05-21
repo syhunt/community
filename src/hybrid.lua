@@ -40,6 +40,7 @@ function SyHybrid:AfterInit()
 	browser.addlibinfo('PDF Creation library','2.0','K. Nishita')
 	browser.addlibinfo('RTF Creation library','1.0','K. Nishita')
 	browser.addlibinfo('TAR Components','2.1.1','Stefan Heymann')
+  browser.addlibinfo('XML Components','1.0.17','Stefan Heymann','Sandcat:ShowLicense(SyHybrid.filename,[[hybrid\\docs\\Licence_XMLComps.txt]])')
 
 	-- Adds new Sandcat Console commands
 	SyhuntDynamic:AddCommands()
