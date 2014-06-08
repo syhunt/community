@@ -24,12 +24,12 @@ function SpiderLinks:findmatch()
 	local port = ui.data:getattrib('port')
 	local session = ui.data:getattrib('session')
 	local links = self:getlinklist(session,host,port)
-	vdbmatch(scop.url.genfromhost(host,port),links)
+	vdbmatch(slx.url.genfromhost(host,port),links)
 end
 
 function SpiderLinks:openurl(url)
 	browser.setactivepage('browser')
-	url = scop.convert.hextostr(url)
+	url = slx.convert.hextostr(url)
 	tab:gotourl(url)
 end
 
@@ -37,14 +37,14 @@ function SpiderLinks:showhostlinks(sessionname,host,port)
 	browser.bottombar:loadx('<img src="res:activity.gif">')
 
 	local inifilename=session_getsessionsdir()..sessionname..'\\'..host..' ['..port..']_Scanner.xml'
-	local links = scl.listparser:new()
-	local scanned_links = scl.listparser:new()
-	local folders = scl.listparser:new()
+	local links = slx.string.loop:new()
+	local scanned_links = slx.string.loop:new()
+	local folders = slx.string.loop:new()
 	links:load(xmlinifile_readstring(inifilename,'Lists','Links',''))
 	scanned_links:load(xmlinifile_readstring(inifilename,'Lists','Scnnd',''))
 	folders:load(xmlinifile_readstring(inifilename,'Lists','Fldrs',''))
 
-	local r = scl.stringlist:new()
+	local r = slx.string.list:new()
 	r:add('<link rel="stylesheet" type="text/css" href="Common.pak#listview.css">')
 	r:add('<link rel="stylesheet" type="text/css" href="Common.pak#tabs.css">')
 	r:add('<div class="tabs">')
@@ -58,11 +58,11 @@ function SpiderLinks:showhostlinks(sessionname,host,port)
 	r:add('<tr><th width="80%">Link</th><th width="20%">Status</th></tr>')
 
 	while links:parsing() do
-		local link_desc = scop.html.escape(links.current)
-		local url = scop.url.genfromhost(host,port)..links.current
-		local url_hex = scop.convert.strtohex(url)
-		url = scop.html.escape(url)
-		local urlext = scop.url.crack(url).fileext
+		local link_desc = slx.html.escape(links.current)
+		local url = slx.url.genfromhost(host,port)..links.current
+		local url_hex = slx.convert.strtohex(url)
+		url = slx.html.escape(url)
+		local urlext = slx.url.crack(url).fileext
 		if scanned_links:indexof(links.current) == -1 then
 			r:add('<tr><td><img class="shell-icon" filename="'..urlext..'"><a href="#" onclick="SpiderLinks:openurl([['..url_hex..']])">'..link_desc..'</a></td><td>Pending Analysis...</td></tr>')
 		else

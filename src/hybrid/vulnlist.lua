@@ -63,9 +63,9 @@ function VulnList:dosearch()
 	end
 	html = [[<html><body>Searching...</body></html>]]
 	tab:loadx(html)
-	h = scl.stringlist:new()
+	h = slx.string.list:new()
 	self:addinterface(h)
-	self:addsection(h,'Search results for "'..scop.html.escape(searchtext)..'" ['..string.upper(searchtype)..']')
+	self:addsection(h,'Search results for "'..slx.html.escape(searchtext)..'" ['..string.upper(searchtype)..']')
 	h:add(vuln_search(searchtext,searchtype))
 	self:closeinterface(h)
 	tab:loadx(h.text)
@@ -77,7 +77,7 @@ end
 
 function VulnList:loadtab()
 	local NA = '<font color="gray">N/A</font>'
-	h = scl.stringlist:new()
+	h = slx.string.list:new()
 	self:addinterface(h)
 
 	-- Name/Total/CWE/CVE/OSVDB/BID

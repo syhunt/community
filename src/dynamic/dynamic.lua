@@ -17,7 +17,7 @@ function SyhuntDynamic:ScanSite(url,method)
 		prefs.save()
 		tab.captureurls = false
 		local script = SyHybrid:getfile('dynamic/scantask.lua')
-		local j = scl.json:new()
+		local j = slx.json.object:new()
 		j.sessionname = symini.getsessionname()
 		j.huntmethod = method
 		j.monitor = tab.handle
@@ -29,7 +29,7 @@ function SyhuntDynamic:ScanSite(url,method)
 		<li style="foreground-image: url(SyHybrid.scx#images\16\spider.png);" onclick="SpiderLinks:showsessionlinks('%s')">View Links</li>
 		<li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="ReportMaker:loadtab('%s')">Generate Report</li>
 		]]
-		menu = stringop.replace(menu,'%s',j.sessionname)
+		menu = slx.string.replace(menu,'%s',j.sessionname)
 		if symini.checkinst() then
 			tab:runtask(script,tostring(j),menu)
 		else
@@ -48,7 +48,7 @@ end
 
 function SyhuntDynamic:EditPreferences(dialoghtml)
 	dialoghtml = dialoghtml or 'dynamic/prefs/prefs.html'
-	local slp = scl.listparser:new()
+	local slp = slx.string.loop:new()
 	Sandcat:dofile('dialog_prefs.lua')
 	local ds = symini.dynamic:new()
 	ds:start()
@@ -66,9 +66,9 @@ function SyhuntDynamic:EditNetworkPreferences()
 end
 
 function SyhuntDynamic:EditSitePreferences()
-	if stringop.beginswith(tab.url,'http') then
+	if slx.string.beginswith(tab.url,'http') then
 		local jsonfile = tab.siteprefsfilename
-		local slp = scl.listparser:new()
+		local slp = slx.string.loop:new()
 		Sandcat:dofile('dialog_prefs.lua')
 		local hs = symini.hybrid:new()
 		hs:start()

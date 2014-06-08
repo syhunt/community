@@ -158,7 +158,7 @@ function ReportMaker:do_search()
 	local ui = self.ui
 	local e = self.ui.element
 	local xml = GXMLIniList:new()
-	local xmlfiles = scl.listparser:new()
+	local xmlfiles = slx.string.loop:new()
 	xmlfiles:load(self.xmllist)
 	local searchfield = ui.searchfield.value
 	local searchtype = ui.searchtype.value
@@ -174,10 +174,10 @@ function ReportMaker:do_search()
 			fieldvalue = string.lower(fieldvalue)
 		end
 		if searchtype == "contains" then
-			if stringop.occur(fieldvalue,searchtext) ~= 0 then found = true end
+			if slx.string.occur(fieldvalue,searchtext) ~= 0 then found = true end
 		end
 		if searchtype == "doesn't contain" then
-			if stringop.occur(fieldvalue,searchtext) == 0 then found = true end
+			if slx.string.occur(fieldvalue,searchtext) == 0 then found = true end
 		end
 		if searchtype == "is" then
 			if fieldvalue == searchtext then found = true end
@@ -186,22 +186,22 @@ function ReportMaker:do_search()
 			if fieldvalue ~= searchtext then found = true end
 		end
 		if searchtype == "begins with" then
-			if stringop.beginswith(fieldvalue,searchtext) == true then found = true end
+			if slx.string.beginswith(fieldvalue,searchtext) == true then found = true end
 		end
 		if searchtype == "ends with" then
-			if stringop.endswith(fieldvalue,searchtext) == true then found = true end
+			if slx.string.endswith(fieldvalue,searchtext) == true then found = true end
 		end
 		if searchtype == "matches regex" then
-			if scop.re.match(fieldvalue,searchtext) == true then found = true end
+			if slx.re.match(fieldvalue,searchtext) == true then found = true end
 		end
 		if searchtype == "doesn't match regex" then
-			if scop.re.match(fieldvalue,searchtext) == false then found = true end
+			if slx.re.match(fieldvalue,searchtext) == false then found = true end
 		end
 		if searchtype == "matches wildcard" then
-			if stringop.match(fieldvalue,searchtext) == true then found = true end
+			if slx.string.match(fieldvalue,searchtext) == true then found = true end
 		end
 		if searchtype == "doesn't match wildcard" then
-			if stringop.match(fieldvalue,searchtext) == false then found = true end
+			if slx.string.match(fieldvalue,searchtext) == false then found = true end
 		end
 		if searchtext == "" then
 			found = true
@@ -268,14 +268,14 @@ function ReportMaker:add_repdata()
 	r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
 	r:add('<tr><th width="10%">Entry Type</th><th width="90%">Short Description</th></tr>')
 	local xml = GXMLIniList:new()
-	local xmlfiles = scl.listparser:new()
+	local xmlfiles = slx.string.loop:new()
 	xmlfiles:load(self.xmllist)
 	while xmlfiles:parsing() do
 		xml:loadfromfile(self.session_dir..xmlfiles.current)
 		type = xml:getvalue('type')
 		desc = xml:getvalue('host')
 		if type == 'Vulnerability' then
-			desc = scop.html.escape(xml:getvalue('check name'))
+			desc = slx.html.escape(xml:getvalue('check name'))
 		end
 		if type == 'Port' then
 			desc = xml:getvalue('host')..':'..xml:getvalue('port')
@@ -371,10 +371,10 @@ function ReportMaker:show_options()
 	</widget>
 	</div>
 	]]
-	self.xmllist = scop.dir.getfilelist(self.session_dir..'*.xrm')
+	self.xmllist = slx.dir.getfilelist(self.session_dir..'*.xrm')
 	local report_title = 'Syhunt Scanner Report'
 
-	r = scl.stringlist:new()
+	r = slx.string.list:new()
 	r:add('<meta id="element">')
 	r:add('<link rel="stylesheet" type="text/css" href="Common.pak#listview.css">')
 	r:add('<link rel="stylesheet" type="text/css" href="Common.pak#tabs.css">')
@@ -384,9 +384,9 @@ function ReportMaker:show_options()
 	r:add('<td width="40%" valign="top">')
 	r:add('<fieldset style="height:100%;"><legend style="color:black">Report Details for: '..self.session_name..'</legend>')
 	r:add('<div style="width:*;padding-right:5px;">')
-	r:add('Report Title:<br><input type="text" id="report_title" style="width:*;" value="'..scop.html.escape(report_title)..'"><br><br>')
-	r:add([[Notes:<br><plaintext id="usernotes" style="width:*;height:200px;" onchange="ReportMaker:save_xmlfield('user notes','usernotes')">]]..scop.html.escape(ReportMaker:get_xmlfield('user notes'))..[[</plaintext><br>]])
-	r:add([[Footer:<br><plaintext id="footer" style="width:*;height:200px;" onchange="ReportMaker:save_xmlfield('footer','footer')">]]..scop.html.escape(ReportMaker:get_xmlfield('footer'))..[[</plaintext>]])
+	r:add('Report Title:<br><input type="text" id="report_title" style="width:*;" value="'..slx.html.escape(report_title)..'"><br><br>')
+	r:add([[Notes:<br><plaintext id="usernotes" style="width:*;height:200px;" onchange="ReportMaker:save_xmlfield('user notes','usernotes')">]]..slx.html.escape(ReportMaker:get_xmlfield('user notes'))..[[</plaintext><br>]])
+	r:add([[Footer:<br><plaintext id="footer" style="width:*;height:200px;" onchange="ReportMaker:save_xmlfield('footer','footer')">]]..slx.html.escape(ReportMaker:get_xmlfield('footer'))..[[</plaintext>]])
 	r:add('</div>')
 	r:add('</fieldset>')
 	r:add('</td>')

@@ -14,7 +14,7 @@ function SyhuntCode:Load()
 end
 
 function SyhuntCode:EditPreferences()
-	local slp = scl.listparser:new()
+	local slp = slx.string.loop:new()
 	Sandcat:dofile('dialog_prefs.lua')
 	local cs = symini.code:new()
 	slp:load(cs.options)
@@ -64,12 +64,12 @@ end
 
 function SyhuntCode.OpenFile(f)
 	local file = SyhuntCode.ui.dir.value..'\\'..f
-	local ext = scop.file.getext(file)
-	if scop.file.exists(file) then
-		tab.title = scop.file.getname(f)
+	local ext = slx.file.getext(file)
+	if slx.file.exists(file) then
+		tab.title = slx.file.getname(f)
 		local ses = symini.session:new()
 		ses.name = tab:userdata_get('session')
-		f = stringop.replace(f,'\\','/')
+		f = slx.string.replace(f,'\\','/')
 		tab:loadsourcemsgs(ses:getcodereview('/'..f))
 		tab.logtext = ses:getcodereviewlog('/'..f)
 		tab.downloadfiles = false
@@ -77,7 +77,7 @@ function SyhuntCode.OpenFile(f)
 		tab:gotourl(file)
 		tab:runsrccmd('readonly',false)
 		tab:runsrccmd('loadfromfile',file)
-		if scop.re.match(ext,'.bmp|.gif|.ico|.jpg|.jpeg|.png|.svg') == true then
+		if slx.re.match(ext,'.bmp|.gif|.ico|.jpg|.jpeg|.png|.svg') == true then
 			browser.setactivepage('browser')
 		end
 		ses:release()
@@ -113,7 +113,7 @@ function SyhuntCode:LoadTree(dir,affscripts)
 	tab.tree_loaditem = SyhuntCode.OpenFile
 	tab:tree_clear()
 	tab:tree_loaddir(dir..'\\',true,affscripts)
-	tab.title = scop.file.getname(dir)
+	tab.title = slx.file.getname(dir)
 end
 
 function SyhuntCode:ScanFolder(huntmethod)
@@ -122,7 +122,7 @@ function SyhuntCode:ScanFolder(huntmethod)
 		prefs.save()
 		self:LoadTree(dir,'')
 		local script = SyHybrid:getfile('code/scantask.lua')
-		local j = scl.json:new()
+		local j = slx.json.object:new()
 		j.sessionname = symini.getsessionname()
 		tab:userdata_set('session',j.sessionname)
 		j.codedir = dir..'\\'
@@ -135,9 +135,9 @@ end
 
 function SyhuntCode:ShowResults(list)
 	local html =  SyHybrid:getfile('code/results.html')
-	local slp = scl.listparser:new()
-	local script = scl.stringlist:new()
-	local j = scl.json:new()
+	local slp = slx.string.loop:new()
+	local script = slx.string.list:new()
+	local j = slx.json.object:new()
 	slp.iscsv = true
 	slp:load(list)
 	while slp:parsing() do
