@@ -70,22 +70,10 @@ function SyHybrid:NewTab()
 	browser.newtabx(j)
 end
 
-function SyHybrid:NewConsoleTab(mode)
+function SyHybrid:ShowConsole(mode)
 	mode = mode or 'sc'
 	browser.options.showconsole = true
 	Sandcat:SetConsoleMode(mode)
-end
-
-function SyHybrid:NewConsoleTabEx(mode)
-	mode = mode or 'sc'
-	local t = {}
-	t.title = 'Console'
-	t.icon = 'url(Resources.pak#16\\icon_consolesimple.png)'
-	t.tag = 'console'
-	if browser.newtabx(t) ~= 0 then
-		Sandcat:SetConsoleMode(mode)
-		browser.setactivepage('console')
-	end
 end
 
 function SyHybrid:VulnList()
