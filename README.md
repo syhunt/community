@@ -22,7 +22,7 @@ This extension uses the Syhunt Hybrid Lua API. To use this API you need to have 
 
 ## License & Credits
 
-Copyright (c) 2014 [Syhunt](http://www.syhunt.com/)
+Copyright (c) 2015 [Syhunt](http://www.syhunt.com/)
 
 This code is licensed under a 3-clause BSD license - see the LICENSE file for details.
 
