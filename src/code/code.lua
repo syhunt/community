@@ -6,7 +6,7 @@ function SyhuntCode:Load()
 	browser.info.fullname = 'Syhunt Code'
 	browser.info.name = 'Code'
 	browser.info.exefilename = app.dir..'SyCode.exe'
-	browser.info.abouturl = 'http://www.syhunt.com/?n=Syhunt.Code'
+	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntCode'
 	browser.pagebar:eval('Tabs.RemoveAll()')
 	browser.pagebar:eval([[$("#tabstrip").insert("<include src='SyHybrid.scx#code/pagebar.html'/>",1);]])
 	browser.pagebar:eval('SandcatUIX.Update();Tabs.Select("source");')

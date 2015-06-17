@@ -55,7 +55,7 @@ function SyHybrid:LoadLauncher()
 	browser.info.fullname = 'Syhunt Hybrid'
 	browser.info.name = 'Hybrid'
 	browser.info.exefilename = app.dir..'SyHybrid.exe'
-	browser.info.abouturl = 'http://www.syhunt.com/?n=Syhunt.Hybrid'
+	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntHybrid'
 end
 
 function SyHybrid:NewTab()
