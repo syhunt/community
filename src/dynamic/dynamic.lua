@@ -56,7 +56,13 @@ function SyhuntDynamic:EditPreferences(dialoghtml)
 	while slp:parsing() do
 		prefs.regdefault(slp.current,ds:prefs_getdefault(slp.current))
 	end
-	Preferences:EditCustom(SyHybrid.filename,dialoghtml,'syhuntdynamic',ds.options)
+	local t = {}
+	t.pak = SyHybrid.filename
+	t.filename = dialoghtml
+	t.id = 'syhuntdynamic'
+	t.options = ds.options
+	t.options_disabled = ds.options_locked
+	Preferences:EditCustom(t)
 	ds:release()
 	slp:release()
 end
@@ -76,7 +82,13 @@ function SyhuntDynamic:EditSitePreferences()
 		while slp:parsing() do
 			prefs.regdefault(slp.current,hs:prefs_getdefault(slp.current))
 		end
-		Preferences:EditCustomFile(SyHybrid.filename,'dynamic/prefs_site/prefs.html','syhuntsiteprefs',hs.options,jsonfile)
+		local t = {}
+		t.pak = SyHybrid.filename
+		t.filename = 'dynamic/prefs_site/prefs.html'
+		t.id = 'syhuntsiteprefs'
+		t.options = hs.options
+		t.jsonfile = jsonfile
+		Preferences:EditCustomFile(t)
 		hs:release()
 		slp:release()
 	else
