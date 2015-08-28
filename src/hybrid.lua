@@ -61,7 +61,7 @@ end
 function SyHybrid:NewTab()
 	local html = SyHybrid:getfile('hybrid/launcher/launcher.html')
 	local j = {}
-	j.icon = 'url(Syhunt.scx#images\\icon_syhunt.png)'
+	j.icon = 'url(SyHybrid.scx#images\\16\\hybrid.png)'
 	j.title = 'Welcome'
 	j.toolbar = 'SyHybrid.scx#hybrid\\launcher\\toolbar.html'
 	j.table = 'SyHybrid.ui'
