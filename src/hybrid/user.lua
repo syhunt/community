@@ -50,6 +50,22 @@ function SyHybridUser:ContactSupport()
 	r:release()
 end
 
+function SyHybridUser:IsMethodAvailable(method,warnuser)
+  local warnuser = warnuser or false
+  local mode = symini.getmodename()
+  local v=true
+  if mode == 'Community Edition' then
+    if method == 'fileinc' then v=false end
+    if method == 'unvredir' then v=false end
+    if method == 'phptop5' then v=false end
+    if method == 'structbf' then v=false end
+    if warnuser == true and v == false then
+      app.showalert('This method is not available in the Community Edition.')
+    end
+  end
+  return v
+end
+
 function SyHybridUser:IsValidUser(user)
 	local v=true
 	if user == '' then v=false end

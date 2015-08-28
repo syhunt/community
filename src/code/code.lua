@@ -123,20 +123,22 @@ function SyhuntCode:LoadTree(dir,affscripts)
 end
 
 function SyhuntCode:ScanFolder(huntmethod)
-	local dir = app.selectdir('Select a code directory to scan:')
-	if dir ~= '' then
-		prefs.save()
-		self:LoadTree(dir,'')
-		local script = SyHybrid:getfile('code/scantask.lua')
-		local j = slx.json.object:new()
-		j.sessionname = symini.getsessionname()
-		tab:userdata_set('session',j.sessionname)
-		j.codedir = dir..'\\'
-		j.huntmethod = huntmethod
-		tab:runtask(script,tostring(j))
-		j:release()
-		browser.setactivepage('source')
-	end
+  if SyHybridUser:IsMethodAvailable(huntmethod, true) then
+	  local dir = app.selectdir('Select a code directory to scan:')
+	  if dir ~= '' then
+  		prefs.save()
+  		self:LoadTree(dir,'')
+  		local script = SyHybrid:getfile('code/scantask.lua')
+  		local j = slx.json.object:new()
+	  	j.sessionname = symini.getsessionname()
+  		tab:userdata_set('session',j.sessionname)
+  		j.codedir = dir..'\\'
+  		j.huntmethod = huntmethod
+  		tab:runtask(script,tostring(j))
+  		j:release()
+  		browser.setactivepage('source')
+  	end
+  end
 end
 
 function SyhuntCode:ShowResults(list)

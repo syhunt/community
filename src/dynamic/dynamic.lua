@@ -7,7 +7,9 @@ end
 
 function SyhuntDynamic:ScanThisSite(method)
 	if Sandcat:IsURLLoaded(true) then
-		self:ScanSite(tab.url,method)
+	  if SyHybridUser:IsMethodAvailable(method, true) then
+		  self:ScanSite(tab.url,method)
+		end
 	end
 end
 
