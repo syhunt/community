@@ -134,7 +134,13 @@ function SyhuntCode:ScanFolder(huntmethod)
   		tab:userdata_set('session',j.sessionname)
   		j.codedir = dir..'\\'
   		j.huntmethod = huntmethod
-  		tab:runtask(script,tostring(j))
+		  local menu = [[
+		  <li onclick="browser.showbottombar('taskmon')">View Messages</li>
+		  <li onclick="SessionManager:show_sessiondetails('%s')">View Vulnerabilities</li>
+	  	<li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="ReportMaker:loadtab('%s')">Generate Report</li>
+	  	]]
+	  	menu = slx.string.replace(menu,'%s',j.sessionname)
+  		tab:runtask(script,tostring(j),menu)
   		j:release()
   		browser.setactivepage('source')
   	end
