@@ -1,6 +1,7 @@
 require "SyMini"
 
 task.caption = 'Syhunt Code Task'
+task:setscript('ondblclick',"browser.showbottombar('taskmon')")
 runtabcmd('seticon','@ICON_LOADING')
 runtabcmd('runtbtis','MarkAsScanning();')
 runtabcmd('syncwithtask','1')
@@ -8,6 +9,7 @@ print('Scanning directory: '..params.codedir..'...')
 
 cs = symini.code:new()
 cs.debug = true
+cs.outputmsgs = true
 cs.sessionname = params.sessionname
 cs.huntmethod = params.huntmethod
 cs:scandir(params.codedir)
