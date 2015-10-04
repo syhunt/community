@@ -12,8 +12,14 @@ cs.sessionname = params.sessionname
 cs.huntmethod = params.huntmethod
 cs:scandir(params.codedir)
 task.status = 'Done.'
+
 if cs.vulnerable == true then
 	print('Vulnerable.')
+	if cs.vulncount == 1 then
+		print('Found 1 vulnerability')
+	else
+		print('Found '..cs.vulncount..' vulnerabilities')
+	end
 	printfailure(task.status)
 	runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_red.png)')
 	runtabcmd('setaffecteditems',cs.affectedscripts)
