@@ -9,7 +9,7 @@ function SyHybrid:Init()
 	browser.setinitmode('syhuntcode','SyhuntCode:Load()')
 
 	-- Inserts new toolbar menu options for each mode
-	local ct_html = "<li id='tnewsyhuntcodetab' style='foreground-image: url(Syhunt.scx#images\\icon_sast.png)' onclick='SyhuntCode:NewTab()'>New Code Scanner Tab</li>"
+	local ct_html = "<li id='tnewsyhuntcodetab' style='foreground-image: url(PenTools.scx#images\\icon_sast.png)' onclick='SyhuntCode:NewTab()'>New Code Scanner Tab</li>"
 	local bt_html = "<li id='tnewbrowsertab' style='foreground-image: @ICON_SANDCAT' onclick='browser.newtab()'>New Browser Tab</li>"
 	if browser.info.initmode == 'syhunthybrid' then
 		browser.navbar:inserthtmlfile('#pagemenu','#toolbar','SyHybrid.scx#dynamic/navbar.html')

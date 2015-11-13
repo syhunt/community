@@ -223,7 +223,7 @@ function SessionManager:loadtab(newtab)
  if newtab == true then
   local j = {}
   j.title = 'Past Sessions'
-  j.icon = 'url(Syhunt.scx#images\\icon_clock.png)'
+  j.icon = 'url(PenTools.scx#images\\icon_clock.png)'
   j.table = 'SessionManager.ui'
   j.toolbar = 'SyHybrid.scx#hybrid\\sesman\\toolbar.html'
   j.html = html

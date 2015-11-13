@@ -58,15 +58,15 @@ $(#scancode).onClick = function() { Sandcat.RunLua("SyhuntCode:ScanFile(tab.sour
    <li style="foreground-image: url(SyHybrid.scx#images\16\scanfolder.png);" onclick="SyhuntCode:ScanFolder('')">Scan a Code Folder...</li>
    <li style="foreground-image: url(SyHybrid.scx#images\16\scanfolder.png);">Scan for Specific Flaws 
     <menu>
-     <li style="foreground-image: url(Syhunt.scx#images\icon_injection_sql.png);" onclick="SyhuntCode:ScanFolder('sqli')">SQL Injection</li>
-     <li style="foreground-image: url(Syhunt.scx#images\icon_injectxss.png);" onclick="SyhuntCode:ScanFolder('xss')">XSS (Cross-Site Scripting)</li>
-     <li style="foreground-image: url(Syhunt.scx#images\icon_insert.png);" onclick="SyhuntCode:ScanFolder('fileinc')">File Inclusion</li>
-     <li style="foreground-image: url(Syhunt.scx#images\icon_injection.png);" onclick="SyhuntCode:ScanFolder('unvredir')">Unvalited Redirects</li>
+     <li style="foreground-image: url(PenTools.scx#images\icon_injection_sql.png);" onclick="SyhuntCode:ScanFolder('sqli')">SQL Injection</li>
+     <li style="foreground-image: url(PenTools.scx#images\icon_injectxss.png);" onclick="SyhuntCode:ScanFolder('xss')">XSS (Cross-Site Scripting)</li>
+     <li style="foreground-image: url(PenTools.scx#images\icon_insert.png);" onclick="SyhuntCode:ScanFolder('fileinc')">File Inclusion</li>
+     <li style="foreground-image: url(PenTools.scx#images\icon_injection.png);" onclick="SyhuntCode:ScanFolder('unvredir')">Unvalited Redirects</li>
     </menu>
    </li>
    <include src="SyHybrid.scx#code\toolbar\sourcemenu.html"/>
    <hr/>
-   <li onclick="Syhunt:PageFind()">Search Source...</li>
+   <li onclick="PenTools:PageFind()">Search Source...</li>
    </menu>
 	</div>
 	<div #navbarmenu .button style="foreground-image: url(Resources.pak#16\icon_menu.png); behavior: ~ popup-menu;" titleid="for-navbarmenu" >

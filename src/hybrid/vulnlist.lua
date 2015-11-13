@@ -2,7 +2,7 @@ require 'SyHybrid'
 
 VulnList = {
 	title = 'Vulnerability List',
-	icon = 'url(Syhunt.scx#images\\icon_dast.png)'
+	icon = 'url(PenTools.scx#images\\icon_dast.png)'
 }
 
 function VulnList:addinterface(p)

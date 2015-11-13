@@ -50,7 +50,7 @@ Key Area=Key Areas
 Interesting=Interesting Findings
 ]]
 	local j = {}
-	j.icon = 'url(Syhunt.scx#images\\icon_sast.png)'
+	j.icon = 'url(PenTools.scx#images\\icon_sast.png)'
 	j.title = 'New Tab'
 	j.toolbar = 'SyHybrid.scx#code\\toolbar\\toolbar.html'
 	j.table = 'SyhuntCode.ui'
@@ -64,7 +64,7 @@ Interesting=Interesting Findings
 end
 
 function SyhuntCode:Search()
-	Syhunt:PageFind()
+	PenTools:PageFind()
 	SearchSource:search(self.ui.search.value)
 end
 

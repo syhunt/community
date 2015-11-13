@@ -2,6 +2,7 @@
  "name": "Syhunt Hybrid Pack",
  "version": "file:SyHybrid.dll",
  "author": "Syhunt",
+ "compat": "v2",
  "script": {
   "filename": "hybrid.lua",
   "init": "SyHybrid:Init()",
