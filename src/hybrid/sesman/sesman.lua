@@ -18,10 +18,13 @@ function SessionManager:show_sessiondetails(sesname)
   r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
   --r:add('<link rel="stylesheet" type="text/css" href="Common.pak#listview.css">')
   local sourcedir = getval('source_code_directory')
+  local targetfile = getval('target_file')
   r:add('<fieldset><legend style="color:black">'..sesname..'</legend>')
   r:add('Date: '..getval('date')..'<br>')
   if sourcedir ~= '' then
    r:add('Target(s): '..sourcedir..'<br>')
+  elseif targetfile ~= '' then
+   r:add('Target(s): '..targetfile..'<br>')
   else
    r:add('Target(s): '..getval('targets')..' ('..getval('ports')..')<br>')
   end
@@ -157,25 +160,46 @@ function SessionManager:add_session(sesname,oldformat)
  local sesnamehex = slx.convert.strtohex(sesname)
  local scanmethod = getval('scan_method')
  local sourcedir = getval('source_code_directory')
+ local targetfile = getval('target_file')
  local icon = 'SyHybrid.scx#images/16/shield_tick.png'
+ -- Support for old session file format (.hrm)
+ if oldformat then
+   scanmethod=getval('scan method')
+ end
+ 
  local vcount=getval('vulnerabilities')
- local status=getval('status')
  if vcount == '' then vcount = '0' end
- if vcount ~= '0' then icon = 'SyHybrid.scx#images/16/shield_exclamation.png' end
+ local status=getval('status')
  if status == 'Completed' then
   if vcount ~= '0' then
-  status = 'Vulnerable'
+    status = 'Vulnerable'
   else
-  status = 'Secure'
+    status = 'Secure'
   end
  end
- if oldformat then scanmethod=getval('scan method') end -- old session file format (.hrm)
+ 
+ -- Handle the status differently if this is a log scan
+ if scanmethod == 'Web Server Log Scan' then
+  local atkcount = getval('attacks')
+  if atkcount == '' then atkcount = '0' end
+  if atkcount ~= '0' then
+    status = 'Attacks Found'
+  else
+    status = 'No Attacks'
+  end
+   vcount = atkcount
+ end
+ 
+ if vcount ~= '0' then icon = 'SyHybrid.scx#images/16/shield_exclamation.png' end
+ 
  r:add('<tr role="option" style="context-menu: selector(#menu'..sesnamehex..');" ')
  r:add([[ondblclick="SessionManager:load_session(']]..sesname..[[')" ]])
  r:add('>')
  r:add('<td><input type="checkbox" session="'..sesname..'"><img .lvfileicon src="'..icon..'">&nbsp;'..getval('date')..' ('..sesname..')</td>')
  if sourcedir ~= '' then
   r:add('<td>'..sourcedir..'</td>')
+ elseif targetfile ~= '' then
+  r:add('<td>'..targetfile..'</td>')
  else
   r:add('<td>'..slx.html.escape(getval('targets'))..self:get_ports(getval('ports'))..'</td>')
  end
@@ -212,7 +236,7 @@ function SessionManager:loadtab(newtab)
  while p:parsing() do
   sesfile=repdir..'\\'..p.current..'\\_Main.xrm'
   if slx.file.exists(sesfile) then
-   self:add_session(p.current,false)
+   self:add_session(p.current)
   else
    sesfile=repdir..'\\'..p.current..'\\_Main.hrm' --old session data format
    if slx.file.exists(sesfile) then self:add_session(p.current,true) end

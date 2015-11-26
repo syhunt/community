@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>Syhunt Insight Preferences</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#insight\prefs\prefs.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+      }
+ }
+
+ $(#ok).onClick = function() { view.close(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<!--div panel="panel-general" accesskey="G"><center><img #icon_general><br>General</center></div-->
+<div panel="panel-checks" accesskey="C" selected><center><img #icon_checks><br>Checks</center></div>
+<div panel="panel-ignore" accesskey="I"><center><img #icon_ignore><br>Exclusions</center></div>
+<div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
+</div>
+
+<div name="panel-general" class="tab">
+</div>
+
+<!-- checks tab begin-->
+<div name="panel-checks" class="tab" selected>
+<fieldset><br>
+<div .optgroup>
+<table width="100%">
+<tr>
+<td width="50%" valign="top">
+<button type="checkbox" cid="syhunt.insight.checks.sqli">SQL Injection</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.xss">Cross-Site Scripting (XSS)</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.afr">Arbitrary File Reading</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.bof">Buffer Overflow</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.dirtrav">Directory Traversal</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.fmtstr">Format String Attack</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.codeinj">Server-Side Code Injection</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.shcode">Shell Code Attack</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.ssiinj">SSI Injection</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.suspreq">Suspicious Requests</button><br>
+</td>
+<td width="50%" valign="top">
+<button type="checkbox" cid="syhunt.insight.checks.idsev">IDS Evasion Techniques</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.wafrej">WAF Rejection</button><br>
+<button type="checkbox" cid="syhunt.insight.checks.hacktools">Hacking Tools</button><br><br>
+<fieldset><legend>Special</legend>
+<div .optgroup>
+<button type="checkbox" cid="syhunt.insight.options.profileatk">Build attacker profile</button><br>
+<button type="checkbox" cid="syhunt.insight.options.detbreach">Determine if breach occurred</button>
+</div>
+</fieldset>
+</td>
+</tr>
+</table>
+</div>
+</fieldset>
+</div>
+<!-- checks tab end-->
+
+<!-- ignore tab begin-->
+<div name="panel-ignore" class="tab">
+<fieldset><legend>Objects to ignore</legend>
+<div .optgroup>
+<button #btnignpath onclick="Sandcat:EditList('syhunt.insight.lists.ignorelist.paths','Path Ignore List','Example: /robots.txt')">URLs...</button>
+<button #btnignips onclick="Sandcat:EditList('syhunt.insight.lists.ignorelist.srcips','IP Ignore List','Example: 127.0.0.1')">Source IPs...</button>
+</div>
+</fieldset>
+</div>
+<!-- ignore tab end-->
+
+<!-- advanced tab begin-->
+<div name="panel-advanced" class="tab">
+<fieldset><legend>Default Log Format</legend>
+<div .optgroup>
+<select class="tag-list" type="select" cid="syhunt.insight.options.logformat">
+<option value="auto" selected>Auto</option>
+<option value="common">Common</option>
+<option value="apache">Apache</option>
+<option value="iis">IIS</option>
+<option value="ncsa">NCSA</option>
+<option value="pws">PWS</option>
+<option value="sambar">Sambar</option>
+</select>
+</div>
+</fieldset>
+<div .sep/>
+<fieldset><br>
+<div .optgroup>
+<button type="checkbox" cid="syhunt.insight.options.resolveip">Resolve attacker IP addresses (Slow)</button><br>
+<!--button type="checkbox" cid="syhunt.insight.checks.knownexp">Check for known exploits (Slow)</button-->
+</div>
+</fieldset>
+</div>
+<!-- advanced tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>

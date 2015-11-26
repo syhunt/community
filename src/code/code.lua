@@ -1,11 +1,12 @@
 SyhuntCode = {}
 
 function SyhuntCode:Load()
+  local mainexe = app.dir..'SyCode.exe'
 	self.NewTab()
-	app.seticonfromres('SYHUNTICON')
+  app.seticonfromfile(mainexe)
 	browser.info.fullname = 'Syhunt Code'
 	browser.info.name = 'Code'
-	browser.info.exefilename = app.dir..'SyCode.exe'
+	browser.info.exefilename = mainexe
 	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntCode'
 	browser.pagebar:eval('Tabs.RemoveAll()')
 	browser.pagebar:eval([[$("#tabstrip").insert("<include src='SyHybrid.scx#code/pagebar.html'/>",1);]])
@@ -50,7 +51,11 @@ Key Area=Key Areas
 Interesting=Interesting Findings
 ]]
 	local j = {}
-	j.icon = 'url(PenTools.scx#images\\icon_sast.png)'
+	if browser.info.initmode == 'syhuntcode' then
+	  j.icon = 'url(PenTools.scx#images\\icon_sast.png)'
+	else
+	  j.icon = 'url(SyHybrid.scx#images\\16\\code.png)'
+	end
 	j.title = 'New Tab'
 	j.toolbar = 'SyHybrid.scx#code\\toolbar\\toolbar.html'
 	j.table = 'SyhuntCode.ui'

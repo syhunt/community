@@ -7,9 +7,10 @@ function SyHybrid:Init()
 	-- Sets additional execution modes
 	browser.setinitmode('syhunthybrid','SyHybrid:LoadLauncher()')
 	browser.setinitmode('syhuntcode','SyhuntCode:Load()')
+	browser.setinitmode('syhuntinsight','SyhuntInsight:Load()')
 
 	-- Inserts new toolbar menu options for each mode
-	local ct_html = "<li id='tnewsyhuntcodetab' style='foreground-image: url(PenTools.scx#images\\icon_sast.png)' onclick='SyhuntCode:NewTab()'>New Code Scanner Tab</li>"
+	local ct_html = "<li id='tnewsyhuntcodetab' style='foreground-image: url(SyHybrid.scx#images\\16\\code.png)' onclick='SyhuntCode:NewTab()'>New Code Scanner Tab</li>"
 	local bt_html = "<li id='tnewbrowsertab' style='foreground-image: @ICON_SANDCAT' onclick='browser.newtab()'>New Browser Tab</li>"
 	if browser.info.initmode == 'syhunthybrid' then
 		browser.navbar:inserthtmlfile('#pagemenu','#toolbar','SyHybrid.scx#dynamic/navbar.html')
@@ -35,8 +36,12 @@ function SyHybrid:AfterInit()
 	self:dofile('dynamic/dynamic.lua')
 	self:dofile('dynamic/links.lua')
 	self:dofile('code/code.lua')
+	self:dofile('insight/insight.lua')
 
 	-- Adds some additional credits to the about screen
+	browser.addlibinfo('famfamfam flag icons','','Mark James')
+	browser.addlibinfo('mmdblua library','','Daurnimator')
+	browser.addlibinfo('GeoLite2 data','2','<a href="#" onclick="browser.newtab([[http://www.maxmind.com]])">MaxMind</a>')
 	browser.addlibinfo('PDF Creation library','2.0','K. Nishita')
 	browser.addlibinfo('RTF Creation library','1.0','K. Nishita')
 	browser.addlibinfo('TAR Components','2.1.1','Stefan Heymann')
@@ -50,18 +55,20 @@ function SyHybrid:AfterInit()
 end
 
 function SyHybrid:LoadLauncher()
+  local mainexe = app.dir..'SyHybrid.exe'
 	self:NewTab()
-	app.seticonfromres('SYHUNTICON')
+	--app.seticonfromres('SYHUNTICON')
+  app.seticonfromfile(mainexe)
 	browser.info.fullname = 'Syhunt Hybrid'..' - ['..symini.getmodename()..']'
 	browser.info.name = 'Hybrid'..' - ['..symini.getmodename()..']'
-	browser.info.exefilename = app.dir..'SyHybrid.exe'
+	browser.info.exefilename = mainexe
 	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntHybrid'
 end
 
 function SyHybrid:NewTab()
 	local html = SyHybrid:getfile('hybrid/launcher/launcher.html')
 	local j = {}
-	j.icon = 'url(SyHybrid.scx#images\\16\\hybrid.png)'
+	j.icon = '@ICON_EMPTY'
 	j.title = 'Welcome'
 	j.toolbar = 'SyHybrid.scx#hybrid\\launcher\\toolbar.html'
 	j.table = 'SyHybrid.ui'

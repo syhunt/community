@@ -1,7 +1,8 @@
 <menu.popup id="navbarmenu-list">
 		  <!--li id="tnewtab" style="foreground-image: @ICON_SANDCAT" onclick="browser.newtab()">New Browser Tab</li-->
-		  <li id="tnewdyntab" style="foreground-image: url(PenTools.scx#images\icon_dast.png);" onclick="SyhuntDynamic:NewTab()">New Dynamic Scanner Tab</li>
-		  <li id="tnewcodetab" style="foreground-image: url(PenTools.scx#images\icon_sast.png);" onclick="SyhuntCode:NewTab()">New Code Scanner Tab</li>
+		  <li id="tnewdyntab" style="foreground-image: url(SyHybrid.scx#images\16\dynamic.png);" onclick="SyhuntDynamic:NewTab()">New Dynamic Tab</li>
+		  <li id="tnewcodetab" style="foreground-image: url(SyHybrid.scx#images\16\code.png);" onclick="SyhuntCode:NewTab()">New Code Tab</li>
+		  <li id="tnewcodetab" style="foreground-image: url(SyHybrid.scx#images\16\insight.png);" onclick="SyhuntInsight:NewTab()">New Insight Tab</li>
 		  <li id="tnewwindow" onclick="browser.newwindow('mode:syhunthybrid')">New Window</li>
 		  <hr/>
 		  <li style="foreground-image: url(PenTools.scx#images\icon_clock.png);" onclick="SyHybrid:SessionManager()">Past Sessions</li>
@@ -18,6 +19,7 @@
 		    <menu id="tprefsmenu">
 		     <li onclick="SyhuntDynamic:EditPreferences()">Dynamic Preferences...</li>
 		     <li onclick="SyhuntCode:EditPreferences()">Code Preferences...</li>
+		     <li onclick="SyhuntInsight:EditPreferences()">Insight Preferences...</li>
 		     <hr/>
 	       <li onclick="Sandcat:EditPreferences()">Browser Preferences...</li>
 		    </menu>

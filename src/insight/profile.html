@@ -1,0 +1,37 @@
+<style>body { overflow-x: hidden; }</style>
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#insight\profile.css">
+
+<div class="tabs">
+<div class="strip" role="page-tab-list">
+<div panel="panel-general" role="page-tab" selected>General</div>
+<div panel="panel-techniques" role="page-tab">Techniques</div>
+</div>
+
+<!--panel-general-->
+<div name="panel-general" class="tab" selected>
+<div style="margin:10px;">
+<b>Profile for </b><input id="iptext" type=text style="width:300px;" value="%ip%" readonly="true"><br><br>
+Origin: <img src="flags.pak#16\%cniso%.png"> %country%<br>
+Attack count: %atkcount%<br>
+Techniques: %teccount%<br>
+Platforms: %platforms%<br><br>
+Tools (%toolcount%):
+<widget id="objlist" type="select" .desktop-list .large>
+%toollist%
+</widget><br>
+<button onclick="AttackerProfile:ReconstructSession('%ip%')">View All Requests</button> &nbsp;<button type="checkbox" id="recasnew">Store as new session</button>
+</div>
+</div>
+<!--panel general end-->
+
+<!--panel-techniques-->
+<div name="panel-techniques" class="tab">
+<div style="margin:10px;">
+<select name="techniques" size=12 style="width:100%;">
+%techniques%
+</select>
+</div>
+</div>
+<!--panel techniques end-->
+
+</div>

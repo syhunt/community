@@ -99,5 +99,11 @@ function SyhuntDynamic:EditSitePreferences()
 end
 
 function SyhuntDynamic:NewTab()
-	browser.newtab()
+  if browser.newtab() ~= 0 then
+	  if browser.info.initmode == 'syhuntdynamic' then
+	    tab.icon = '@ICON_EMPTY'
+	  else
+	    tab.icon = 'url(SyHybrid.scx#images\\16\\dynamic.png)'
+	  end
+	end
 end
