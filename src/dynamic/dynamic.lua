@@ -51,7 +51,6 @@ end
 function SyhuntDynamic:EditPreferences(dialoghtml)
 	dialoghtml = dialoghtml or 'dynamic/prefs/prefs.html'
 	local slp = slx.string.loop:new()
-	Sandcat:dofile('dialog_prefs.lua')
 	local ds = symini.dynamic:new()
 	ds:start()
 	slp:load(ds.options)
@@ -64,7 +63,7 @@ function SyhuntDynamic:EditPreferences(dialoghtml)
 	t.id = 'syhuntdynamic'
 	t.options = ds.options
 	t.options_disabled = ds.options_locked
-	Preferences:EditCustom(t)
+	Sandcat.Preferences:EditCustom(t)
 	ds:release()
 	slp:release()
 end
@@ -77,7 +76,6 @@ function SyhuntDynamic:EditSitePreferences()
 	if slx.string.beginswith(tab.url,'http') then
 		local jsonfile = tab.siteprefsfilename
 		local slp = slx.string.loop:new()
-		Sandcat:dofile('dialog_prefs.lua')
 		local hs = symini.hybrid:new()
 		hs:start()
 		slp:load(hs.options)
@@ -90,7 +88,7 @@ function SyhuntDynamic:EditSitePreferences()
 		t.id = 'syhuntsiteprefs'
 		t.options = hs.options
 		t.jsonfile = jsonfile
-		Preferences:EditCustomFile(t)
+		Sandcat.Preferences:EditCustomFile(t)
 		hs:release()
 		slp:release()
 	else

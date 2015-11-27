@@ -17,7 +17,6 @@ end
 function SyhuntCode:EditPreferences()
 	local slp = slx.string.loop:new()
 	local t = {}
-	Sandcat:dofile('dialog_prefs.lua')
 	local cs = symini.code:new()
 	slp:load(cs.options)
 	while slp:parsing() do
@@ -28,7 +27,7 @@ function SyhuntCode:EditPreferences()
 	t.id = 'syhuntcode'
 	t.options = cs.options
 	t.options_disabled = cs.options_locked
-	Preferences:EditCustom(t)
+	Sandcat.Preferences:EditCustom(t)
 	cs:release()
 	slp:release()
 end
