@@ -9,9 +9,9 @@
 		  <hr/>
       <li>Import & Export
         <menu id="tsetiemenu">
-         <li onclick="Sandcat:ImportPreferences()">Import Preferences...</li>
+         <li onclick="Sandcat.Preferences:LoadFromFile()">Import Preferences...</li>
          <hr id="tsetiesep"/>
-         <li onclick="Sandcat:ExportPreferences()">Export Preferences...</li>
+         <li onclick="Sandcat.Preferences:SaveToFile()">Export Preferences...</li>
         </menu>
       </li>
 		  <hr/>
@@ -21,7 +21,7 @@
 		     <li onclick="SyhuntCode:EditPreferences()">Code Preferences...</li>
 		     <li onclick="SyhuntInsight:EditPreferences()">Insight Preferences...</li>
 		     <hr/>
-	       <li onclick="Sandcat:EditPreferences()">Browser Preferences...</li>
+	       <li onclick="Sandcat.Preferences:Edit()">Browser Preferences...</li>
 		    </menu>
 		  </li>
 			<include src="SyHybrid.scx#hybrid\launcher\menuhelp.html"/>

@@ -34,15 +34,15 @@
 Directory: <input type="folder-path" novalue="Select Folder..." cid="site.syhunt.code.srcdir"><br><br>
 Note: Be sure to specify a directory where the index files of your web content are located.
 <p align=right style="margin:0;padding:0;">
-<button #btnsrcexts onclick="Sandcat:EditList('site.syhunt.code.lists.srcexts','Source Extensions','Example: .myext=.php')">Extensions...</button>
+<button #btnsrcexts onclick="prefs.editlist('site.syhunt.code.lists.srcexts','Source Extensions','Example: .myext=.php')">Extensions...</button>
 </p>
 </div>
 </fieldset>
 <fieldset><br>
 <div .optgroup>
-<button #btnstarturls onclick="Sandcat:EditList('site.syhunt.dynamic.lists.starturls','Start URLs','Example: /url.php')">Start URLs...</button> 
-<button #btnalerts onclick="Sandcat:EditList('site.syhunt.dynamic.lists.emailalerts','Email Alerts','Example: admin@domain.com')">Email Alerts...</button> 
-<button #btncookies onclick="Sandcat:EditList('site.syhunt.dynamic.lists.cookies','Cookies','')">Cookies...</button>
+<button #btnstarturls onclick="prefs.editlist('site.syhunt.dynamic.lists.starturls','Start URLs','Example: /url.php')">Start URLs...</button> 
+<button #btnalerts onclick="prefs.editlist('site.syhunt.dynamic.lists.emailalerts','Email Alerts','Example: admin@domain.com')">Email Alerts...</button> 
+<button #btncookies onclick="prefs.editlist('site.syhunt.dynamic.lists.cookies','Cookies','')">Cookies...</button>
 </div>
 </fieldset>
 </div>
@@ -51,9 +51,9 @@ Note: Be sure to specify a directory where the index files of your web content a
 <div name="panel-ignore" class="tab">
 <fieldset><legend>Objects to ignore</legend>
 <div .optgroup>
-<button #btnignurls onclick="Sandcat:EditList('site.syhunt.dynamic.lists.ignore.urls','Paths to ignore','Example: /about.php')">URLs...</button> 
-<button #btnlouturls onclick="Sandcat:EditList('site.syhunt.dynamic.lists.ignore.logoutpaths','Logout paths to ignore','Example: /logout.php')">Logout URLs...</button> 
-<button #btnignformnames onclick="Sandcat:EditList('site.syhunt.dynamic.lists.ignore.form.names','Forms to ignore (by name)','Example: search')">Forms...</button>
+<button #btnignurls onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.urls','Paths to ignore','Example: /about.php')">URLs...</button> 
+<button #btnlouturls onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.logoutpaths','Logout paths to ignore','Example: /logout.php')">Logout URLs...</button> 
+<button #btnignformnames onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.form.names','Forms to ignore (by name)','Example: search')">Forms...</button>
 </div>
 </fieldset>
 </div>
@@ -113,8 +113,8 @@ CA Directory:<br><input type="folder-path" novalue="Select Folder..." style="wid
 <div name="panel-advanced" class="tab">
 <fieldset><legend>Detection Signatures</legend>
 <div .optgroup>
-<button #btnerrorsigs onclick="Sandcat:EditList('site.syhunt.dynamic.lists.errorpagesigs','Error Page Detection Signatures','Example: 404 Not Found')">Error Page...</button> 
-<button #btnloutsigs onclick="Sandcat:EditList('site.syhunt.dynamic.lists.signatures.logout','Logout Detection Signatures','Example: Your Session Has Expired!')">Logout...</button>
+<button #btnerrorsigs onclick="prefs.editlist('site.syhunt.dynamic.lists.errorpagesigs','Error Page Detection Signatures','Example: 404 Not Found')">Error Page...</button> 
+<button #btnloutsigs onclick="prefs.editlist('site.syhunt.dynamic.lists.signatures.logout','Logout Detection Signatures','Example: Your Session Has Expired!')">Logout...</button>
 </div>
 </fieldset>
 <fieldset><legend>Base Path</legend>

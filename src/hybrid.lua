@@ -80,7 +80,7 @@ end
 function SyHybrid:ShowConsole(mode)
 	mode = mode or 'sc'
 	browser.options.showconsole = true
-	Sandcat:SetConsoleMode(mode)
+	console.setmode(mode)
 end
 
 function SyHybrid:VulnList()

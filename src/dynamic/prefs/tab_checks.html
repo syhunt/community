@@ -15,7 +15,7 @@
 <popup #extchecks>
 <button type="checkbox" cid="syhunt.dynamic.checks.extensions.backup">Check for common backup extensions</button><br>
 <button type="checkbox" cid="syhunt.dynamic.checks.extensions.double">Perform double extension checking</button><br><br>
-<button #btnextbkp onclick="Sandcat:EditList('syhunt.dynamic.lists.extensions.bkp','Backup Extensions','Example: .bak')">Backup Extensions...</button> <button #btnextapp onclick="Sandcat:EditList('syhunt.dynamic.lists.extensions.app','Application Extensions','Example: .php')">App. Extensions...</button>
+<button #btnextbkp onclick="prefs.editlist('syhunt.dynamic.lists.extensions.bkp','Backup Extensions','Example: .bak')">Backup Extensions...</button> <button #btnextapp onclick="prefs.editlist('syhunt.dynamic.lists.extensions.app','Application Extensions','Example: .php')">App. Extensions...</button>
 </popup>
 <div .sep/>
 <button .subopt .adv type="checkbox" cid="syhunt.dynamic.injection.enabled">Enable injection checks</button><button #btninjchecks>Checks...</button><br>
@@ -23,7 +23,7 @@
 <button type="checkbox" cid="syhunt.dynamic.checks.manipulate.form">Manipulate form parameters</button><br>
 <button type="checkbox" cid="syhunt.dynamic.checks.manipulate.url">Manipulate URL parameters</button><br>
 <button type="checkbox" cid="syhunt.dynamic.options.ignunparams">Ignore common unnecessary URL/form parameters</button><br><br>
-<button onclick="Sandcat:EditList('syhunt.dynamic.lists.ignore.params','URL/form parameters to ignore','Example: __VIEWSTATE')">Parameter Exclusions...</button>
+<button onclick="prefs.editlist('syhunt.dynamic.lists.ignore.params','URL/form parameters to ignore','Example: __VIEWSTATE')">Parameter Exclusions...</button>
 </popup>
 <div .sep/>
 <button .subopt .adv type="checkbox" cid="syhunt.dynamic.checks.files.structure">Enable structure brute force checks</button><button #btnedtstructchecks>Checks...</button><br>
@@ -36,7 +36,7 @@
 <button type="checkbox" cid="syhunt.dynamic.checks.files.extra">Extra Files</button>
 </popup>
 <div .sep/>
-<button .subopt .adv type="checkbox" cid="syhunt.dynamic.checks.htmlcomments">Enable HTML comment checks</button> <button #btnsuskey onclick="Sandcat:EditList('syhunt.dynamic.lists.signatures.suspectwords','Suspicious Strings','Example: password')">Signatures...</button>
+<button .subopt .adv type="checkbox" cid="syhunt.dynamic.checks.htmlcomments">Enable HTML comment checks</button> <button #btnsuskey onclick="prefs.editlist('syhunt.dynamic.lists.signatures.suspectwords','Suspicious Strings','Example: password')">Signatures...</button>
 <div .sep/>
 <button .subopt type="checkbox" cid="syhunt.hybrid.checks.enabled">Enable hybrid checks</button>
 <button #btnedtappchecks style="float:right;">Additional Checks...</button>

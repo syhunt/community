@@ -6,7 +6,7 @@ function SyhuntDynamic:AddCommands()
 end
 
 function SyhuntDynamic:ScanThisSite(method)
-	if Sandcat:IsURLLoaded(true) then
+	if tab:hasloadedurl(true) then
 	  if SyHybridUser:IsMethodAvailable(method, true) then
 		  self:ScanSite(tab.url,method)
 		end
@@ -42,7 +42,7 @@ function SyhuntDynamic:ScanSite(url,method)
 end
 
 function SyhuntDynamic:CaptureURLs()
-	if Sandcat:IsURLLoaded(true) then
+	if tab:hasloadedurl(true) then
 		tab.captureurls = true
 		app.showmessage('URL Logger enabled.')
 	end

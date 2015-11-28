@@ -14,7 +14,7 @@
 <button type="checkbox" cid="syhunt.dynamic.protocol.usegzip">Enable GZIP compression support</button><br>
 <button type="checkbox" cid="syhunt.dynamic.protocol.mknocache">Make no-cache requests</button>
 <p align=right style="margin:0;padding:0;">
-<button #btnaddhdr onclick="Sandcat:EditList('syhunt.dynamic.lists.protocol.customhdr','Request Headers','Example: X-Custom: AValue')">Request Headers...</button> <button #btnhttps>HTTPS Options...</button> <button #btnproxyprefs onclick="SyhuntDynamic:EditNetworkPreferences()">Proxy...</button> <button #btnreqthreads>Threads...</button>
+<button #btnaddhdr onclick="prefs.editlist('syhunt.dynamic.lists.protocol.customhdr','Request Headers','Example: X-Custom: AValue')">Request Headers...</button> <button #btnhttps>HTTPS Options...</button> <button #btnproxyprefs onclick="SyhuntDynamic:EditNetworkPreferences()">Proxy...</button> <button #btnreqthreads>Threads...</button>
 </p>
 <popup #httpsoptions>
 <button type="checkbox" cid="syhunt.dynamic.protocol.ssl.v3">Enable SSL 3</button><br>
