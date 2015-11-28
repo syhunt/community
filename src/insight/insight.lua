@@ -15,6 +15,44 @@ function SyhuntInsight:Load()
 	PageMenu.newtabscript = 'SyhuntInsight:NewTab()'
 end
 
+function SyhuntInsight:LoadAttackLog(filename)
+  if slx.file.exists(filename) then
+    local slp = slx.string.loop:new()
+    slp:loadfromfile(filename)
+    while slp:parsing() do
+      tab:resources_add(slx.base64.decode(slp.current))
+    end
+    tab.status = string.format('Found %i possible attacks.', slp.count)
+    slp:release()
+  end
+end
+
+function SyhuntInsight:LoadSession(sesname)
+  debug.print('Loading Insight session: '..sesname)
+  if self:NewTab() ~= '' then
+   tab:userdata_set('session',sesname)
+   tab:userdata_set('taskid','')
+   local s = symini.session:new()
+   s.name = sesname
+   local logfile = s:getvalue('target file')
+   local attacklogfile = s:getdir()..'\AttacksCustom.log'
+   if logfile ~= '' then
+    self.ui.file.value = logfile
+    self:LoadAttackLog(attacklogfile)
+   end
+   tab.title = sesname
+   if s:getvalue('attacks') ~= '0' then
+     tab.toolbar:eval('MarkAsAttacked()')
+   else
+     tab.toolbar:eval('MarkAsSecure()')
+   end
+   if s:getvalue('breached') == 'True' then
+     tab.toolbar:eval('MarkAsBreached()')
+   end
+   s:release()
+ end
+end
+
 function SyhuntInsight:EditPreferences()
 	local slp = slx.string.loop:new()
 	local t = {}
@@ -155,6 +193,8 @@ function SyhuntInsight:IsScanInProgress(warn)
       end
       return true
     end
+  else
+    return false
   end
 end
 

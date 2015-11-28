@@ -34,8 +34,10 @@ function addattack(t)
   if t.isbreach == true then
     j.imageindex = 25
   end
-  runtabcmd('resaddcustomitem',tostring(j))
+  local jsonstr = tostring(j)
   j:release()
+  i:logcustomalert(slx.base64.encode(jsonstr))
+  runtabcmd('resaddcustomitem',jsonstr)
 end
 
 function log(s)

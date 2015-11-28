@@ -76,38 +76,17 @@ function SessionManager:show_sessiondetails(sesname)
  r:release()
 end
 
-function SessionManager:load_codesession(sesname)
- --app.showmessage('Loading '..sesname..'...')
- if SyhuntCode.NewTab() ~= '' then
-  tab:userdata_set('session',sesname)
-  local ses = symini.session:new()
-  ses.name = sesname
-  local dir = ses:getvalue('source code directory')
-  if dir ~= '' then
-   SyhuntCode:LoadTree(dir,ses:getvalue('vulnerable scripts'))
-  end
-  if ses.vulnerable then
-   tab.icon = 'url(SyHybrid.scx#images\\16\\folder_red.png)'
-   tab.toolbar:eval('MarkAsVulnerable();')
-  else
-   tab.icon = 'url(SyHybrid.scx#images\\16\\folder_green.png)'
-   tab.toolbar:eval('MarkAsSecure();')
-  end
-  tab.title = sesname
-  ses:release()
- end
-end
-
 function SessionManager:load_session(name)
  require "SyMini"
- --self:show_sessiondetails(name)
  local ses = symini.session:new()
  ses.name = name
- if ses:getvalue('launcher') == 'Syhunt Code' then
-  self:load_codesession(name)
+ local launcher = ses:getvalue('launcher')
+ if launcher == 'Syhunt Code' then
+  SyhuntCode:LoadSession(name)
+ elseif launcher == 'Syhunt Insight' then
+  SyhuntInsight:LoadSession(name)
  else
   SessionManager:show_sessiondetails(name)
-  --app.showmessage('Launcher not supported.')
  end
  ses:release()
 end

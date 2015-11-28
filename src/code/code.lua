@@ -14,6 +14,28 @@ function SyhuntCode:Load()
 	PageMenu.newtabscript = 'SyhuntCode:NewTab()'
 end
 
+function SyhuntCode:LoadSession(sesname)
+ debug.print('Loading Code session: '..sesname)
+ if self:NewTab() ~= '' then
+  tab:userdata_set('session',sesname)
+  local s = symini.session:new()
+  s.name = sesname
+  local dir = s:getvalue('source code directory')
+  if dir ~= '' then
+   self:LoadTree(dir,s:getvalue('vulnerable scripts'))
+  end
+  if s.vulnerable then
+   tab.icon = 'url(SyHybrid.scx#images\\16\\folder_red.png)'
+   tab.toolbar:eval('MarkAsVulnerable();')
+  else
+   tab.icon = 'url(SyHybrid.scx#images\\16\\folder_green.png)'
+   tab.toolbar:eval('MarkAsSecure();')
+  end
+  tab.title = sesname
+  s:release()
+ end
+end
+
 function SyhuntCode:EditPreferences()
 	local slp = slx.string.loop:new()
 	local t = {}
