@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>New Dynamic Scan</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#dynamic\prefs_scan\prefs.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+      }
+ }
+
+ $(#ok).onClick = function() { confirm_edit(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-scan" accesskey="S" selected><center><img #icon_scan><br>Scan</center></div>
+</div>
+
+<!-- scan tab begin-->
+<div name="panel-scan" class="tab" selected>
+<fieldset><legend>Target</legend>
+<div .optgroup>
+URL:<br><input type="text" style="width:350px;" cid="syhunt.dynamic.options.target.url">
+</div>
+</fieldset>
+<fieldset><legend>Hunt Method</legend>
+<div .optgroup>
+<select xclass="tag-list" type="select" size=4 style="width:300px;" cid="syhunt.dynamic.options.huntmethod">
+<option value="appscan" selected>Application Scan (Default)</option>
+<option value="sqlinj">SQLi</option>
+<option value="xss">XSS</option>
+<option value="fileinc">File Inclusion</option>
+<option value="fileold">Backup Files</option>
+<option value="unvredir">Unvalited Redirects</option>
+<option value="faultinj">Fault Injection</option>
+<option value="phptop5">PHP Top 5</option>
+<option value="structbf">Structure Brute Force</option>
+</select><br><br>
+<button type="checkbox" cid="syhunt.dynamic.checks.dos">Perform DoS tests</button><br>
+<button type="checkbox" cid="syhunt.dynamic.emulation.javascript.execution">Enable JavaScript emulation</button><br>
+<button type="checkbox" cid="syhunt.dynamic.options.target.editsiteprefs">Edit site preferences before starting scan</button>
+</div>
+</fieldset>
+</div>
+<!-- scan tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">Start Scan</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>

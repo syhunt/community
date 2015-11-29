@@ -21,6 +21,12 @@ function MarkAsScanning() {
  MarkReset();
  $(#scanstat).value="Scanning";
 }
+function MarkAsStopped() {
+ if($(#scanstat).value == "Scanning") {
+  MarkReset();
+  $(#scanstat).value="Stopped";
+ }
+}
 
 $(#search).onKey = function(evt) {
  if( evt.type == Event.KEY_UP && evt.keyCode == Event.VK_RETURN) {
@@ -42,6 +48,9 @@ $(#scancode).onClick = function() { Sandcat.RunLua("SyhuntCode:ScanFile(tab.sour
 	<div .button style="foreground-image: @ICON_SAVE" onclick="SyhuntCode:SaveFile()" titleid="for_save"/>
 	<div .sepv />
   <div #scancode .button style="foreground-image: url(Resources.pak#16\icon_repeat.png)" titleid="for_rescan"/>
+	<div .button style="foreground-image: @ICON_STOP" onclick="SyhuntCode:StopScan()" titleid="for_stop"/>
+	<div .sepv />
+	<div .button style="foreground-image: @ICON_PAUSE" onclick="SyhuntCode:PauseScan()" titleid="for_pause"/>
 	<div .sepv />
 	<div .button style="foreground-image: @ICON_CUT" onclick="tab:runsrccmd('cut')" titleid="for_cut"/>
 	<div .button style="foreground-image: @ICON_COPY" onclick="tab:runsrccmd('copy')" titleid="for_copy"/>
@@ -86,3 +95,5 @@ $(#scancode).onClick = function() { Sandcat.RunLua("SyhuntCode:ScanFile(tab.sour
 <popup id="for_copy">Copy</popup>
 <popup id="for_paste">Paste</popup>
 <popup id="for_cut">Cut</popup>
+<popup id="for_pause">Suspend/Resume</popup>
+<popup id="for_stop">Stop</popup>

@@ -176,7 +176,7 @@ function SyhuntInsight:StopScan()
   local tid = tab:userdata_get('taskid','')
   if tid ~= '' then
     browser.stoptask(tid,'User requested')
-    tab.icon = '@ICON_EMPTY'
+    tab.icon = '@ICON_STOP'
     tab.toolbar:eval('MarkAsStopped()')
   end
 end

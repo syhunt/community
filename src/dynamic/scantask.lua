@@ -1,14 +1,42 @@
 require "SyMini"
 
-task.caption = 'Syhunt Hybrid Task'
-task:setscript('ondblclick',"browser.showbottombar('taskmon')")
-runtabcmd('syncwithtask','1')
-print('Scanning URL: '..params.starturl..'...')
-print('Hunt Method: '..params.huntmethod..'...')
-print('Session Name: '..params.sessionname)
-
 function updateprogress(pos,max)
 	task:setprogress(pos,max)
+end
+
+function addvuln(v)
+  local loc = v.location
+  if v.locationsrc ~= '' then
+    -- replace by source code location
+    loc = v.locationsrc
+  end
+  print(string.format('Found: %s at %s',v.checkname,loc))
+  local j = slx.json.object:new()
+  j.caption = v.checkname
+  j.subitemcount = 6
+  j.subitem1 = v.location
+  j.subitem2 = v.params
+  j.subitem3 = v.lines
+  j.subitem4 = tostring(v.statuscode)
+  j.subitem5 = v.risk
+  j.subitem6 = v.location --v.filename
+  j.imageindex = 0
+  local risk = string.lower(v.risk)
+  if risk == 'high' then
+    j.imageindex = 21
+  elseif risk == 'medium' then
+    j.imageindex = 22
+  elseif risk == 'low' then
+    j.imageindex = 23
+  end
+  local jsonstr = tostring(j)
+  j:release()
+  --hs:logcustomalert(slx.base64.encode(jsonstr))
+  runtabcmd('resaddcustomitem',jsonstr)
+end
+
+function log(s)
+  runtabcmd('setstatus',s) -- Updates the tab status bar text
 end
 
 function printscanresult()
@@ -19,17 +47,40 @@ function printscanresult()
 		else
 			print('Found '..hs.vulncount..' vulnerabilities')
 		end
+	  runtabcmd('seticon','@ICON_CHECKED_RED')
+    runtabcmd('runtbtis','MarkAsVulnerable();')
 		printfailure(task.status)
 	else
 		print('Secure.')
+	  runtabcmd('seticon','@ICON_CHECKED')
+    runtabcmd('runtbtis','MarkAsSecure();')
 		printsuccess(task.status)
 	end
 end
+
+task.caption = 'Syhunt Hybrid Task'
+task:setscript('ondblclick',"browser.showbottombar('taskmon')")
+
+-- if running in background mode, all runtabcmds will be ignored
+if parambool('runinbg',true) == true then
+  print('Running scan task in background...')
+  runtabcmd = function(cmd,value) end
+end
+
+runtabcmd('seticon','@ICON_LOADING')
+runtabcmd('runtbtis','MarkAsScanning();')
+runtabcmd('syncwithtask','1')
+
+print('Scanning URL: '..params.starturl..'...')
+print('Hunt Method: '..params.huntmethod..'...')
+print('Session Name: '..params.sessionname)
 
 hs = symini.hybrid:new()
 hs.debug = true
 hs.outputmsgs = true
 hs.monitor = params.monitor
+hs.onlogmessage = function(s) log(s) end
+hs.onvulnfound = addvuln
 hs.onprogress = 'updateprogress'
 hs:start()
 hs.starturl = params.starturl

@@ -7,10 +7,11 @@ function SyHybrid:Init()
 	-- Sets additional execution modes
 	browser.setinitmode('syhunthybrid','SyHybrid:LoadLauncher()')
 	browser.setinitmode('syhuntcode','SyhuntCode:Load()')
+	browser.setinitmode('syhuntdynamic','SyhuntDynamic:Load()')
 	browser.setinitmode('syhuntinsight','SyhuntInsight:Load()')
 
 	-- Inserts new toolbar menu options for each mode
-	local ct_html = "<li id='tnewsyhuntcodetab' style='foreground-image: url(SyHybrid.scx#images\\16\\code.png)' onclick='SyhuntCode:NewTab()'>New Code Scanner Tab</li>"
+	local ct_html = "<li id='tnewsyhuntcodetab' style='foreground-image: url(SyHybrid.scx#images\\16\\code.png)' onclick='SyhuntCode:NewTab()'>New Code Tab</li>"
 	local bt_html = "<li id='tnewbrowsertab' style='foreground-image: @ICON_SANDCAT' onclick='browser.newtab()'>New Browser Tab</li>"
 	if browser.info.initmode == 'syhunthybrid' then
 		browser.navbar:inserthtmlfile('#pagemenu','#toolbar','SyHybrid.scx#dynamic/navbar.html')
@@ -68,11 +69,12 @@ end
 function SyHybrid:NewTab()
 	local html = SyHybrid:getfile('hybrid/launcher/launcher.html')
 	local j = {}
-	j.icon = '@ICON_EMPTY'
-	j.title = 'Welcome'
+	j.icon = 'url(SyHybrid.scx#images\\16\\launcher.png)'
+	j.title = 'Launcher'
 	j.toolbar = 'SyHybrid.scx#hybrid\\launcher\\toolbar.html'
 	j.table = 'SyHybrid.ui'
 	j.html = html
+	j.tag = 'syhuntlauncher'
 	j.showpagestrip = false
 	browser.newtabx(j)
 end

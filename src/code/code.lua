@@ -54,14 +54,34 @@ function SyhuntCode:EditPreferences()
 	slp:release()
 end
 
+function SyhuntCode:IsScanInProgress(warn)
+  warn = warn or false
+  local tid = tab:userdata_get('taskid','')
+  if tid ~= '' then
+    if browser.gettaskinfo(tid).enabled == false then
+      return false
+    else
+      if warn == true then
+        app.showmessage('A scan is in progress.')
+      end
+      return true
+    end
+  else
+    return false
+  end
+end
+
 function SyhuntCode:NewScan()
-	tab:tree_clear()
-	SyhuntCode.ui.dir.value = ''
-	tab.source = ''
-	tab:loadsourcemsgs('')
-	tab:userdata_set('session','')
-	tab:runsrccmd('showmsgs',false)
-	tab.toolbar:eval('MarkReset();')
+  if self:IsScanInProgress(true) == false then
+	  tab:tree_clear()
+	  SyhuntCode.ui.dir.value = ''
+	  tab.source = ''
+	  tab:loadsourcemsgs('')
+	  tab:userdata_set('session','')
+    tab:userdata_set('taskid','')
+	  tab:runsrccmd('showmsgs',false)
+	  tab.toolbar:eval('MarkReset();')
+	end
 end
 
 function SyhuntCode:NewTab()
@@ -116,6 +136,13 @@ function SyhuntCode.OpenFile(f)
 	end
 end
 
+function SyhuntCode:PauseScan()
+  local tid = tab:userdata_get('taskid','')
+  if tid ~= '' then
+    browser.suspendtask(tid)
+  end
+end
+
 function SyhuntCode:SaveFile()
 	if tab.sourcefilename ~= '' then
 		tab:runsrccmd('savetofile',tab.sourcefilename)
@@ -149,7 +176,15 @@ function SyhuntCode:LoadTree(dir,affscripts)
 end
 
 function SyhuntCode:ScanFolder(huntmethod)
-  if SyHybridUser:IsMethodAvailable(huntmethod, true) then
+  local canscan = true
+  if self:IsScanInProgress(true) == true then
+    canscan = false
+  else
+    if SyHybridUser:IsMethodAvailable(huntmethod, true) == false then
+      canscan = false
+    end
+  end
+  if canscan == true then
 	  local dir = app.selectdir('Select a code directory to scan:')
 	  if dir ~= '' then
   		prefs.save()
@@ -166,7 +201,8 @@ function SyhuntCode:ScanFolder(huntmethod)
 	  	<li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="ReportMaker:loadtab('%s')">Generate Report</li>
 	  	]]
 	  	menu = slx.string.replace(menu,'%s',j.sessionname)
-  		tab:runtask(script,tostring(j),menu)
+  		local tid = tab:runtask(script,tostring(j),menu)
+      tab:userdata_set('taskid',tid)
   		j:release()
   		browser.setactivepage('source')
   	end
@@ -193,4 +229,13 @@ function SyhuntCode:ShowResults(list)
 	j:release()
 	script:release()
 	slp:release()
+end
+
+function SyhuntCode:StopScan()
+  local tid = tab:userdata_get('taskid','')
+  if tid ~= '' then
+    browser.stoptask(tid,'User requested')
+    tab.icon = '@ICON_STOP'
+    tab.toolbar:eval('MarkAsStopped()')
+  end
 end
