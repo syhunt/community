@@ -15,7 +15,12 @@
 		  <hr/>
 		  <li style="foreground-image: url(PenTools.scx#images\icon_clock.png);" onclick="SyHybrid:SessionManager()">Past Sessions</li>
 			<li id="tprefs" onclick="SyhuntDynamic:EditPreferences()">Preferences...</li>
-			<include src="SyHybrid.scx#dynamic\toolbar\menuhelp.html"/>
+			<li>Advanced
+			  <menu>
+		    <li onclick="SyhuntDynamic:EditNetworkPreferences()">Network Preferences...</li>
+		    </menu>
+		  </li>
+      <include src="SyHybrid.scx#dynamic\toolbar\menuhelp.html"/>
 			<hr/>
 			<li id="texit" onclick="browser.exit()">Exit</li>
 </menu>
