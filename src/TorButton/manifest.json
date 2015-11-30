@@ -1,0 +1,10 @@
+{
+ "name": "Tor Button Extension",
+ "version": "1.1",
+ "author": "Syhunt",
+ "script": {
+  "filename": "TorButton.lua",
+  "init": "TorButton:init()",
+  "afterinit": "TorButton:afterinit()"
+ }
+}

@@ -1,0 +1,23 @@
+<style>
+@const ICON_TOR_ENABLED: url(TorButton.scx#images\icon_tor_enabled.png);
+@const ICON_TOR_DISABLED: url(TorButton.scx#images\icon_tor_disabled.png);
+</style>
+<div id="torbutton" class="button" style="behavior: ~ popup-menu;foreground-image: @ICON_TOR_DISABLED;" titleid="for-tor">6
+ <menu.popup>
+ <li>Proxy Switcher
+  <menu>
+  <li onclick="Tor:SetProxy('Direct')">Direct Connection</li>
+  <hr/>
+  <li onclick="Tor:SetProxy('Tor') Tor:Run()">Tor (Anonymous Browsing)</li>
+  </menu>
+ </li>
+ <li onclick="Tor:Check()">Are you using Tor?</li>
+ <hr/>
+ <li>Help
+  <menu>
+  <li onclick="browser.newtab('http://www.torproject.org/about/overview')">About Tor</li>
+  </menu>
+ </li>
+ </menu>
+</div>
+<popup #for-tor>Tor</popup>
