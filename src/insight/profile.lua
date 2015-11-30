@@ -16,8 +16,6 @@ end
 function AttackerProfile:load(ip)
   local tipak = extensionpack:new()
   tipak.filename = 'ToolInfo.pak'
-  local toolline = [[<option.link style="foreground-image:url(ToolInfo.pak#icons\32\%s.png)">%s</option>]]
-  local platline = [[<img style="width:16px;height:16px;foreground-image:url(ToolInfo.pak#icons\16\%s.png)" alt="%s">]]
   debug.print('Loading attacker profile: '..ip)
   self.page = SyHybrid:getfile('insight/profile.html')
   local geodb = require "mmdb".open(app.dir.."Packs\\GeoLite2\\GeoLite2-Country.mmdb")
@@ -29,15 +27,23 @@ function AttackerProfile:load(ip)
   end
   
   local i = symini.insight:new()
-  local json = i:getprofile(ip)
- 
+  local prof = i:getprofile(ip)
   local j = slx.json.object:new()
-  j:load(json)
+  j:load(prof)
   local html = self.page
-  local toollist = ''
-  local platlist = ''
-  local teclist = ''
   local slp = slx.string.loop:new()
+  if browser.bottombar.uix ~= self.uitable then
+    browser.bottombar:loadx(html,self.uitable)
+  end
+  browser.bottombar:eval('ClearProfile();')
+  local ui = self.ui
+  ui.iptext.value = ip
+  ui.atkcount.value = tostring(j.attackcount)
+  ui.teccount.value = tostring(j.techniques_count)
+  ui.toolcount.value = tostring(j.tools_count)
+  ui.country.value = ipcountry.country.names.en
+  ui.countryflag:setattrib('src','flags.pak#16\\'..string.lower(ipcountry.country.iso_code)..'.png')
+  
   slp:load(j.tools)
   while slp:parsing() do
     if slp.current ~= '' then
@@ -46,9 +52,23 @@ function AttackerProfile:load(ip)
       if tipak:fileexists('icons/32/'..icon..'.png') == false then
         icon = 'unknown'
       end
-      toollist = toollist..string.format(toolline,icon,toolinfo.title)
+      local tool = slx.json.object:new()
+      tool.icon = icon
+      tool.title = toolinfo.title
+      browser.bottombar:eval('AddTool('..tool:getjson_unquoted()..');')
+      tool:release()
     end
   end
+  
+  slp:load(j.techniques)
+  while slp:parsing() do
+    if slp.current ~= '' then
+      browser.bottombar:eval('AddTechnique("'..slx.html.escape(slp.current)..'");')
+    end
+  end
+  
+  local foundplat = false
+  ui.platdesc.value = ''
   slp:load(j.platforms)
   while slp:parsing() do
     if slp.current ~= '' then
@@ -57,29 +77,18 @@ function AttackerProfile:load(ip)
       if tipak:fileexists('icons/16/'..icon..'.png') == false then
         icon = 'unknown'
       end
-      platlist = platlist..string.format(platline,icon,toolinfo.title)
+      foundplat = true
+      local plat = slx.json.object:new()
+      plat.icon = icon
+      plat.title = toolinfo.title
+      browser.bottombar:eval('AddPlatform('..plat:getjson_unquoted()..');')
+      plat:release()
     end
   end
-  if platlist == '' then
-    platlist = 'Unknown'
+  if foundplat == false then
+    ui.platdesc.value = 'Unknown'
   end
-  slp:load(j.techniques)
-  while slp:parsing() do
-    if slp.current ~= '' then
-      teclist = teclist..string.format('<option>%s</option>',slx.html.escape(slp.current))
-    end
-  end
-  html = slx.string.replace(html, '%ip%',ip)
-  html = slx.string.replace(html, '%toollist%',toollist)
-  html = slx.string.replace(html, '%platforms%',tostring(platlist))
-  html = slx.string.replace(html, '%atkcount%',tostring(j.attackcount))
-  html = slx.string.replace(html, '%teccount%',tostring(j.techniques_count))
-  html = slx.string.replace(html, '%toolcount%',tostring(j.tools_count))
-  html = slx.string.replace(html, '%country%',ipcountry.country.names.en)
-  html = slx.string.replace(html, '%cniso%',string.lower(ipcountry.country.iso_code))
-  html = slx.string.replace(html, '%techniques%',teclist)
-  browser.bottombar:loadx(html,self.uitable)
-  local ui = self.ui
+  
   j:release()
   slp:release()
   i:release()

@@ -87,23 +87,16 @@ function SyhuntInsight:NewScan()
 end
 
 function SyhuntInsight:LoadAttackerProfile(ip)
-  SyHybrid:dofile('insight/profile.lua')
+  if AttackerProfile == nil then
+    SyHybrid:dofile('insight/profile.lua')
+  end
   AttackerProfile:load(ip)
 end
 
 function SyhuntInsight:NewTab()
-  local colloader = 'SyhuntInsight:LoadAttackerProfile'
-  local col =
-[[
-"c=Line",w=80
-"c=Date / Time",w=180
-"c=Attacker IP",w=100
-"c=Request",a=1,w=200
-"c=Status",w=80
-"c=Attack Description",w=140
-"c=Attack Origin",w=100
-"c=Tool",w=120
-]]
+  local cr = {}
+  cr.clickfunc = 'SyhuntInsight:LoadAttackerProfile'
+  cr.columns = SyHybrid:getfile('insight/atkcols.lst')
 	local j = {}
 	if browser.info.initmode == 'syhuntinsight' then
 	  j.icon = '@ICON_EMPTY'
@@ -117,7 +110,7 @@ function SyhuntInsight:NewTab()
 	j.showpagestrip = true
 	local newtab = browser.newtabx(j)
 	if newtab ~= '' then 
-	  tab:resources_loadcol(col,colloader)
+	  tab:resources_customize(cr)
 		browser.setactivepage(j.activepage)
 	end
 	return newtab
@@ -232,13 +225,7 @@ function SyhuntInsight:ScanFile(filename,huntmethod,targetip)
   		tab:userdata_set('session',j.sessionname)
   		j.logfile = filename
   		j.huntmethod = huntmethod
-		  local menu = [[
-		  <li onclick="browser.showbottombar('taskmon')">View Messages</li>
-		  <!--li onclick="SessionManager:show_sessiondetails('%s')">View Vulnerabilities</li-->
-	  	<!--li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="ReportMaker:loadtab('%s')">Generate Report</li-->
-	  	<li style="foreground-image: @ICON_SAVE" onclick="SyhuntInsight:SaveResults('%s')">Save Results</li>
-	  	<li style="foreground-image: @ICON_SAVE" onclick="SyhuntInsight:SaveAttackerList('%s')">Save Attacker List</li>
-	  	]]
+		  local menu = SyHybrid:getfile('insight/scantaskmenu.html')
 	  	menu = slx.string.replace(menu,'%s',j.sessionname)
   		local tid = tab:runtask(script,tostring(j),menu)
   		tab:userdata_set('taskid',tid)

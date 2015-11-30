@@ -147,8 +147,9 @@ function SyhuntDynamic:NewScan(runinbg)
 end
 
 function SyhuntDynamic:NewTab()
-  local colloader = 'SyhuntDynamic:LoadVulnDetails'
-  local col = SyHybrid:getfile('dynamic/vulncols.lst')
+  local cr = {}
+  cr.dblclickfunc = 'SyhuntDynamic:LoadVulnDetails'
+  cr.columns = SyHybrid:getfile('dynamic/vulncols.lst')
 	local j = {}
 	if browser.info.initmode == 'syhuntdynamic' then
 	  j.icon = '@ICON_EMPTY'
@@ -162,7 +163,7 @@ function SyhuntDynamic:NewTab()
 	j.showpagestrip = true
 	local newtab = browser.newtabx(j)
 	if newtab ~= '' then 
-	  tab:resources_loadcol(col,colloader)
+	  tab:resources_customize(cr)
 		browser.setactivepage(j.activepage)
 		app.update()
 	  self:NewScan(false)

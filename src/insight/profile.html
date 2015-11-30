@@ -1,5 +1,25 @@
 <style>body { overflow-x: hidden; }</style>
 <link rel="stylesheet" type="text/css" href="SyHybrid.scx#insight\profile.css">
+<script type="text/tiscript">
+ function AddTool(t) {
+   $("#toolist").insert("<option.link tool='1' style='foreground-image:url(ToolInfo.pak#icons\\32\\"+t.icon+".png)'>"+t.title+"</option>");
+ }
+ function AddPlatform(t) {
+   $("#platlist").insert("<img plat='1' style='width:16px;height:16px;foreground-image:url(ToolInfo.pak#icons\\16\\"+t.icon+".png)' alt='"+t.title+"'>");
+ }
+ function AddTechnique(name) {
+   $("#techniques").insert("<option technique='1'>"+name+"</option>");
+ }
+ function ClearProfile() {
+   for(var e in $$("img[plat]")) e.remove();
+   for(var e in $$("option[tool]")) e.remove();
+   for(var e in $$("option[technique]")) e.remove();
+ }
+
+ $(#recon).onClick = function() { 
+  Sandcat.RunLua("AttackerProfile:ReconstructSession('"+$("#iptext").value+"')");
+ }
+</script>
 
 <div class="tabs">
 <div class="strip" role="page-tab-list">
@@ -10,16 +30,17 @@
 <!--panel-general-->
 <div name="panel-general" class="tab" selected>
 <div style="margin:10px;">
-<b>Profile for </b><input id="iptext" type=text style="width:300px;" value="%ip%" readonly="true"><br><br>
-Origin: <img src="flags.pak#16\%cniso%.png"> %country%<br>
-Attack count: %atkcount%<br>
-Techniques: %teccount%<br>
-Platforms: %platforms%<br><br>
-Tools (%toolcount%):
-<widget id="objlist" type="select" .desktop-list .large>
-%toollist%
+<table>
+<tr style="margin-bottom:2px;"><td><b>Profile for </b></td><td>&nbsp;</td><td><input id="iptext" type=text style="width:300px;" value="" readonly="true"></td></tr>
+<tr><td>Origin: </td><td>&nbsp;</td><td><img id="countryflag" src="flags.pak#16\unknown.png"> <code id="country"></code></td></tr>
+<tr><td>Attack count: </td><td>&nbsp;</td><td><code id="atkcount"></code></td></tr>
+<tr><td>Techniques: </td><td>&nbsp;</td><td><code id="teccount"></code></td></tr>
+<tr style="height:16px;"><td>Platforms: </td><td>&nbsp;</td><td><div id="platlist"></div><code id="platdesc"></code></td></tr>
+</table>
+Tools (<b><code id="toolcount"></code></b>):
+<widget id="toolist" type="select" .desktop-list .large>
 </widget><br>
-<button onclick="AttackerProfile:ReconstructSession('%ip%')">View All Requests</button> &nbsp;<button type="checkbox" id="recasnew">Store as new session</button>
+<button #recon>View All Requests</button> &nbsp;<button type="checkbox" id="recasnew">Store as new session</button>
 </div>
 </div>
 <!--panel general end-->
@@ -27,8 +48,7 @@ Tools (%toolcount%):
 <!--panel-techniques-->
 <div name="panel-techniques" class="tab">
 <div style="margin:10px;">
-<select name="techniques" size=12 style="width:100%;">
-%techniques%
+<select id="techniques" size=12 style="width:100%;">
 </select>
 </div>
 </div>
