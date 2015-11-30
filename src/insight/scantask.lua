@@ -1,10 +1,6 @@
 require "SyMini"
 geodb = require "mmdb".open(getappdir().."Packs\\GeoLite2\\GeoLite2-Country.mmdb")
 
-function updateprogress(pos,max)
-	task:setprogress(pos,max)
-end
-
 function addattack(t)
   local ipcountry = {}
   local j = slx.json.object:new()
@@ -45,6 +41,10 @@ function log(s)
   runtabcmd('setstatus',s) -- Updates the tab status bar text
 end
 
+function updateprogress(pos,max)
+	task:setprogress(pos,max)
+end
+
 task.caption = 'Syhunt Insight Task - '..slx.file.getname(params.logfile)
 
 if params.huntmethod == 'reconstruct' then
@@ -62,9 +62,9 @@ end
 
 i = symini.insight:new()
 i.debug = false
-i.onlogmessage = function(s) log(s) end
+i.onlogmessage = log
 i.onattackfound = addattack
-i.onprogress = 'updateprogress'
+i.onprogressupdate = updateprogress
 i.resolveip = false
 i.sessionname = params.sessionname
 i.huntmethod = params.huntmethod

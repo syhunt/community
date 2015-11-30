@@ -7,9 +7,24 @@ runtabcmd('runtbtis','MarkAsScanning();')
 runtabcmd('syncwithtask','1')
 print('Scanning directory: '..params.codedir..'...')
 
+function addvuln(v)
+  print(string.format('Found: %s',v.checkname))
+end
+
+function log(s)
+  outputmsg(s,-1) -- Adds to messages listview
+  runtabcmd('setstatus',s) -- Updates the tab status bar text
+end
+
+function updateprogress(pos,max)
+	task:setprogress(pos,max)
+end
+
 cs = symini.code:new()
 cs.debug = true
-cs.outputmsgs = true
+cs.onlogmessage = log
+cs.onvulnfound = addvuln
+cs.onprogressupdate = updateprogress
 cs.sessionname = params.sessionname
 cs.huntmethod = params.huntmethod
 cs:scandir(params.codedir)

@@ -36,6 +36,7 @@ function addvuln(v)
 end
 
 function log(s)
+  outputmsg(s,-1) -- Adds to messages listview
   runtabcmd('setstatus',s) -- Updates the tab status bar text
 end
 
@@ -58,6 +59,17 @@ function printscanresult()
 	end
 end
 
+function requestdone(r)
+  -- add requests during spidering stage
+  if r.isseccheck == false then
+    local s = r.method..' '..r.url
+    if r.postdata ~= '' then
+      s = s..' ['..r.postdata..' ]'
+    end
+    outputmsg(s,11) -- Adds to messages listview
+  end
+end
+
 task.caption = 'Syhunt Hybrid Task'
 task:setscript('ondblclick',"browser.showbottombar('taskmon')")
 
@@ -77,11 +89,11 @@ print('Session Name: '..params.sessionname)
 
 hs = symini.hybrid:new()
 hs.debug = true
-hs.outputmsgs = true
 hs.monitor = params.monitor
-hs.onlogmessage = function(s) log(s) end
+hs.onlogmessage = log
 hs.onvulnfound = addvuln
-hs.onprogress = 'updateprogress'
+hs.onprogressupdate = updateprogress
+hs.onrequestdone = requestdone
 hs:start()
 hs.starturl = params.starturl
 hs.urllist = params.urllist
