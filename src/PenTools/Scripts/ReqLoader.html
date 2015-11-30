@@ -1,0 +1,61 @@
+
+  <style>
+  input[type="text"],input[type="password"] {
+   height:17px;width:*;
+  }
+  #postdata {
+  overflow-x:none; /* word wrap */
+  overflow-y:auto;
+  }
+  #url {width:*;}
+  #loadrequest, #sendrequest, #usecurrent { width:80px; height:16px; }
+  </style>
+  <script type="text/tiscript">
+  $(#btneditheaders).onClick = function() { showDialog($(#dlgheaders)); }
+  $(#ok).onClick = function() { closeDialog($(#dlgheaders)); }
+  </script>
+
+  <table width="100%"><tr>
+  <td valign="top">
+  <select class="tag-list" id="method" type="select" style="width:210px;">
+  <option value="GET" selected>GET</option>
+  <option value="POST">POST</option>
+  <option value="HEAD">HEAD</option>
+  <option value="PUT">PUT</option>
+  <option value="DELETE">DELETE</option>
+  </select>
+  </td>
+  <td valign="top" style="width:*;">
+  <input id="url" type="text" value="" novalue="http://" /> <button id="usecurrent" onclick="ReqLoader.ui.url.value = tab.url">Use Current Page</button>
+  </td>
+  <td valign="top">
+  <button id="sendrequest" onclick="ReqLoader:sendrequest(false)">Just Send</button>
+  </td>
+  <td valign="top">
+  <button id="loadrequest" onclick="ReqLoader:sendrequest(true)">Send & Load</button>
+  </td>
+  <td valign="top">
+  <button id="btneditheaders" titleid="for-editoptions"><img src="Resources.pak#16\icon_advanced.png"></button>
+  </div>
+  </td>
+  </tr>
+  </table>
+  <div id="postoptions" style="height:*;">
+  Request Data (Optional):
+  <plaintext.editor id="postdata"></plaintext>
+  </div>
+  <popup id="for-editoptions">Advanced Options</popup>
+  
+  <div class="lightbox" id="dlgheaders">
+   <form class="dialog" style="width:*;height:*">
+   <div class="inner">
+   <div class="header"><caption>Advanced Options</caption></div>
+   <div class="body">
+   <include src="PenTools.scx#Scripts\ReqLoader_Adv.html"/>
+   </div>
+   <div class="buttons">
+   <input type="button" id="ok" value="OK">
+   </div>
+   </div>
+   </form>
+ </div>

@@ -1,0 +1,33 @@
+<style>
+@const ICON_CVE: url(PenTools.scx#images\icon_search_cve.png);
+@const ICON_EXPLOITSEARCH: url(PenTools.scx#images\icon_search_exploit.png);
+@const ICON_HACKERNEWS: url(PenTools.scx#images\icon_search_hackernews.png);
+@const ICON_OSVDB: url(PenTools.scx#images\icon_search_osvdb.png);
+@const ICON_PACKETSTORM: url(PenTools.scx#images\icon_search_packetstorm.png);
+@const ICON_BING: url(PenTools.scx#images\icon_search_bing.png);
+@const ICON_TORSEARCH: url(PenTools.scx#images\icon_search_tor.png);
+@const ICON_YAHOO: url(PenTools.scx#images\icon_search_yahoo.png);
+</style>
+<li onclick="browser.setsearcheng('Bing','http://www.bing.com/search?q=','@ICON_BING')"
+ style="foreground-image: @ICON_BING">Bing</li>
+<li onclick="browser.setsearcheng('Yahoo','http://search.yahoo.com/search?p=','@ICON_YAHOO')"
+ style="foreground-image: @ICON_YAHOO">Yahoo</li>
+<hr/>
+<li>Deep Web
+ <menu>
+ <li onclick="browser.setsearcheng('TorSearch','https://kbhpodhnfxl3clb4.onion.to/?q=test','@ICON_TORSEARCH')" style="foreground-image: @ICON_TORSEARCH">TorSearch</li>
+ </menu>
+</li>
+<li>Exploits
+ <menu>
+ <li onclick="browser.setsearcheng('ExploitSearch','http://www.exploitsearch.net/index.php?q=','@ICON_EXPLOITSEARCH')" style="foreground-image: @ICON_EXPLOITSEARCH">ExploitSearch</li>
+ <li onclick="browser.setsearcheng('Packet Storm','http://packetstormsecurity.com/search/?q=','@ICON_PACKETSTORM')" style="foreground-image: @ICON_PACKETSTORM">Packet Storm</li>
+ <li onclick="browser.setsearcheng('To Exploit','http://toexploit.com/search?q=','@ICON_EMPTY')" style="foreground-image: @ICON_BLANK">To Exploit</li>
+ </menu>
+</li>
+<li>Security
+ <menu>
+ <li onclick="browser.setsearcheng('CanaryPW','https://canary.pw/search/?q=','@ICON_EMPTY')" style="foreground-image: @ICON_BLANK">CanaryPW</li>
+ <li onclick="browser.setsearcheng('CVE','https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=','@ICON_CVE')" style="foreground-image: @ICON_CVE">CVE</li>
+ <li onclick="browser.setsearcheng('OSVDB','http://osvdb.org/search?search[text_type]=alltext&search[vuln_title]=','@ICON_OSVDB')" style="foreground-image: @ICON_OSVDB">OSVDB</li>
+ </menu>

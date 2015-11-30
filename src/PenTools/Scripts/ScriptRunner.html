@@ -1,0 +1,36 @@
+<link rel="stylesheet" type="text/css" href="Resources.pak#tab_navbar.css">
+<link rel="stylesheet" type="text/css" href="Resources.pak#toolbar.css">
+  
+<div id="toolbar" class="toolbar" style="vertical-align:middle;margin-bottom:3px;">
+	<div class="button" id="buttonrun" onclick="" style="foreground-image: url(Resources.pak#16\icon_run.png)" titleid="for_run"/>
+	<div class="button" style="foreground-image: @ICON_BLANK; foreground-image-transformation: colorize(black); behavior: ~ popup-menu; " id="btnscripts" titleid="for_extscripts" >6
+		<menu.popup id="ext-list">
+     <font color="gray">(Place your .<code id="lablangext"></code> scripts in <b><code id="labprogdir">%progdir%</code>Scripts\</b>)</font><br>
+     <select .file-list id="scriptlist" size="10" style="width:100%;" onchange="ScriptRunner:openscript()">
+     <!scriptlist>
+     </select>
+		</menu>
+	</div>
+	<div class="inputbox" style="min-width:50px;width:230px;">
+		<input type="file-path" id="scriptfile" filter="" novalue="Open Script..." value="" onchange="ScriptRunner:openscript_inp()">
+	</div>
+	<!--div class="button" style="foreground-image: @ICON_ERASE" onclick="ScriptRunner.ui.codeedit.value = ''" titleid="for_clear"/-->
+	<div class="sepv" />
+	<div class="button" style="foreground-image: @ICON_SAVE" onclick="ScriptRunner:savescript()" titleid="for_save"/>
+
+	<div class="inputbox">
+		<!extraoptions><button type="checkbox" id="buttonclearlog" checked>Clear log before execution</button>
+	</div>
+		<div class="sep" />
+	<div class="button" style="foreground-image: @ICON_HELP; behavior: ~ popup-menu; " id="help" titleid="for_help" >6
+		<menu.popup id="help-list">
+		  <!examplemenuitems>
+	  </menu>
+	</div>
+</div>
+<plaintext.editor id="codeedit"></plaintext>
+<popup id="for_run">Run</popup>
+<popup id="for_clear">Clear</popup>
+<popup id="for_help">Help</popup>
+<popup id="for_save">Save</popup>
+<popup id="for_extscripts">User Scripts</popup>

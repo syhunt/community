@@ -1,0 +1,4 @@
+// Dialogs
+view.msgbox(#alert,"Hello world!","Sandcat");
+
+Sciter.launch("Notepad.exe");

@@ -1,0 +1,20 @@
+  <menu.popup id="htmlmenu">
+    <li.do onclick="quickinject:run(slx.html.escape)">HTML Escape</li>
+    <li.undo onclick="quickinject:run(slx.html.unescape)">HTML Unescape</li>
+    <hr/>
+    <li>Entity Encode
+     <menu>
+     <li.num onclick="quickinject:run(forge.strtodechtml)">Decimal Encode</li>
+     <li.hex onclick="quickinject:run(forge.strtohexhtml)">Hex Encode</li>
+     </menu>
+    </li>
+    <li>Entity Decode
+     <menu>
+     <li.str onclick="quickinject:run(forge.dechtmltostr)">Decimal Decode</li>
+     <li.str onclick="quickinject:run(forge.hexhtmltostr)">Hex Decode</li>
+     </menu>
+    </li>
+    <hr/>
+    <li onclick="quickinject:run(slx.html.striptags)">Strip HTML Tags</li>
+    <li onclick="quickinject:run(forge.strtojsstr)">JS String Escape</li>
+   </menu>

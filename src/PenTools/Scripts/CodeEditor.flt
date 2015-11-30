@@ -1,0 +1,28 @@
+Source files:
+*.css,
+*.dpr,
+*.htm,*.html,
+*.js,
+*.json,
+*.lua,*.lp,
+*.pas,
+*.php,
+*.py,
+*.rb,
+*.tis,
+*.vbs,
+*.xml;
+
+HTML files:*.htm,*.html;
+CSS files:*.css;
+JavaScript files:*.js;
+PHP files:*.php;
+JSON files:*.json;
+XML files:*.xml;
+Lua files:*.lua,*.lp;
+Delphi files:*.dpr,*.pas;
+Python files:*.py;
+Ruby files:*.rb;
+TIScript files:*.tis;
+VBScript files:*.vbs;
+All files:*.*

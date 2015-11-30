@@ -1,0 +1,2 @@
+Sandcat.Write("Hello ");
+Sandcat.WriteLn("World from "+"ti".toUpperCase()+"Script");

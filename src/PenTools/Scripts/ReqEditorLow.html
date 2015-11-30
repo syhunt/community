@@ -1,0 +1,49 @@
+  <head>
+  <style>
+  input[type="text"] { height:17px; }
+  input[type="password"] { height:17px; }
+  #postdata, #script {
+  overflow-x:none; /* word wrap */
+  overflow-y:auto;
+  }
+  #sendrequestlow { width:80px;}
+  #usecurrent, #sendrequestlow { height:16px; }
+  </style>
+  </head>
+  <script type="text/tiscript">
+  $(#btnadvlow).onClick = function() { showDialog($(#dlgadvanced)); }
+  $(#ok).onClick = function() { closeDialog($(#dlgadvanced)); }
+  </script>
+  
+  <table width="100%"><tr>
+  <td valign="top" style="width:*;">Host: <input id="host" type="text" value="" novalue="www.somehost.com" style="width:*;"></td>
+  <td valign="top" style="width:150px;padding-left:5px;">Port: <input id="port" type="number" step="1" minvalue="1" value="80" size="10"></td>
+  <td valign="top"><button id="usecurrent" onclick="ReqEditorLow:loadhost()">Use Current Host</button></td>
+  <td valign="top"><button id="sendrequestlow" onclick="ReqEditorLow:sendrequest()">Send</button></td>
+  <td valign="top"><button id="btnadvlow" titleid="for-editadv"><img src="Resources.pak#16\icon_advanced.png"></button></td>
+  </tr>
+  </table>
+  
+  Request:<br>
+  <plaintext.editor id="request"></plaintext>
+  <plaintext.editor id="header" readonly="true" style="display:none"></plaintext>
+  <div style="text-align:right;">
+  <button type="checkbox" id="viator">Send Via Tor</button>
+  <div style="display:none;"><button onclick="ReqEditorLow:loadinfuzzer()">Load in Fuzzer</button></div>
+  </div>
+  
+  <popup id="for-editoptions">Advanced Options</popup>
+  
+  <div class="lightbox" id="dlgadvanced">
+   <form class="dialog" style="width:*;height:*">
+   <div class="inner">
+   <div class="header"><caption>Advanced Options</caption></div>
+   <div class="body">
+   <include src="PenTools.scx#Scripts\ReqEditorLow_Adv.html"/>
+   </div>
+   <div class="buttons">
+   <input type="button" id="ok" value="OK">
+   </div>
+   </div>
+   </form>
+ </div>

@@ -1,0 +1,24 @@
+<div id="toolbar" class="toolbar" style="vertical-align:middle;">
+  <div class="button" style="foreground-image: url(PenTools.scx#images\icon_newfile.png)" onclick="CodeEditor:new()" titleid="for_new"/>
+	<div class="inputbox" style="min-width:50px;width:230px;">
+		<input type="file-path" id="scriptfile" filter="" novalue="Open File..." value="" onchange="CodeEditor:open()">
+	</div>
+	<div .sepv />
+	<div .button style="foreground-image: @ICON_SAVE" onclick="CodeEditor:save()" titleid="for_save"/>
+	<div .sepv />
+	<div .button style="foreground-image: @ICON_UNDO" onclick="tab:runsrccmd('undo')" titleid="for_undo"/>
+	<div .button style="foreground-image: @ICON_REDO" onclick="tab:runsrccmd('redo')" titleid="for_redo"/>
+	<div .sepv />
+	<div .button style="foreground-image: @ICON_CUT" onclick="tab:runsrccmd('cut')" titleid="for_cut"/>
+	<div .button style="foreground-image: @ICON_COPY" onclick="tab:runsrccmd('copy')" titleid="for_copy"/>
+	<div .button style="foreground-image: @ICON_PASTE" onclick="tab:runsrccmd('paste')" titleid="for_paste"/>
+</div>
+
+<popup id="for_new">New</popup>
+<popup id="for_clear">Clear</popup>
+<popup id="for_save">Save</popup>
+<popup id="for_undo">Undo</popup>
+<popup id="for_redo">Redo</popup>
+<popup id="for_copy">Copy</popup>
+<popup id="for_paste">Paste</popup>
+<popup id="for_cut">Cut</popup>

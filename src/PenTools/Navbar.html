@@ -1,0 +1,94 @@
+<div class="button" style="behavior: ~ popup-menu;foreground-image: url(PenTools.scx#images\icon_syhunt.png);" titleid="for-syhunt_tools">6
+ <menu.popup>
+  <li onclick="browser.showreqbuilder()">QuickInject Bar</li>
+  <hr/>
+  <li>Encoders/Decoders
+   <menu>
+   <li onclick="PenTools:ViewMultiEncoder()">Multi-Encoder</li>
+   <hr/>
+   <li onclick="URLEncoder:view()">URL Encoder/Decoder</li>
+   <li onclick="Base64Encoder:view()">Base64 Encoder/Decoder</li>
+   <li onclick="MD5Encoder:view()">MD5 Encoder</li>
+   <li onclick="SHA1Encoder:view()">SHA-1 Encoder</li>
+   </menu>
+  </li>
+  <li>Fuzzer
+   <menu>
+    <!--li onclick="PenTools:ViewFuzzer()">XHR</li-->
+    <li onclick="PenTools:ViewFuzzerLow()">HTTP (Low-Level)</li>
+   </menu>
+  </li>
+  <li>Open With User Agent
+   <menu>
+   <li onclick="PenTools:OpenWithAgent('Chrome')" style="foreground-image: url(PenTools.scx#images\icon_nav_chrome.png);">Chrome (Default)</li>
+   <li onclick="PenTools:OpenWithAgent('Edge')" style="foreground-image: url(PenTools.scx#images\icon_nav_edge.png);">Edge</li>
+   <li onclick="PenTools:OpenWithAgent('Firefox')" style="foreground-image: url(PenTools.scx#images\icon_nav_firefox.png);">Firefox</li>
+   <li onclick="PenTools:OpenWithAgent('IE')" style="foreground-image: url(PenTools.scx#images\icon_nav_ie.png);">Internet Explorer</li>
+   <li onclick="PenTools:OpenWithAgent('Opera')" style="foreground-image: url(PenTools.scx#images\icon_nav_opera.png);">Opera</li>
+   <li onclick="PenTools:OpenWithAgent('Safari')" style="foreground-image: url(PenTools.scx#images\icon_nav_safari.png);">Safari</li>
+   <li>Mobile
+    <menu>
+    <li onclick="PenTools:OpenWithAgent('IEMobile')" style="foreground-image: url(PenTools.scx#images\icon_nav_ie.png);">IE Mobile (HTC Touch 3G)</li>
+    <li onclick="PenTools:OpenWithAgent('Android')" style="foreground-image: url(PenTools.scx#images\icon_mob_android.png);">Safari Mobile (Android)</li>
+    <li onclick="PenTools:OpenWithAgent('BlackBerry')" style="foreground-image: url(PenTools.scx#images\icon_mob_blackberry.png);">Safari Mobile (Blackberry)</li>
+    <li onclick="PenTools:OpenWithAgent('iPhone')" style="foreground-image: url(PenTools.scx#images\icon_mob_iphone.png);">Safari Mobile (iPhone)</li>
+    </menu>
+   </li>
+  </li>
+  <li>Request Editors
+   <menu>
+   <li onclick="PenTools:ViewRequestLoader()">Request Editor/Loader</li>
+   <!--li onclick="PenTools:EditRequest()">XHR Editor</li-->
+   <li onclick="PenTools:EditRequestLow()">Low-Level Editor</li>
+   </menu>
+  </li>
+  <li>User-Agent Changer
+   <menu>
+   <li onclick="PenTools:SetUserAgent('Chrome')" style="foreground-image: url(PenTools.scx#images\icon_nav_chrome.png);">Identify as Chrome (Default)</li>
+   <li onclick="PenTools:SetUserAgent('Edge')" style="foreground-image: url(PenTools.scx#images\icon_nav_edge.png);">Identify as Edge</li>
+   <li onclick="PenTools:SetUserAgent('Firefox')" style="foreground-image: url(PenTools.scx#images\icon_nav_firefox.png);">Identify as Firefox</li>
+   <li onclick="PenTools:SetUserAgent('IE')" style="foreground-image: url(PenTools.scx#images\icon_nav_ie.png);">Identify as Internet Explorer</li>
+   <li onclick="PenTools:SetUserAgent('Opera')" style="foreground-image: url(PenTools.scx#images\icon_nav_opera.png);">Identify as Opera</li>
+   <li onclick="PenTools:SetUserAgent('Safari')" style="foreground-image: url(PenTools.scx#images\icon_nav_safari.png);">Identify as Safari</li>
+   <li onclick="PenTools:SetUserAgent('Custom')">Identify as a custom agent...</li>
+   <hr/>
+   <li onclick="PenTools:ViewUserAgent()">View Current User-Agent</li>
+   </menu>
+  </li>
+  <li onclick="PenTools:ViewCGIScanner()">Directory Scanner</li>
+  <li onclick="PenTools:ViewHTTPBruteForce()">HTTP Brute Force</li>
+  <li>Miscellaneous
+   <menu>
+   <!li onclick="PenTools:LoadPageInfoTab('explorer')")"><!Resources Explorer><!/li>
+   <li onclick="browser.newtab('http://sebsauvage.net/paste/')">ZeroBin</li>
+   </menu>
+  </li>
+ </menu>
+</div>
+<!--div .button id="runlua" style="foreground-image: url(PenTools.scx#images\icon_lang_lua.png);" onclick="ScriptRunner:vieweditor_lua()" titleid="for-runlua"-->
+<div class="button" style="behavior: ~ popup-menu;foreground-image: url(PenTools.scx#images\icon_run_script.png);" titleid="for-runascript">6
+ <menu.popup>
+ <li onclick="ScriptRunner:vieweditor_js()" style="foreground-image: url(PenTools.scx#images\icon_lang_javascript.png);">JavaScript in Loaded Page</li>
+ <li onclick="ScriptRunner:vieweditor_lua()" style="foreground-image: url(PenTools.scx#images\icon_lang_lua.png);">Lua</li>
+ <li onclick="ScriptRunner:vieweditor('PHP','php')" style="foreground-image: url(PenTools.scx#images\icon_lang_php.png);">PHP</li>
+ <li onclick="ScriptRunner:vieweditor('Ruby','rb')" style="foreground-image: url(PenTools.scx#images\icon_lang_ruby.png);">Ruby</li>
+ <li onclick="ScriptRunner:vieweditor('TIScript','tis')" style="foreground-image: url(PenTools.scx#images\icon_lang_tiscript.png);">TIScript</li>
+ <hr/>
+ <li>Other
+  <menu>
+   <li onclick="ScriptRunner:vieweditor('JScript','jsc')">JScript</li>
+   <li onclick="ScriptRunner:vieweditor('PascalScript','pas')">PascalScript</li>
+   <li onclick="ScriptRunner:vieweditor('Pascal','pasrem')">Pascal (RemObjects)</li>
+   <li onclick="ScriptRunner:vieweditor('Perl','pl')">Perl</li>
+   <li onclick="ScriptRunner:vieweditor('Python','py')">Python</li>
+   <li onclick="ScriptRunner:vieweditor('VBScript','vbs')">VBScript</li>
+  </menu>
+ </li>
+ <li id="tviewerrors" onclick="Sandcat:ShowErrorLog()">Error Log</li>
+ </menu>
+</div>
+<div .button onclick="browser.showreqbuilder()" style="foreground-image: url(PenTools.scx#images\icon_injection.png);" titleid="for-quickinject"/>
+<popup id="for-quickinject">QuickInject</popup>
+<popup #for-syhunt_tools>Pen-Tester Tools</popup>
+<popup #for-runascript>Run a Script</popup>
+<popup #for-runlua>Run Lua Script</popup>

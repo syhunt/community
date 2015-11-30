@@ -1,0 +1,20 @@
+  <table style="width:*;height:*;"><tr>
+  <td width="50%">
+  <plaintext.editor id="data"></plaintext>
+  </td>
+  <td width="50%">
+  <plaintext.editor id="result"></plaintext>
+  </td>
+  <td style="width:0px;"><plaintext id="script" style="display:none;"></plaintext></td>
+  </tr></table>
+  <button id="btnrun" onclick=""><code id="btncaption">%caption%</code> <img id="btnrunicon" src="" style="height:10px;width:10px;"></button>
+  <button onclick="MultiEncoder:reset()">Reset</button>
+  <select id="encoder" size="1" onchange="MultiEncoder:encoder_changed()">
+  <option value="base64" selected>Base64 Encode</option>
+  <option value="hex">Hexadecimal</option>
+  <option value="html">HTML Encode</option>
+  <option value="md5">MD5</option>
+  <option value="sha1">SHA-1</option>
+  <option value="url">URL Encode</option>
+  <option value="url.full">URL Encode (Full)</option>
+  </select>

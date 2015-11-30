@@ -1,0 +1,7 @@
+// Hello World example
+var from = 'JavaScript';
+Sandcat.WriteLn('Hello World from '+from.toUpperCase()+'!');
+if (tabURL != '') {
+Sandcat.WriteLn(tabURL);
+}
+Sandcat.WriteLn('Bye!');

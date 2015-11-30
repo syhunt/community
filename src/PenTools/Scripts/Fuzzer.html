@@ -1,0 +1,119 @@
+  <head>
+  <meta id="element">
+  <style>
+  input[type="text"] { height:17px; }
+  input[type="password"] { height:17px; }
+  #postdata, #script {
+  overflow-x:none; /* word wrap */
+  overflow-y:auto;
+  }
+  #run { width:80px;}
+  #usecurrent, #run { height:16px; }
+  </style>
+  </head>
+  <script type="text/tiscript">
+  $(#btnadvanced).onClick = function() { showDialog($(#dlgadvanced)); }
+  $(#btnadvlow).onClick = function() { showDialog($(#dlgadvanced)); }
+  $(#ok).onClick = function() { closeDialog($(#dlgadvanced)); }
+  </script>
+  
+  
+  <div id="divlow" style="width:*;height:*;display:none;">
+  <table width="100%"><tr>
+  <td valign="top" style="width:*;">Host: <input id="host" type="text" value="" style="width:*;"></td>
+  <td valign="top" style="width:150px;padding-left:5px;">Port: <input id="port" type="number" step="1" minvalue="1" value="80" size="10"></td>
+  <td valign="top"><button id="usecurrent" onclick="Fuzzer:loadhost()">Use Current Host</button></td>
+  <td valign="top"><button id="run" onclick="Fuzzer:start()">Run Fuzzer</button></td>
+  <td valign="top"><button id="btnadvlow" titleid="for-editadv"><img src="Resources.pak#16\icon_advanced.png"></button></td>
+  </tr>
+  </table>
+  Raw Request:
+  <plaintext.editor id="request"></plaintext>
+  </div>
+  
+  <div id="divstandard" style="width:*;height:*;">
+  <table width="100%"><tr>
+  <td valign="top">
+   <select class="tag-list" id="method" type="select" style="width:120px;">
+   <option value="GET" selected>GET</option>
+   <option value="POST">POST</option>
+   <option value="HEAD">HEAD</option>
+   </select>
+  </td>
+  <td style="width:5px;"></td>
+  <td valign="top" style="width:*;">
+   Base URL: <input id="url" type="text" value="" style="width:*;"> <button id="usecurrent" onclick="Fuzzer.ui.url.value = tab.url..'{$1}'">Use Current Page</button>
+  </td>
+  <td valign="top"><button id="run" onclick="Fuzzer:start()">Run XHR Fuzzer</button></td>
+  <td valign="top"><button id="btnadvanced" titleid="for-editadv"><img src="Resources.pak#16\icon_advanced.png"></button></td>
+  </tr>
+  </table>
+   Request Data:
+   <plaintext.editor id="postdata"></plaintext>
+  </div>
+  
+  <table width="100%"><tr>
+  <td valign="top" style="width:*;">
+  <select class="tag-list" type="select" id="mode" size="1" onchange="Fuzzer:mode_changed()">
+  <option value="number" selected>Number</option>
+  <option value="ascii">ASCII</option>
+  <option value="char_repeat">Char Repeat</option>
+  <option value="wordlist">Wordlist</option>
+  </select>
+  </td>
+  </tr>
+  </table><br>
+  
+  <table style="width:*;height:*;border:0;padding:0;"><tr>
+  <td width="20%" valign="top">
+  <div id="wordlist" style="display:none">
+  <input type="file-path" id="wordlist" filter="List File:*.lst;Text File:*.txt" novalue="Select File..." value="">
+  </div>
+  <div id="startend">
+  Start - End:<br>
+  <input id="start" type="number" step="1" minvalue="0" value="0" size="10"> - 
+  <input id="aend" type="number" step="1" minvalue="0" value="100" size="10"><br><br>
+  </div>
+  <div id="increment">
+  Increment:<br>
+  <input id="inc" type="number" step="1" minvalue="1" value="1" size="10">
+  </div><br>
+  <div id="character" style="display:none">
+  Character:<br>
+  <input id="char" type="text" value="A" size="10">
+  </div><br>
+  </td>
+  <td style="width:3px;"></td>
+  <td width="50%" valign="top">
+  <plaintext.editor id="script" style="width:100%;height:100%;"></plaintext>
+  </td>
+  <td style="width:10px;"></td>
+  <td width="30%" valign="top">
+   External Filters:<br>
+   <select .file-list id="scriptlist" size="5" style="width:*;" onchange="Fuzzer:openjs()">
+   <!scriptlist>
+   </select><br>
+   <font color="gray">Place your <code id="lablangext"></code> filters in <b><code id="labprogdir">%progdir%</code>Scripts\Fuzzer\</b></font><br>
+   <br>
+  Delay between requests (ms):<br>
+  <input id="delay" type="number" step="100" minvalue="0" value="0" size="10">
+  </td>
+  </tr></table>
+  
+<popup id="for-editadv">Advanced Options</popup>
+<button type="checkbox" id="isxhr" style="display:none;"></button>
+<button type="checkbox" id="islow" style="display:none;"></button>
+  
+<div class="lightbox" id="dlgadvanced">
+<form class="dialog" style="width:*;height:*">
+<div class="inner">
+<div class="header"><caption>Advanced Options</caption></div>
+<div class="body">
+<!advoptions>
+</div>
+<div class="buttons">
+<input type="button" id="ok" value="OK">
+</div>
+</div>
+</form>
+</div>

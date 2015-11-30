@@ -1,0 +1,11 @@
+{
+ "name": "Syhunt Pen-Tester Tools Pack",
+ "version": "file:Sandcat.exe",
+ "author": "Syhunt",
+ "compat": "v2",
+ "script": {
+  "filename": "Syhunt.lua",
+  "init": "PenTools:init()",
+  "afterinit": "PenTools:afterinit()"
+ }
+}
