@@ -95,4 +95,8 @@ else
 	runtabcmd('runtbtis','MarkAsSecure();')
 end
 
+if i.warnings ~= '' then
+  runcmd('showmsg',i.warnings)
+end
+
 i:release()

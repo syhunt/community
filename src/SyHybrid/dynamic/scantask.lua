@@ -108,4 +108,8 @@ else
 	printscanresult()
 end
 
+if hs.warnings ~= '' then
+  runcmd('showmsg',hs.warnings)
+end
+
 hs:release()

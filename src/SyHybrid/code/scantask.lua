@@ -48,4 +48,8 @@ else
 	runtabcmd('runtbtis','MarkAsSecure();')
 end
 
+if cs.warnings ~= '' then
+  runcmd('showmsg',cs.warnings)
+end
+
 cs:release()
