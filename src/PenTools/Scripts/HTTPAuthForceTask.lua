@@ -1,7 +1,7 @@
  require "SelHTTP"
  task.caption = 'HTTP Brute Force'
- userlist = slx.file.getcontents(params.userlistfile)
- passlist = slx.file.getcontents(params.passlistfile)
+ userlist = ctk.file.getcontents(params.userlistfile)
+ passlist = ctk.file.getcontents(params.passlistfile)
  url = params.url
  method = params.method
  found = false
@@ -9,9 +9,9 @@
  http = sel_httprequest:new()
  http.auth = 'Basic'
  http.description = 'Auth Force Request'
- u = slx.string.loop:new()
+ u = ctk.string.loop:new()
  u:load(userlist)
- p = slx.string.loop:new()
+ p = ctk.string.loop:new()
  p:load(passlist)
  print('Executing HTTP brute force...')
  print('Target URL: '..url..'...')

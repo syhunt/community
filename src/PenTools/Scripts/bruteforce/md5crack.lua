@@ -3,7 +3,7 @@ MD5CrackPHP = {}
 function MD5CrackPHP:run()
  local ui = self.ui
  local script = PenTools:getfile('Scripts/bruteforce/md5crack_task.lua')
- local j = slx.json.object:new()
+ local j = ctk.json.object:new()
  j.charset = ui.charset.value
  j.maxcount = ui.maxcount.value
  j.md5 = ui.md5.value

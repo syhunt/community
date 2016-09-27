@@ -27,8 +27,8 @@ function MultiEncoder:openlua()
  local ui = self.ui
  local f = ui.scriptlist.value
  local fcontents = ''
- if slx.file.exists(self.default_scriptdir..f) then
-  fcontents = slx.file.getcontents(self.default_scriptdir..f)
+ if ctk.file.exists(self.default_scriptdir..f) then
+  fcontents = ctk.file.getcontents(self.default_scriptdir..f)
  end
  ui.script.value = fcontents
 end

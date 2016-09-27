@@ -8,7 +8,7 @@ function HeadView:load()
    local ui = self.ui
    ui.rcvdheader.value = tab.rcvdheaders
    ui.sentheader.value = tab.sentheaders
-   ui.banner.value = slx.html.escape(slx.http.getheader(tab.rcvdheaders,'Server'))
+   ui.banner.value = ctk.html.escape(ctk.http.getheader(tab.rcvdheaders,'Server'))
   else
    PenTools:ViewCachedPage()
    browser.bottombar:eval([[

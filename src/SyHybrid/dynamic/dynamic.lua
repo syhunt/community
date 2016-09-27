@@ -29,7 +29,7 @@ end
 
 function SyhuntDynamic:EditPreferences(dialoghtml)
 	dialoghtml = dialoghtml or 'dynamic/prefs/prefs.html'
-	local slp = slx.string.loop:new()
+	local slp = ctk.string.loop:new()
 	local ds = symini.dynamic:new()
 	ds:start()
 	slp:load(ds.options)
@@ -54,9 +54,9 @@ end
 
 function SyhuntDynamic:EditSitePreferences(url)
   url = url or tab.url
-	if slx.string.beginswith(string.lower(url),'http') then
+	if ctk.string.beginswith(string.lower(url),'http') then
 		local jsonfile = prefs.getsiteprefsfilename(url)
-		local slp = slx.string.loop:new()
+		local slp = ctk.string.loop:new()
 		local hs = symini.hybrid:new()
 		hs:start()
 		slp:load(hs.options)
@@ -173,9 +173,9 @@ end
 
 function SyhuntDynamic:NormalizeTargetURL(url)
   local addproto = true
-  if slx.string.beginswith(string.lower(url),'http:') then
+  if ctk.string.beginswith(string.lower(url),'http:') then
     addproto = false
-  elseif slx.string.beginswith(string.lower(url),'https:') then
+  elseif ctk.string.beginswith(string.lower(url),'https:') then
     addproto = false
   end
   if addproto then
@@ -198,7 +198,7 @@ function SyhuntDynamic:ScanSite(runinbg,url,method)
 		tab.captureurls = false
 		local script = SyHybrid:getfile('dynamic/scantask.lua')
 		local menu = SyHybrid:getfile('dynamic/scantaskmenu.html')
-		local j = slx.json.object:new()
+		local j = ctk.json.object:new()
 		local tid = 0
 		j.sessionname = symini.getsessionname()
 		j.huntmethod = method
@@ -206,7 +206,7 @@ function SyhuntDynamic:ScanSite(runinbg,url,method)
 		j.urllist = tab.urllist
 		j.starturl = url
 		j.runinbg = runinbg
-		menu = slx.string.replace(menu,'%s',j.sessionname)
+		menu = ctk.string.replace(menu,'%s',j.sessionname)
 		if symini.checkinst() then
 			tid = tab:runtask(script,tostring(j),menu)
 		else
@@ -216,7 +216,7 @@ function SyhuntDynamic:ScanSite(runinbg,url,method)
 		  -- Updates the tab user interface
   	  tab:userdata_set('session',j.sessionname)
   	  tab:userdata_set('taskid',tid)
-  	  tab.title = slx.url.crack(url).host
+  	  tab.title = ctk.url.crack(url).host
   	  self.ui.url.value = url
   	  browser.setactivepage('resources')
 		end

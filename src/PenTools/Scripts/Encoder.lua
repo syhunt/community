@@ -15,12 +15,12 @@ end
 
 function Base64Encoder:encode()
  local ui = self.ui
- ui.result.value = slx.base64.encode(ui.data.value)
+ ui.result.value = ctk.base64.encode(ui.data.value)
 end
 
 function Base64Encoder:decode()
  local ui = self.ui
- ui.result.value = slx.base64.decode(ui.data.value)
+ ui.result.value = ctk.base64.decode(ui.data.value)
 end
 
 URLEncoder = {}
@@ -42,15 +42,15 @@ end
 function URLEncoder:encode(full)
   local ui = self.ui
   if full == true then
-   ui.result.value = slx.url.encodefull(ui.data.value)
+   ui.result.value = ctk.url.encodefull(ui.data.value)
   else
-   ui.result.value = slx.url.encode(ui.data.value)
+   ui.result.value = ctk.url.encode(ui.data.value)
   end
 end
 
 function URLEncoder:decode()
   local ui = self.ui
-  ui.result.value = slx.url.decode(ui.data.value)
+  ui.result.value = ctk.url.decode(ui.data.value)
 end
 
 MD5Encoder = {}
@@ -69,7 +69,7 @@ end
 
 function MD5Encoder:encode()
   local ui = self.ui
-  ui.result.value = slx.crypto.md5(ui.data.value)
+  ui.result.value = ctk.crypto.md5(ui.data.value)
 end
 
 SHA1Encoder = {}
@@ -88,5 +88,5 @@ end
 
 function SHA1Encoder:encode()
   local ui = self.ui
-  ui.result.value = slx.crypto.sha1(ui.data.value)
+  ui.result.value = ctk.crypto.sha1(ui.data.value)
 end

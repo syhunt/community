@@ -1,3 +1,3 @@
 function Encode(s)
- return slx.url.encode(s)
+ return ctk.url.encode(s)
 end

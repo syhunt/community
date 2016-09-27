@@ -40,7 +40,7 @@ function SyCommands:Whois(url)
  if tab:hasloadedurl(true) then
   PenTools:dofile("Scripts/commands/whois.lua")
   local whois = getwhois(url)
-  p = slx.string.loop:new()
+  p = ctk.string.loop:new()
   p:load(whois)
   while p:parsing() do
    print(p.current)
@@ -53,9 +53,9 @@ end
 
 function SyCommands:RunScript(filename)
  local fullfile = app.dir..'Scripts\\'..filename
- local ext = string.lower(slx.file.getext(filename))
- if slx.file.exists(fullfile) then
-  local script = slx.file.getcontents(fullfile)
+ local ext = string.lower(ctk.file.getext(filename))
+ if ctk.file.exists(fullfile) then
+  local script = ctk.file.getcontents(fullfile)
   if ext == '.js' then
    tab:runjs(script,tab.url,0)
   elseif ext == '.lua' then

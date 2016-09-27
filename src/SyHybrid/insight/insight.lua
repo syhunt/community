@@ -16,11 +16,11 @@ function SyhuntInsight:Load()
 end
 
 function SyhuntInsight:LoadAttackLog(filename)
-  if slx.file.exists(filename) then
-    local slp = slx.string.loop:new()
+  if ctk.file.exists(filename) then
+    local slp = ctk.string.loop:new()
     slp:loadfromfile(filename)
     while slp:parsing() do
-      tab:resources_add(slx.base64.decode(slp.current))
+      tab:resources_add(ctk.base64.decode(slp.current))
     end
     tab.status = string.format('Found %i possible attacks.', slp.count)
     slp:release()
@@ -54,7 +54,7 @@ function SyhuntInsight:LoadSession(sesname)
 end
 
 function SyhuntInsight:EditPreferences()
-	local slp = slx.string.loop:new()
+	local slp = ctk.string.loop:new()
 	local t = {}
 	local cs = symini.insight:new()
 	slp:load(cs.options)
@@ -129,12 +129,12 @@ function SyhuntInsight:SaveSessionFile(session,filename,filter,defext,sug)
   session = session or tab:userdata_get('session','')
 	if session ~= '' then
 	  local source = symini.getsessionsdir()..session..'\\'..filename
-	  if slx.file.exists(source) == true then
+	  if ctk.file.exists(source) == true then
 	    saved = true
   	  local dest = app.savefile(filter,defext,sug)
   	  if dest ~= '' then
-  	    if slx.file.canopen(source) == true then
-  	      slx.file.copy(source,dest)
+  	    if ctk.file.canopen(source) == true then
+  	      ctk.file.copy(source,dest)
   	    else
 	        app.showmessage('Unable to save file right now. Please try again.')
   	    end
@@ -148,13 +148,13 @@ end
 
 function SyhuntInsight:SaveResults(session)
   local flt = 'Insight results (*.txt)|*.txt'
-  local sug = slx.file.getname(self.ui.file.value)..'_attacks.txt'
+  local sug = ctk.file.getname(self.ui.file.value)..'_attacks.txt'
   self:SaveSessionFile(session,'Attacks.log',flt,'txt',sug)
 end
 
 function SyhuntInsight:SaveAttackerList(session)
   local flt = 'Insight list (*.lst)|*.lst'
-  local sug = slx.file.getname(self.ui.file.value)..'_attackers.lst'
+  local sug = ctk.file.getname(self.ui.file.value)..'_attackers.lst'
   self:SaveSessionFile(session,'Attackers.lst',flt,'lst',sug)
 end
 
@@ -204,8 +204,8 @@ function SyhuntInsight:ScanFile(filename,huntmethod,targetip)
   if SyHybridUser:IsMethodAvailable(huntmethod, true) then
 	  if filename ~= '' then
 	    tab:resources_clear()
-	    tab.title = slx.file.getname(filename)
-	    if slx.file.getsize(filename) < 1024*500 then
+	    tab.title = ctk.file.getname(filename)
+	    if ctk.file.getsize(filename) < 1024*500 then
 	      tab:runsrccmd('loadfromfile',filename)
 	    else
 	      tab.source = ''
@@ -213,7 +213,7 @@ function SyhuntInsight:ScanFile(filename,huntmethod,targetip)
 	    ui.file.value = filename
   		prefs.save()
   		local script = SyHybrid:getfile('insight/scantask.lua')
-  		local j = slx.json.object:new()
+  		local j = ctk.json.object:new()
   	  j.sessionname = symini.getsessionname()
   	  j.targetip = targetip
   		if huntmethod == 'reconstruct' then
@@ -226,7 +226,7 @@ function SyhuntInsight:ScanFile(filename,huntmethod,targetip)
   		j.logfile = filename
   		j.huntmethod = huntmethod
 		  local menu = SyHybrid:getfile('insight/scantaskmenu.html')
-	  	menu = slx.string.replace(menu,'%s',j.sessionname)
+	  	menu = ctk.string.replace(menu,'%s',j.sessionname)
   		local tid = tab:runtask(script,tostring(j),menu)
   		tab:userdata_set('taskid',tid)
   		j:release()

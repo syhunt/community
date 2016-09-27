@@ -18,7 +18,7 @@ end
 function XHREditor:sendrequest()
  local ui = self.ui
  if ui.url.value ~= '' then
-  if slx.url.crack(tab.url).host ~= slx.url.crack(ui.url.value).host then
+  if ctk.url.crack(tab.url).host ~= ctk.url.crack(ui.url.value).host then
     tab.loadend = 'XHREditor:doreq()'
     tab.capturebrowser = false
     tab:gotourl(ui.url.value)

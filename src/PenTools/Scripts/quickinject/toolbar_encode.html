@@ -1,30 +1,30 @@
   <menu.popup id="encodemenu">
-    <li.do onclick="quickinject:run(slx.url.encode)">URL Encode</li>
-    <li.do onclick="quickinject:run(slx.url.encodefull)">URL Encode (Full)</li>
-    <li.undo onclick="quickinject:run(slx.url.decode)">URL Decode</li>
+    <li.do onclick="quickinject:run(ctk.url.encode)">URL Encode</li>
+    <li.do onclick="quickinject:run(ctk.url.encodefull)">URL Encode (Full)</li>
+    <li.undo onclick="quickinject:run(ctk.url.decode)">URL Decode</li>
     <hr/>
     <li>Hex Encode
      <menu>
-      <li.hex onclick="quickinject:run(slx.convert.strtohex)">String To Hex</li>
+      <li.hex onclick="quickinject:run(ctk.convert.strtohex)">String To Hex</li>
       <li.hex onclick="quickinject:run(quickinject.strtohex_0xhex)">String To Hex (0xHEX)</li>
       <li.hex onclick="quickinject:run(quickinject.strtohex_colonsep)">String To Hex (Colon-Separated)</li>
       <li.hex onclick="quickinject:run(quickinject.strtohex_spaced)">String To Hex (Spaced)</li>
       <hr/>
-      <li.hex onclick="quickinject:run(slx.convert.inttohex)">Integer To Hex</li>
+      <li.hex onclick="quickinject:run(ctk.convert.inttohex)">Integer To Hex</li>
      </menu>
     </li>
     <li>Hex Decode
      <menu>
-      <li.str onclick="quickinject:run(slx.convert.hextostr)">Hex To String</li>
-      <li.num onclick="quickinject:run(slx.convert.hextoint)">Hex To Integer</li>
+      <li.str onclick="quickinject:run(ctk.convert.hextostr)">Hex To String</li>
+      <li.num onclick="quickinject:run(ctk.convert.hextoint)">Hex To Integer</li>
      </menu>
     </li>
     <hr/>
     <li>Base64 Encoding
     <menu>
-     <li.do onclick="quickinject:run(slx.base64.encode)">Base64 Encode</li>
+     <li.do onclick="quickinject:run(ctk.base64.encode)">Base64 Encode</li>
      <hr/>
-     <li.undo onclick="quickinject:run(slx.base64.decode)">Base64 Decode</li>
+     <li.undo onclick="quickinject:run(ctk.base64.decode)">Base64 Decode</li>
     </menu>
     </li>
     <li>CharCode Conversion

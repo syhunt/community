@@ -37,7 +37,7 @@ function SyhuntCode:LoadSession(sesname)
 end
 
 function SyhuntCode:EditPreferences()
-	local slp = slx.string.loop:new()
+	local slp = ctk.string.loop:new()
 	local t = {}
 	local cs = symini.code:new()
 	slp:load(cs.options)
@@ -116,12 +116,12 @@ end
 
 function SyhuntCode.OpenFile(f)
 	local file = SyhuntCode.ui.dir.value..'\\'..f
-	local ext = slx.file.getext(file)
-	if slx.file.exists(file) then
-		tab.title = slx.file.getname(f)
+	local ext = ctk.file.getext(file)
+	if ctk.file.exists(file) then
+		tab.title = ctk.file.getname(f)
 		local ses = symini.session:new()
 		ses.name = tab:userdata_get('session')
-		f = slx.string.replace(f,'\\','/')
+		f = ctk.string.replace(f,'\\','/')
 		tab:loadsourcemsgs(ses:getcodereview('/'..f))
 		tab.logtext = ses:getcodereviewlog('/'..f)
 		tab.downloadfiles = false
@@ -129,7 +129,7 @@ function SyhuntCode.OpenFile(f)
 		tab:gotourl(file)
 		tab:runsrccmd('readonly',false)
 		tab:runsrccmd('loadfromfile',file)
-		if slx.re.match(ext,'.bmp|.gif|.ico|.jpg|.jpeg|.png|.svg') == true then
+		if ctk.re.match(ext,'.bmp|.gif|.ico|.jpg|.jpeg|.png|.svg') == true then
 			browser.setactivepage('browser')
 		end
 		ses:release()
@@ -172,7 +172,7 @@ function SyhuntCode:LoadTree(dir,affscripts)
 	tab.tree_loaditem = SyhuntCode.OpenFile
 	tab:tree_clear()
 	tab:tree_loaddir(dir..'\\',true,affscripts)
-	tab.title = slx.file.getname(dir)
+	tab.title = ctk.file.getname(dir)
 end
 
 function SyhuntCode:ScanFolder(huntmethod)
@@ -190,7 +190,7 @@ function SyhuntCode:ScanFolder(huntmethod)
   		prefs.save()
   		self:LoadTree(dir,'')
   		local script = SyHybrid:getfile('code/scantask.lua')
-  		local j = slx.json.object:new()
+  		local j = ctk.json.object:new()
 	  	j.sessionname = symini.getsessionname()
   		tab:userdata_set('session',j.sessionname)
   		j.codedir = dir..'\\'
@@ -200,7 +200,7 @@ function SyhuntCode:ScanFolder(huntmethod)
 		  <li onclick="SessionManager:show_sessiondetails('%s')">View Vulnerabilities</li>
 	  	<li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="ReportMaker:loadtab('%s')">Generate Report</li>
 	  	]]
-	  	menu = slx.string.replace(menu,'%s',j.sessionname)
+	  	menu = ctk.string.replace(menu,'%s',j.sessionname)
   		local tid = tab:runtask(script,tostring(j),menu)
       tab:userdata_set('taskid',tid)
   		j:release()
@@ -211,9 +211,9 @@ end
 
 function SyhuntCode:ShowResults(list)
 	local html =  SyHybrid:getfile('code/results.html')
-	local slp = slx.string.loop:new()
-	local script = slx.string.list:new()
-	local j = slx.json.object:new()
+	local slp = ctk.string.loop:new()
+	local script = ctk.string.list:new()
+	local j = ctk.json.object:new()
 	slp.iscsv = true
 	slp:load(list)
 	while slp:parsing() do

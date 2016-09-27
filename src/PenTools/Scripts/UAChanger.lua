@@ -58,8 +58,8 @@ function UAChanger:DisplayUserAgentList()
 end
 
 function UAChanger:GetUserAgentList()
- local p = slx.string.loop:new()
- local flist = slx.string.list:new()
+ local p = ctk.string.loop:new()
+ local flist = ctk.string.list:new()
  local l = PenTools:getfile('Scripts/Agent.lst')
  p:load(l)
  while p:parsing() do
@@ -93,7 +93,7 @@ function UAChanger:OpenWithAgent(s)
  prefs.save()
  browser.newwindow(tab.url)
  -- restores user agent
- slx.utils.delay(1000)
+ ctk.utils.delay(1000)
  self:SetUserAgent(backup)
  prefs.save()
 end

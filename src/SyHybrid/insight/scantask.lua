@@ -3,7 +3,7 @@ geodb = require "mmdb".open(getappdir().."Packs\\GeoLite2\\GeoLite2-Country.mmdb
 
 function addattack(t)
   local ipcountry = {}
-  local j = slx.json.object:new()
+  local j = ctk.json.object:new()
   if string.match(t.ip,'[:]') then
     ipcountry = geodb:search_ipv6(t.ip)
   else
@@ -32,7 +32,7 @@ function addattack(t)
   end
   local jsonstr = tostring(j)
   j:release()
-  i:logcustomalert(slx.base64.encode(jsonstr))
+  i:logcustomalert(ctk.base64.encode(jsonstr))
   runtabcmd('resaddcustomitem',jsonstr)
 end
 
@@ -45,7 +45,7 @@ function updateprogress(pos,max)
 	task:setprogress(pos,max)
 end
 
-task.caption = 'Syhunt Insight Task - '..slx.file.getname(params.logfile)
+task.caption = 'Syhunt Insight Task - '..ctk.file.getname(params.logfile)
 
 if params.huntmethod == 'reconstruct' then
   task.caption = task.caption..' Session Reconstruction'

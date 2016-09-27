@@ -10,9 +10,9 @@ end
 function CGIScanner:start()
  local ui = self.ui
  local script = PenTools:getfile('Scripts/CGIScannerTask.lua')
- local j = slx.json.object:new()
+ local j = ctk.json.object:new()
  j.pathlistfile = ui.pathlist.value
- if slx.file.exists(j.pathlistfile) then
+ if ctk.file.exists(j.pathlistfile) then
   j.method = ui.method.value
   j.url = ui.url.value
   tab:runtask(script,tostring(j))

@@ -3,7 +3,7 @@ CodeEditor.title = 'Sandcat Editor'
 
 function CodeEditor:drop()
  local ui = self.ui
- local slp = slx.string.loop:new()
+ local slp = ctk.string.loop:new()
  slp:load(tab.codeedit.droplist)
   if slp.count == 1 then
    ui.scriptfile.value = tab.codeedit.droplist
@@ -26,7 +26,7 @@ function CodeEditor:openinnewtab(f)
  local ui = self.ui
  self:newtab()
  ui.scriptfile.value = f
- slx.utils.delay(100)
+ ctk.utils.delay(100)
 end
 
 function CodeEditor:open(f)
@@ -34,10 +34,10 @@ function CodeEditor:open(f)
  if f == undefined then
   f = ui.scriptfile.value
  end
- if slx.file.exists(f) then
-  --tab.codeedit:sethighlighter(slx.file.getext(f))
+ if ctk.file.exists(f) then
+  --tab.codeedit:sethighlighter(ctk.file.getext(f))
   --app.showmessage(tab.codeedit.text)
-  tab.title = slx.file.getname(f)
+  tab.title = ctk.file.getname(f)
 	tab.downloadfiles = false
 	tab.updatesource = false
 	tab:gotourl(f)
@@ -53,12 +53,12 @@ end
 function CodeEditor:save()
  local ui = self.ui
  local f = ui.scriptfile.value
- local ext = slx.file.getext(f)
- if slx.file.exists(f) then
+ local ext = ctk.file.getext(f)
+ if ctk.file.exists(f) then
   tab:runsrccmd('savetofile',f)
   ui.scriptfile.value = f
  else
-  local sl = slx.string.list:new()
+  local sl = ctk.string.list:new()
   sl.text = tab.source
   f = app.savefile('All files (*.*)|*.*',ext,'Untitled.'..ext)
   if f ~= '' then
@@ -83,6 +83,6 @@ function CodeEditor:newtab()
   browser.setactivepage('source')
   --tab.codeedit.acceptdrop = true
   --tab.codeedit.dropend = 'CodeEditor:drop()'
-  self.ui.scriptfile:setattrib('filter',slx.string.replace(filter,string.char(13)..string.char(10),''))
+  self.ui.scriptfile:setattrib('filter',ctk.string.replace(filter,string.char(13)..string.char(10),''))
  end
 end

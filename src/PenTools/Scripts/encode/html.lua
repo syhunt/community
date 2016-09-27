@@ -1,3 +1,3 @@
 function Encode(s)
- return slx.html.escape(s)
+ return ctk.html.escape(s)
 end

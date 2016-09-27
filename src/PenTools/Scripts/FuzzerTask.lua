@@ -3,23 +3,23 @@ msg_nowordlist = 'No wordlist provided.'
 do_req = do_xhr
 
 function do_xhr(value)
- local j = slx.json.object:new()
+ local j = ctk.json.object:new()
  j.details = 'XHR Call (Via Fuzzer)'
  j.method = method
- j.url = slx.string.replace(baseurl,'{$1}',value)
- j.postdata = slx.string.replace(basepostdata,'{$1}',value)
- j.headers = slx.string.replace(basereqheaders,'{$1}',value)
+ j.url = ctk.string.replace(baseurl,'{$1}',value)
+ j.postdata = ctk.string.replace(basepostdata,'{$1}',value)
+ j.headers = ctk.string.replace(basereqheaders,'{$1}',value)
  j.filter = filter
  j.username = username
  j.password = password
  task:sendxhr(tostring(j))
  j:release()
- slx.utils.delay(delay)
+ ctk.utils.delay(delay)
 end
 
 function do_lowlevel(value)
  canlog = true
- local request = slx.string.replace(baserequest,'{$1}',value)
+ local request = ctk.string.replace(baserequest,'{$1}',value)
  http:openlow(host,port,request)
   if http.error == 0 then
    assert(loadstring(filter))()
@@ -27,7 +27,7 @@ function do_lowlevel(value)
     task:logrequest(http.requestinfo)
    end
   end
- slx.utils.delay(delay)
+ ctk.utils.delay(delay)
 end
 
 function setprogress(pos,max)
@@ -41,9 +41,9 @@ function run_wordlist()
   print(msg_nowordlist)
   task:showmessage(msg_nowordlist)
  else
-  if slx.file.exists(wordlistfile) then
-   local list = slx.file.getcontents(wordlistfile)
-   p = slx.string.loop:new()
+  if ctk.file.exists(wordlistfile) then
+   local list = ctk.file.getcontents(wordlistfile)
+   p = ctk.string.loop:new()
    p:load(list)
    while p:parsing() do
     setprogress(p.curindex,p.count)
@@ -108,7 +108,7 @@ function start_low()
  host = paramstr('host')
  port = paramint('port',80)
  baserequest = paramstr('baserequest')
- if slx.string.endswith(baserequest,'\n\n') == false then
+ if ctk.string.endswith(baserequest,'\n\n') == false then
   baserequest = baserequest..'\n\n'
  end
  http = sel_httprequest:new()

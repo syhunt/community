@@ -1,7 +1,7 @@
 require 'SyHybrid'
 
 function vdbmatch(url,links)
-	local r = slx.string.list:new()
+	local r = ctk.string.list:new()
 	tab:loadx([['<html>
 	<link rel="stylesheet" type="text/css" href="Resources.pak#Sandcat.css">
 	<body>

@@ -28,10 +28,10 @@ function AttackerProfile:load(ip)
   
   local i = symini.insight:new()
   local prof = i:getprofile(ip)
-  local j = slx.json.object:new()
+  local j = ctk.json.object:new()
   j:load(prof)
   local html = self.page
-  local slp = slx.string.loop:new()
+  local slp = ctk.string.loop:new()
   if browser.bottombar.uix ~= self.uitable then
     browser.bottombar:loadx(html,self.uitable)
   end
@@ -52,7 +52,7 @@ function AttackerProfile:load(ip)
       if tipak:fileexists('icons/32/'..icon..'.png') == false then
         icon = 'unknown'
       end
-      local tool = slx.json.object:new()
+      local tool = ctk.json.object:new()
       tool.icon = icon
       tool.title = toolinfo.title
       browser.bottombar:eval('AddTool('..tool:getjson_unquoted()..');')
@@ -63,7 +63,7 @@ function AttackerProfile:load(ip)
   slp:load(j.techniques)
   while slp:parsing() do
     if slp.current ~= '' then
-      browser.bottombar:eval('AddTechnique("'..slx.html.escape(slp.current)..'");')
+      browser.bottombar:eval('AddTechnique("'..ctk.html.escape(slp.current)..'");')
     end
   end
   
@@ -78,7 +78,7 @@ function AttackerProfile:load(ip)
         icon = 'unknown'
       end
       foundplat = true
-      local plat = slx.json.object:new()
+      local plat = ctk.json.object:new()
       plat.icon = icon
       plat.title = toolinfo.title
       browser.bottombar:eval('AddPlatform('..plat:getjson_unquoted()..');')

@@ -1,3 +1,3 @@
 function Encode(s)
- return slx.crypto.sha1(s)
+ return ctk.crypto.sha1(s)
 end

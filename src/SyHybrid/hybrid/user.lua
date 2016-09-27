@@ -9,8 +9,8 @@ end
 function SyHybridUser:ContactSupport()
 	local configfile=app.dir..'\\Config\\Smrtupd.xcfg'
 	local username=xmlinifile_readstring(configfile,'config','login','')
-	local r = slx.string.list:new()
-	local ver = slx.file.getver(app.dir..'\\SyHybrid.exe')
+	local r = ctk.string.list:new()
+	local ver = ctk.file.getver(app.dir..'\\SyHybrid.exe')
 	local redir = 'welcome'
 
 	r:add('<form method="POST" action="http://www.syhunt.com/index_forms.php" name="f">')

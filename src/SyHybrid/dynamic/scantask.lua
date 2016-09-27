@@ -11,7 +11,7 @@ function addvuln(v)
     loc = v.locationsrc
   end
   print(string.format('Found: %s at %s',v.checkname,loc))
-  local j = slx.json.object:new()
+  local j = ctk.json.object:new()
   j.caption = v.checkname
   j.subitemcount = 6
   j.subitem1 = v.location
@@ -31,7 +31,7 @@ function addvuln(v)
   end
   local jsonstr = tostring(j)
   j:release()
-  --hs:logcustomalert(slx.base64.encode(jsonstr))
+  --hs:logcustomalert(ctk.base64.encode(jsonstr))
   runtabcmd('resaddcustomitem',jsonstr)
 end
 

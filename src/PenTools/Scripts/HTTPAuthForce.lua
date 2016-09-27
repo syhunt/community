@@ -10,11 +10,11 @@ end
 function HTTPAuthForce:start()
  local ui = self.ui
  local script = PenTools:getfile('Scripts/HTTPAuthForceTask.lua')
- local j = slx.json.object:new()
+ local j = ctk.json.object:new()
  j.userlistfile = ui.userlist.value
  j.passlistfile = ui.passlist.value
- if slx.file.exists(j.userlistfile) then
-  if slx.file.exists(j.passlistfile) then
+ if ctk.file.exists(j.userlistfile) then
+  if ctk.file.exists(j.passlistfile) then
    j.method = ui.method.value
    j.url = ui.url.value
    tab:runtask(script,tostring(j))

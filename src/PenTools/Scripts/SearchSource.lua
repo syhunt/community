@@ -30,8 +30,8 @@ function SearchSource:search(text)
    self:load()
   end
   local ui = self.ui
-  local p = slx.string.loop:new()
-  local html = slx.string.list:new()
+  local p = ctk.string.loop:new()
+  local html = ctk.string.list:new()
   local source = tab.source
   local hl = ''
   local matchcase = ui.matchcase.value
@@ -42,9 +42,9 @@ function SearchSource:search(text)
  if text ~= '' then
   while p:parsing() do
    if self:match(p.current,text,matchcase) == true then
-    hl = slx.html.escape(p.current)
+    hl = ctk.html.escape(p.current)
     if matchcase == true then
-     hl = slx.string.replace(hl,text,'<font style="background-color:yellow;">'..text..'</font>')
+     hl = ctk.string.replace(hl,text,'<font style="background-color:yellow;">'..text..'</font>')
     end
     found = true
     html:add('<tr><td><a href="#" onclick="tab:gotosrcline('..p.curindex..')">'..p.curindex..'</a></td><td style="width:20px;"></td><td>'..hl..'</td></tr>')

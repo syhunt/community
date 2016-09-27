@@ -27,7 +27,7 @@ end
 function ScriptRunner:canrunext(ext)
  local r = true
  if ext == 'py' then
-  if slx.utils.hassoftware('Python') == false then
+  if ctk.utils.hassoftware('Python') == false then
    r = false
    app.showmessage('Python not installed!')
   end
@@ -72,9 +72,9 @@ function ScriptRunner:runscript(ext,script)
 end
 
 function ScriptRunner:runscriptfile(file)
-  local script = slx.file.getcontents(file)
-  local ext = string.lower(slx.file.getext(file))
-  ext = slx.string.after(ext,'.')
+  local script = ctk.file.getcontents(file)
+  local ext = string.lower(ctk.file.getext(file))
+  ext = ctk.string.after(ext,'.')
   self:runscript(ext,script)
 end
 
@@ -89,8 +89,8 @@ end
 function ScriptRunner:openscript_inp()
  local ui = self.ui
  local f = ui.scriptfile.value
- if slx.file.exists(f) then
-  local s = slx.file.getcontents(f)
+ if ctk.file.exists(f) then
+  local s = ctk.file.getcontents(f)
   ui.codeedit.value = s
  end
  if f == '' then
@@ -102,9 +102,9 @@ function ScriptRunner:savescript()
  local ui = self.ui
  local f = ui.scriptfile.value
  local ext = ui.lablangext.value
- local sl = slx.string.list:new()
+ local sl = ctk.string.list:new()
  sl.text = ui.codeedit.value
- if slx.file.exists(f) then
+ if ctk.file.exists(f) then
   sl:savetofile(f)
   ui.scriptfile.value = f
  else
@@ -123,17 +123,17 @@ function ScriptRunner:openscript()
  local f = ui.scriptlist.value
  local file = self.default_scriptdir..f
  local fcontents = ''
- if slx.file.exists(file) then
-  fcontents = slx.file.getcontents(file)
+ if ctk.file.exists(file) then
+  fcontents = ctk.file.getcontents(file)
   ui.scriptfile.value = file
  end
  ui.codeedit.value = fcontents
 end
 
 function ScriptRunner:get_scriptlist(ext)
- local p = slx.string.loop:new()
- local flist = slx.string.list:new()
- local l = slx.dir.getfilelist(self.default_scriptdir..'*.'..ext)
+ local p = ctk.string.loop:new()
+ local flist = ctk.string.list:new()
+ local l = ctk.dir.getfilelist(self.default_scriptdir..'*.'..ext)
  p:load(l)
  while p:parsing() do
   flist:add('<option>'..p.current..'</option>')
@@ -169,9 +169,9 @@ function ScriptRunner:vieweditor(lang_name,lang_ext,lang_desc)
   helpitems = helpitems.."<li id='showvar' onclick='ScriptRunner:showvariables()'>Available Variables</li>"
  end
  local extraoptions = PenTools:getfile('Scripts/scriptrunner/Options_'..lang_name..'.html')
-  html = slx.string.replace(html,'<!examplemenuitems>',helpitems)
-  html = slx.string.replace(html,'<!scriptlist>',self:get_scriptlist(lang_ext))
-  html = slx.string.replace(html,'<!extraoptions>',extraoptions)
+  html = ctk.string.replace(html,'<!examplemenuitems>',helpitems)
+  html = ctk.string.replace(html,'<!scriptlist>',self:get_scriptlist(lang_ext))
+  html = ctk.string.replace(html,'<!extraoptions>',extraoptions)
   browser.loadpagex(lang_ext..'runner',html,'ScriptRunner.ui')
   --tab:showcodeedit('','.'..lang_ext,html)
 

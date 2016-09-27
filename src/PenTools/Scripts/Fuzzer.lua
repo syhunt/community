@@ -49,16 +49,16 @@ function Fuzzer:openjs()
  local ui = self.ui
  local f = ui.scriptlist.value
  local fcontents = ''
- if slx.file.exists(self.default_jsdir..f) then
-  fcontents = slx.file.getcontents(self.default_jsdir..f)
+ if ctk.file.exists(self.default_jsdir..f) then
+  fcontents = ctk.file.getcontents(self.default_jsdir..f)
  end
  ui.script.value = fcontents
 end
 
 function Fuzzer:get_scriptlist(ext)
- local p = slx.string.loop:new()
- local flist = slx.string.list:new()
- local l = slx.dir.getfilelist(self.default_jsdir..'*'..ext)
+ local p = ctk.string.loop:new()
+ local flist = ctk.string.list:new()
+ local l = ctk.dir.getfilelist(self.default_jsdir..'*'..ext)
  p:load(l)
  while p:parsing() do
   flist:add('<option>'..p.current..'</option>')
@@ -72,7 +72,7 @@ end
 function Fuzzer:loadui(url,script,ext)
   local html = PenTools:getfile('Scripts/Fuzzer.html')
   local advoptions = ''
-  html = slx.string.replace(html,'<!scriptlist>',self:get_scriptlist(ext))
+  html = ctk.string.replace(html,'<!scriptlist>',self:get_scriptlist(ext))
   if ext == '.lua' then
    html = html..'<style>html { background-color:#e6fffa;}</style>'
    advoptions = PenTools:getfile('Scripts/ReqEditorLow_Adv.html')
@@ -80,7 +80,7 @@ function Fuzzer:loadui(url,script,ext)
    html = html..'<style>html { background-color:#faf4c6;}</style>'
    advoptions = PenTools:getfile('Scripts/XHREditor_Adv.html')
   end
-  html = slx.string.replace(html,'<!advoptions>',advoptions)
+  html = ctk.string.replace(html,'<!advoptions>',advoptions)
   browser.loadpagex('fuzzer',html,'Fuzzer.ui')
   local ui = self.ui
   ui.isxhr.value = true
@@ -103,34 +103,34 @@ function Fuzzer:view_lowlevel()
  local default_filters = [[
 -- Add your Lua filters here. Examples:
 -- if http.status == 404 then canlog = false end
--- if slx.re.match(http.text,'someregex') == false then canlog = false end
--- if slx.string.match(string.lower(http.text),'*error*') == false then canlog = false end
+-- if ctk.re.match(http.text,'someregex') == false then canlog = false end
+-- if ctk.string.match(string.lower(http.text),'*error*') == false then canlog = false end
 ]]
   self:loadui(tab.url,default_filters,'.lua')
   local ui = self.ui
   local hdr = tab.sentheaders
   self:loadhost()
   if hdr == '' then
-   hdr = 'GET /'..slx.url.crack(tab.url).path..' HTTP/1.1\nHost: '..ui.host.value..'\nConnection: Keep-Alive'
+   hdr = 'GET /'..ctk.url.crack(tab.url).path..' HTTP/1.1\nHost: '..ui.host.value..'\nConnection: Keep-Alive'
   end 
   ui.divstandard:setstyle('display','none')
   ui.divlow:setstyle('display','block')
-  ui.request.value = slx.string.replace(hdr,' HTTP/','{$1} HTTP/')
+  ui.request.value = ctk.string.replace(hdr,' HTTP/','{$1} HTTP/')
   ui.islow.value = true
   ui.isxhr.value = false
 end
 
 function Fuzzer:loadhost()
  local ui = self.ui
- local url = slx.url.crack(tab.url)
+ local url = ctk.url.crack(tab.url)
  local request = ui.request.value
- if slx.http.getheader(request,'Host') ~= '' then
-  url.host = slx.http.getheader(request,'Host')
-  url.host = slx.string.trim(url.host)
+ if ctk.http.getheader(request,'Host') ~= '' then
+  url.host = ctk.http.getheader(request,'Host')
+  url.host = ctk.string.trim(url.host)
   url.port = 80
-  if slx.string.match(url.host,'*:*') then
-   url.port = slx.string.after(url.host,':')
-   url.host = slx.string.before(url.host,':')
+  if ctk.string.match(url.host,'*:*') then
+   url.port = ctk.string.after(url.host,':')
+   url.host = ctk.string.before(url.host,':')
   end
  end
  ui.host.value = url.host
@@ -140,7 +140,7 @@ end
 function Fuzzer:start()
  local ui = self.ui
  local script = PenTools:getfile('Scripts/FuzzerTask.lua')
- local j = slx.json.object:new()
+ local j = ctk.json.object:new()
  j.filter = ui.script.value
  j.delay = ui.delay.value
  -- fuzzer mode

@@ -1,3 +1,3 @@
 function Encode(s)
- return slx.convert.strtohex(s)
+ return ctk.convert.strtohex(s)
 end

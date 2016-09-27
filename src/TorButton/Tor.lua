@@ -74,12 +74,12 @@ function Tor:ConfigureHTTPClient(client,enabletor)
 end
 
 function Tor:IsRunning()
- return slx.task.isrunning(self.executable)
+ return ctk.task.isrunning(self.executable)
 end
 
 function Tor:Run()
-  if slx.task.isrunning(self.executable) == false then
-   slx.file.exechide(app.dir..'Extensions\\Tor\\'..self.executable,'',app.dir)
+  if ctk.task.isrunning(self.executable) == false then
+   ctk.file.exechide(app.dir..'Extensions\\Tor\\'..self.executable,'',app.dir)
   end
 end
 
@@ -91,7 +91,7 @@ function Tor:Startup()
 end
 
 function Tor:Shutdown()
-  if slx.task.isrunning(self.executable) == true then
-   slx.task.kill(self.executable)
+  if ctk.task.isrunning(self.executable) == true then
+   ctk.task.kill(self.executable)
   end
 end

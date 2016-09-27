@@ -5,16 +5,16 @@ SessionManager = {
 }
 
 function getval(tag)
- return slx.html.gettagcontents(sesdata.text,tag)
+ return ctk.html.gettagcontents(sesdata.text,tag)
 end
 
 function SessionManager:show_sessiondetails(sesname)
  local repdir=session_getsessionsdir()
- local r = slx.string.list:new()
- sesdata = slx.string.list:new()
+ local r = ctk.string.list:new()
+ sesdata = ctk.string.list:new()
  sesfile=repdir..'\\'..sesname..'\\_Main.xrm'
- if slx.file.exists(sesfile) then
-  sesdata.text = slx.file.getcontents(sesfile)
+ if ctk.file.exists(sesfile) then
+  sesdata.text = ctk.file.getcontents(sesfile)
   r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
   --r:add('<link rel="stylesheet" type="text/css" href="Common.pak#listview.css">')
   local sourcedir = getval('source_code_directory')
@@ -48,17 +48,17 @@ function SessionManager:show_sessiondetails(sesname)
   r:add('<widget type="select" style="padding:0;">')
   r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
   r:add('<tr><th width="20%">Description</th><th width="15%">Location</th><th width="20%">Affected Param(s)</th><th width="10%">Line(s)</th><th width="15%">Type/Result</th><th width="10%">Risk</th></tr>')
-  l = slx.string.loop:new()
-  v = slx.string.loop:new()
-  l:load(slx.dir.getfilelist(repdir..'\\'..sesname..'\\*_Vulns.log'))
+  l = ctk.string.loop:new()
+  v = ctk.string.loop:new()
+  l:load(ctk.dir.getfilelist(repdir..'\\'..sesname..'\\*_Vulns.log'))
   while l:parsing() do
-   v:load(slx.file.getcontents(repdir..'\\'..sesname..'\\'..l.current))
+   v:load(ctk.file.getcontents(repdir..'\\'..sesname..'\\'..l.current))
    while v:parsing() do
-    local vname=slx.html.escape(v:curgetvalue('vname'))
-    local vpath=slx.html.escape(v:curgetvalue('vpath'))
-    local vpars=slx.html.escape(v:curgetvalue('vpars'))
-    local vpath_hex = slx.convert.strtohex(v:curgetvalue('vpath'))
-    r:add('<tr role="option" ><td>'..vname..'</td><td><a href="#" onclick="browser.newtab(slx.convert.hextostr([['..vpath_hex..']]))">'..vpath..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..v:curgetvalue('vstat')..'</td><td>'..v:curgetvalue('vrisk')..'</td></tr>')
+    local vname=ctk.html.escape(v:curgetvalue('vname'))
+    local vpath=ctk.html.escape(v:curgetvalue('vpath'))
+    local vpars=ctk.html.escape(v:curgetvalue('vpars'))
+    local vpath_hex = ctk.convert.strtohex(v:curgetvalue('vpath'))
+    r:add('<tr role="option" ><td>'..vname..'</td><td><a href="#" onclick="browser.newtab(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..v:curgetvalue('vstat')..'</td><td>'..v:curgetvalue('vrisk')..'</td></tr>')
    end
   end
   v:release()
@@ -96,8 +96,8 @@ function SessionManager:checkuncheckall(state)
  local repdir=session_getsessionsdir()
  local boolstate = false
  if state==1 then boolstate=true end
- p = slx.string.loop:new()
- p:load(slx.dir.getdirlist(repdir))
+ p = ctk.string.loop:new()
+ p:load(ctk.dir.getdirlist(repdir))
  while p:parsing() do
   e:select('input[session="'..p.current..'"]')
   e.value = boolstate
@@ -135,8 +135,8 @@ function SessionManager:getcounticon(i)
 end
 
 function SessionManager:add_session(sesname,oldformat)
- sesdata.text = slx.file.getcontents(sesfile)
- local sesnamehex = slx.convert.strtohex(sesname)
+ sesdata.text = ctk.file.getcontents(sesfile)
+ local sesnamehex = ctk.convert.strtohex(sesname)
  local scanmethod = getval('scan_method')
  local sourcedir = getval('source_code_directory')
  local targetfile = getval('target_file')
@@ -180,7 +180,7 @@ function SessionManager:add_session(sesname,oldformat)
  elseif targetfile ~= '' then
   r:add('<td>'..targetfile..'</td>')
  else
-  r:add('<td>'..slx.html.escape(getval('targets'))..self:get_ports(getval('ports'))..'</td>')
+  r:add('<td>'..ctk.html.escape(getval('targets'))..self:get_ports(getval('ports'))..'</td>')
  end
  r:add('<td>'..scanmethod..'</td>')
  r:add('<td>'..status..'&nbsp;<img .lvfileicon src="'..self:getcounticon(vcount)..'"></td>')
@@ -197,10 +197,10 @@ end
 function SessionManager:loadtab(newtab)
  local html = SyHybrid:getfile('hybrid/sesman/list.html')
  local repdir=session_getsessionsdir()
- r = slx.string.list:new()
- sesdata = slx.string.list:new()
- p = slx.string.loop:new()
- p:load(slx.dir.getdirlist(repdir))
+ r = ctk.string.list:new()
+ sesdata = ctk.string.list:new()
+ p = ctk.string.loop:new()
+ p:load(ctk.dir.getdirlist(repdir))
  --[[
  r:add('<meta id="element">')
  r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
@@ -214,15 +214,15 @@ function SessionManager:loadtab(newtab)
  ]]
  while p:parsing() do
   sesfile=repdir..'\\'..p.current..'\\_Main.xrm'
-  if slx.file.exists(sesfile) then
+  if ctk.file.exists(sesfile) then
    self:add_session(p.current)
   else
    sesfile=repdir..'\\'..p.current..'\\_Main.hrm' --old session data format
-   if slx.file.exists(sesfile) then self:add_session(p.current,true) end
+   if ctk.file.exists(sesfile) then self:add_session(p.current,true) end
   end
  end
  --r:add('</widget>')
- html = slx.string.replace(html,'%sessions%',r.text)
+ html = ctk.string.replace(html,'%sessions%',r.text)
  if newtab == true then
   local j = {}
   j.title = 'Past Sessions'
@@ -245,13 +245,13 @@ function SessionManager:deleteallchecked()
  local state = false
  local resp=app.ask_yn('Are you sure you want to delete the selected sessions?',self.title)
  if resp==true then 
-  p = slx.string.loop:new()
-  p:load(slx.dir.getdirlist(repdir))
+  p = ctk.string.loop:new()
+  p:load(ctk.dir.getdirlist(repdir))
   while p:parsing() do
    e:select('input[session="'..p.current..'"]')
    state=e.value
    if state==true then
-    slx.dir.delete(repdir..'\\'..p.current)
+    ctk.dir.delete(repdir..'\\'..p.current)
     --if UI.SessionName == p.current then UI:NewSession() end
    end
   end
@@ -272,7 +272,7 @@ function SessionManager:delsession(sesname)
  local resp=app.ask_yn("Are you sure you want to delete '"..sesname.."'?",self.title)
  if resp==true then 
   if repdir ~= '' then
-   slx.dir.delete(repdir..'\\'..sesname)
+   ctk.dir.delete(repdir..'\\'..sesname)
    --if UI.SessionName == sesname then UI:NewSession() end
   end
   self:loadtab(false)

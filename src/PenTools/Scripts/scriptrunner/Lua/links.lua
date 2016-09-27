@@ -1,9 +1,9 @@
-html = slx.string.list:new()
-p = slx.html.parser:new()
+html = ctk.string.list:new()
+p = ctk.html.parser:new()
 p:load(tab.source)
 while p:parsing() do
  if p.tagname == 'a' then
-   href = slx.html.escape(p:getattrib('href'))
+   href = ctk.html.escape(p:getattrib('href'))
    if href ~= '' then
     html:add('<a href="'..href..'" target="new">'..href..'</a><br>')
    end

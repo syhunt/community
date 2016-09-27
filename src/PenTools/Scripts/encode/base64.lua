@@ -1,8 +1,8 @@
 -- Base64 Encoder
 function Encode(s)
- return slx.base64.encode(s)
+ return ctk.base64.encode(s)
 end
 
 function Decode(s)
- return slx.base64.decode(s)
+ return ctk.base64.decode(s)
 end

