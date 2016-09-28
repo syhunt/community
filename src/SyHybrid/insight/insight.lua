@@ -128,7 +128,7 @@ function SyhuntInsight:SaveSessionFile(session,filename,filter,defext,sug)
   local saved = false
   session = session or tab:userdata_get('session','')
 	if session ~= '' then
-	  local source = symini.getsessionsdir()..session..'\\'..filename
+	  local source = symini.info.sessionsdir..session..'\\'..filename
 	  if ctk.file.exists(source) == true then
 	    saved = true
   	  local dest = app.savefile(filter,defext,sug)

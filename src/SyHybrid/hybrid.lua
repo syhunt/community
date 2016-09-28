@@ -60,8 +60,8 @@ function SyHybrid:LoadLauncher()
 	self:NewTab()
 	--app.seticonfromres('SYHUNTICON')
   app.seticonfromfile(mainexe)
-	browser.info.fullname = 'Syhunt Hybrid'..' - ['..symini.getmodename()..']'
-	browser.info.name = 'Hybrid'..' - ['..symini.getmodename()..']'
+	browser.info.fullname = 'Syhunt Hybrid'..' - ['..symini.info.modename..']'
+	browser.info.name = 'Hybrid'..' - ['..symini.info.modename..']'
 	browser.info.exefilename = mainexe
 	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntHybrid'
 end

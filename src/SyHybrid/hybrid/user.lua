@@ -52,7 +52,7 @@ end
 
 function SyHybridUser:IsMethodAvailable(method,warnuser)
   local warnuser = warnuser or false
-  local mode = symini.getmodename()
+  local mode = symini.info.modename
   local v=true
   if mode == 'Community Edition' then
     if method == 'fileinc' then v=false end
