@@ -23,14 +23,14 @@
  $(#btnwafev).onClick = function() { this.popup( $(popup#advwafev)); }
  $(#btnidsev).onClick = function() { this.popup( $(popup#advidsev)); }
  $(#btnhttps).onClick = function() { this.popup( $(popup#httpsoptions)); }
- $(#btnedtappchecks).onClick = function() { this.popup( $(popup#appchecks)); }
- $(#btnedtstructchecks).onClick = function() { this.popup( $(popup#structchecks)); }
- $(#btninjchecks).onClick = function() { this.popup( $(popup#injchecks)); }
- $(#btnextchecks).onClick = function() { this.popup( $(popup#extchecks)); }
- $(#btninjplus).onClick = function() { this.popup( $(popup#injplus)); }
- $(#btnsqlichecks).onClick = function() { this.popup( $(popup#sqlichecks)); }
- $(#btndiscchecks).onClick = function() { this.popup( $(popup#discchecks)); }
- $(#btnadvcgi).onClick = function() { this.popup( $(popup#advcgi)); }
+ //$(#btnedtappchecks).onClick = function() { this.popup( $(popup#appchecks)); }
+ //$(#btnedtstructchecks).onClick = function() { this.popup( $(popup#structchecks)); }
+ //$(#btninjchecks).onClick = function() { this.popup( $(popup#injchecks)); }
+ //$(#btnextchecks).onClick = function() { this.popup( $(popup#extchecks)); }
+ //$(#btninjplus).onClick = function() { this.popup( $(popup#injplus)); }
+ //$(#btnsqlichecks).onClick = function() { this.popup( $(popup#sqlichecks)); }
+ //$(#btndiscchecks).onClick = function() { this.popup( $(popup#discchecks)); }
+ //$(#btnadvcgi).onClick = function() { this.popup( $(popup#advcgi)); }
  $(#btnadvextjs).onClick = function() { this.popup( $(popup#advextjs)); }
  //$(#btnadvscbot).onClick = function() { this.popup( $(popup#advscbot)); }
  $(#btnreqthreads).onClick = function() { this.popup( $(popup#reqthreads)); }
@@ -51,8 +51,25 @@
 <include src="{$PluginsDir}SyHybrid.scx#dynamic/prefs/tab_general.html"/>
 <include src="{$PluginsDir}SyHybrid.scx#dynamic/prefs/tab_emulation.html"/>
 <include src="{$PluginsDir}SyHybrid.scx#dynamic/prefs/tab_crawling.html"/>
-<include src="{$PluginsDir}SyHybrid.scx#dynamic/prefs/tab_checks.html"/>
-<include src="{$PluginsDir}SyHybrid.scx#dynamic/prefs/tab_injection.html"/>
+<!-- checks tab begin-->
+<div name="panel-checks" class="tab" >
+<button type="checkbox" cid="syhunt.dynamic.checks.enabled"><b>Enable application checks</b></button><br><br>
+<widget type="select" style="padding:0;width:100%;height:*;">
+<table name="reportview" style="width:100%;height:*;" cellspacing=-1px fixedrows=1>
+%dynamic_checks%
+</table>
+</widget>
+</div>
+<!-- checks tab end-->
+<!-- injection tab begin-->
+<div name="panel-injection" class="tab" >
+<widget type="select" style="padding:0;width:100%;height:*;">
+<table name="reportview" style="width:100%;height:*;" cellspacing=-1px fixedrows=1>
+%dynamic_injection_checks%
+</table>
+</widget>
+</div>
+<!-- injection tab end-->
 <include src="{$PluginsDir}SyHybrid.scx#dynamic/prefs/tab_evasion.html"/>
 <include src="{$PluginsDir}SyHybrid.scx#dynamic/prefs/tab_protocol.html"/>
 <include src="{$PluginsDir}SyHybrid.scx#dynamic/prefs/tab_advanced.html"/>

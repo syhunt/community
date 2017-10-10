@@ -71,7 +71,7 @@ function PageInfo:load()
  if tab:hasloadedurl(true) then
   local html = PenTools:getfile('Scripts/PageInfo_Objects.html')
   html = ctk.string.replace(html,'<!pageobjects>',self:getobjects('option'))
-  browser.loadpagex('resexplorer',html,'PageInfo.ui')
+  browser.loadpagex({name='resexplorer',html=html,table='PageInfo.ui'})
  end
 end
 

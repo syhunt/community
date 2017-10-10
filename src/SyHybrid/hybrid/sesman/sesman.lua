@@ -4,41 +4,23 @@ SessionManager = {
  title = 'Session Manager'
 }
 
-function getval(tag)
- return ctk.html.gettagcontents(sesdata.text,tag)
-end
-
 function SessionManager:show_sessiondetails(sesname)
- local repdir=session_getsessionsdir()
+ local details = symini.getsessiondetails(sesname)
+ local sesdir = symini.info.sessionsdir
  local r = ctk.string.list:new()
- sesdata = ctk.string.list:new()
- sesfile=repdir..'\\'..sesname..'\\_Main.xrm'
- if ctk.file.exists(sesfile) then
-  sesdata.text = ctk.file.getcontents(sesfile)
   r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
-  --r:add('<link rel="stylesheet" type="text/css" href="Common.pak#listview.css">')
-  local sourcedir = getval('source_code_directory')
-  local targetfile = getval('target_file')
   r:add('<fieldset><legend style="color:black">'..sesname..'</legend>')
-  r:add('Date: '..getval('date')..'<br>')
-  if sourcedir ~= '' then
-   r:add('Target(s): '..sourcedir..'<br>')
-  elseif targetfile ~= '' then
-   r:add('Target(s): '..targetfile..'<br>')
+  r:add('Date: '..details.datetime..'<br>')
+  if details.sourcedir ~= '' then
+   r:add('Target(s): '..details.sourcedir..'<br>')
+  elseif details.targetfile ~= '' then
+   r:add('Target(s): '..details.targetfile..'<br>')
   else
-   r:add('Target(s): '..getval('targets')..' ('..getval('ports')..')<br>')
+   r:add('Target(s): '..details.targets..' ('..details.ports..')<br>')
   end
-  r:add('Hunt Method: '..getval('scan_method')..'<br>')
-  r:add('Status: '..getval('status'))
+  r:add('Hunt Method: '..details.huntmethod..'<br>')
+  r:add('Status: '..details.resultsdesc)
   r:add('<p align="right">')
-  --if sesname ~= UI.SessionName then
-  --r:add([[<button onclick="SessionManager:load_session(']]..sesname..[[')">Load</button>]])
-  --end
-  --if getval('status') == 'Canceled' then
-  -- r:add([[<button onclick="UI:ResumeSession(']]..sesname..[[')">Resume</button>]])
-  --else
-  -- r:add([[<button disabled>Resume</button>]])
-  --end
   r:add([[<button onclick="ReportMaker:loadtab(']]..sesname..[[')">Generate Report</button>]])
   r:add([[<button onclick="SessionManager:delsession(']]..sesname..[[')">Delete</button>]])
   r:add('</p>')
@@ -47,18 +29,18 @@ function SessionManager:show_sessiondetails(sesname)
   r:add('<div style="width:100%%;height:100%%;">')
   r:add('<widget type="select" style="padding:0;">')
   r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
-  r:add('<tr><th width="20%">Description</th><th width="15%">Location</th><th width="20%">Affected Param(s)</th><th width="10%">Line(s)</th><th width="15%">Type/Result</th><th width="10%">Risk</th></tr>')
+  r:add('<tr><th width="20%">Description</th><th width="30%">Location</th><th width="20%">Affected Param(s)</th><th width="10%">Line(s)</th><th width="10%">Risk</th></tr>')
   l = ctk.string.loop:new()
   v = ctk.string.loop:new()
-  l:load(ctk.dir.getfilelist(repdir..'\\'..sesname..'\\*_Vulns.log'))
+  l:load(ctk.dir.getfilelist(sesdir..'\\'..sesname..'\\*_Vulns.log'))
   while l:parsing() do
-   v:load(ctk.file.getcontents(repdir..'\\'..sesname..'\\'..l.current))
+   v:load(ctk.file.getcontents(sesdir..'\\'..sesname..'\\'..l.current))
    while v:parsing() do
     local vname=ctk.html.escape(v:curgetvalue('vname'))
     local vpath=ctk.html.escape(v:curgetvalue('vpath'))
     local vpars=ctk.html.escape(v:curgetvalue('vpars'))
     local vpath_hex = ctk.convert.strtohex(v:curgetvalue('vpath'))
-    r:add('<tr role="option" ><td>'..vname..'</td><td><a href="#" onclick="browser.newtab(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..v:curgetvalue('vstat')..'</td><td>'..v:curgetvalue('vrisk')..'</td></tr>')
+    r:add('<tr role="option" ><td>'..vname..'</td><td><a href="#" onclick="browser.showurl(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..v:curgetvalue('vrisk')..'</td></tr>')
    end
   end
   v:release()
@@ -71,8 +53,6 @@ function SessionManager:show_sessiondetails(sesname)
   j.icon = 'SyHybrid.scx#images\\icon_dast.png'
   j.html = r.text
   browser.newtabx(j)
- end
- sesdata:release()
  r:release()
 end
 
@@ -93,7 +73,7 @@ end
 
 function SessionManager:checkuncheckall(state)
  local e = self.ui.element
- local repdir=session_getsessionsdir()
+ local repdir=symini.info.sessionsdir
  local boolstate = false
  if state==1 then boolstate=true end
  p = ctk.string.loop:new()
@@ -134,56 +114,30 @@ function SessionManager:getcounticon(i)
  return icon
 end
 
-function SessionManager:add_session(sesname,oldformat)
- sesdata.text = ctk.file.getcontents(sesfile)
+function SessionManager:add_session(sesname)
+ local details = symini.getsessiondetails(sesname)
  local sesnamehex = ctk.convert.strtohex(sesname)
- local scanmethod = getval('scan_method')
- local sourcedir = getval('source_code_directory')
- local targetfile = getval('target_file')
  local icon = 'SyHybrid.scx#images/16/shield_tick.png'
- -- Support for old session file format (.hrm)
- if oldformat then
-   scanmethod=getval('scan method')
+ local vcount = details.vulncount
+ -- Handle the count differently if this is a log scan
+ if details.huntmethod == 'Web Server Log Scan' then
+   vcount = details.attackcount
  end
- 
- local vcount=getval('vulnerabilities')
- if vcount == '' then vcount = '0' end
- local status=getval('status')
- if status == 'Completed' then
-  if vcount ~= '0' then
-    status = 'Vulnerable'
-  else
-    status = 'Secure'
-  end
- end
- 
- -- Handle the status differently if this is a log scan
- if scanmethod == 'Web Server Log Scan' then
-  local atkcount = getval('attacks')
-  if atkcount == '' then atkcount = '0' end
-  if atkcount ~= '0' then
-    status = 'Attacks Found'
-  else
-    status = 'No Attacks'
-  end
-   vcount = atkcount
- end
- 
  if vcount ~= '0' then icon = 'SyHybrid.scx#images/16/shield_exclamation.png' end
  
  r:add('<tr role="option" style="context-menu: selector(#menu'..sesnamehex..');" ')
  r:add([[ondblclick="SessionManager:load_session(']]..sesname..[[')" ]])
  r:add('>')
- r:add('<td><input type="checkbox" session="'..sesname..'"><img .lvfileicon src="'..icon..'">&nbsp;'..getval('date')..' ('..sesname..')</td>')
- if sourcedir ~= '' then
-  r:add('<td>'..sourcedir..'</td>')
- elseif targetfile ~= '' then
-  r:add('<td>'..targetfile..'</td>')
+ r:add('<td><input type="checkbox" session="'..sesname..'"><img .lvfileicon src="'..icon..'">&nbsp;'..details.datetime..' ('..sesname..')</td>')
+ if details.sourcedir ~= '' then
+  r:add('<td>'..details.sourcedir..'</td>')
+ elseif details.targetfile ~= '' then
+  r:add('<td>'..details.targetfile..'</td>')
  else
-  r:add('<td>'..ctk.html.escape(getval('targets'))..self:get_ports(getval('ports'))..'</td>')
+  r:add('<td>'..ctk.html.escape(details.targets)..self:get_ports(details.ports)..'</td>')
  end
- r:add('<td>'..scanmethod..'</td>')
- r:add('<td>'..status..'&nbsp;<img .lvfileicon src="'..self:getcounticon(vcount)..'"></td>')
+ r:add('<td>'..details.huntmethod..'</td>')
+ r:add('<td>'..details.resultsdesc..'&nbsp;<img .lvfileicon src="'..self:getcounticon(vcount)..'"></td>')
  r:add('<menu.context id="menu'..sesnamehex..'">')
  r:add([[<li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="ReportMaker:loadtab(']]..sesname..[[')">Generate Report</li>]])
  r:add([[<li onclick="SessionManager:show_sessiondetails(']]..sesname..[[')">View Vulnerabilities</li>]])
@@ -196,9 +150,8 @@ end
 
 function SessionManager:loadtab(newtab)
  local html = SyHybrid:getfile('hybrid/sesman/list.html')
- local repdir=session_getsessionsdir()
+ local repdir=symini.info.sessionsdir
  r = ctk.string.list:new()
- sesdata = ctk.string.list:new()
  p = ctk.string.loop:new()
  p:load(ctk.dir.getdirlist(repdir))
  --[[
@@ -213,12 +166,9 @@ function SessionManager:loadtab(newtab)
  r:add('<widget type="select" style="width:100%; height:90%">')
  ]]
  while p:parsing() do
-  sesfile=repdir..'\\'..p.current..'\\_Main.xrm'
+  sesfile=repdir..'\\'..p.current..'\\_Main.jrm'
   if ctk.file.exists(sesfile) then
    self:add_session(p.current)
-  else
-   sesfile=repdir..'\\'..p.current..'\\_Main.hrm' --old session data format
-   if ctk.file.exists(sesfile) then self:add_session(p.current,true) end
   end
  end
  --r:add('</widget>')
@@ -235,13 +185,12 @@ function SessionManager:loadtab(newtab)
   tab:loadx(html)
  end
  r:release()
- sesdata:release()
  p:release()
 end
 
 function SessionManager:deleteallchecked()
  local e = self.ui.element
- local repdir=session_getsessionsdir()
+ local repdir=symini.info.sessionsdir
  local state = false
  local resp=app.ask_yn('Are you sure you want to delete the selected sessions?',self.title)
  if resp==true then 
@@ -268,7 +217,7 @@ function SessionManager:actionmenuchanged()
 end
  
 function SessionManager:delsession(sesname)
- local repdir=session_getsessionsdir()
+ local repdir=symini.info.sessionsdir
  local resp=app.ask_yn("Are you sure you want to delete '"..sesname.."'?",self.title)
  if resp==true then 
   if repdir ~= '' then

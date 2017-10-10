@@ -3,7 +3,7 @@ ReqEditorLow = {}
 function ReqEditorLow:load(req,head)
   --local tor_running = Tor:IsRunning()
   local html = PenTools:getfile('Scripts/ReqEditorLow.html')
-  browser.bottombar:loadx(html,'ReqEditorLow.ui')
+  browser.loadpagex({name='request editor (low)', html=html,table='ReqEditorLow.ui'})
   local ui = self.ui
   self:loadhost()
   if req == '' then
@@ -67,8 +67,8 @@ function ReqEditorLow:sendrequest()
    http:openlow(host,port,request)
    ui.request.value = request
    ui.header.value = http:getheader()
-   local newpath = ctk.http.crackrequest(request).path
-   local newurl = ctk.url.genfromhost(host,port)..newpath
+   --local newpath = ctk.http.crackrequest(request).path
+   --local newurl = ctk.url.genfromhost(host,port)..newpath
    tab:logrequest(http.requestinfo)
    --if ui.render.value == true then
    --tab:gotourl(newurl,http.text)

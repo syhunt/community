@@ -18,5 +18,5 @@ function MD5CrackPHP:load()
   MD5: <input id=md5 type=text style="width:30%%" value="900150983cd24fb0d6963f7d28e17f72" novalue="Your MD5...">
   <button onclick="MD5CrackPHP:run()">Run</button>
  ]]
- browser.loadpagex('md5crack',html,'MD5CrackPHP.ui')
+ browser.loadpagex({name = 'md5crack',html = html, table = 'MD5CrackPHP.ui'})
 end

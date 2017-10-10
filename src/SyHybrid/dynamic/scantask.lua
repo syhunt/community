@@ -4,6 +4,15 @@ function updateprogress(pos,max)
 	task:setprogress(pos,max)
 end
 
+function sitemapupdate(t)
+  runtabcmd('settreeurls', t.urls)
+  runtabcmd('setaffecteditems',hs.vulnurls)
+end
+
+function statsupdate(t)
+  runtabcmd('resupdatehtml', t.csv)
+end
+
 function addvuln(v)
   local loc = v.location
   if v.locationsrc ~= '' then
@@ -13,13 +22,12 @@ function addvuln(v)
   print(string.format('Found: %s at %s',v.checkname,loc))
   local j = ctk.json.object:new()
   j.caption = v.checkname
-  j.subitemcount = 6
+  j.subitemcount = 5
   j.subitem1 = v.location
   j.subitem2 = v.params
   j.subitem3 = v.lines
-  j.subitem4 = tostring(v.statuscode)
-  j.subitem5 = v.risk
-  j.subitem6 = v.location --v.filename
+  j.subitem4 = v.risk
+  j.subitem5 = v.filename
   j.imageindex = 0
   local risk = string.lower(v.risk)
   if risk == 'high' then
@@ -28,11 +36,14 @@ function addvuln(v)
     j.imageindex = 22
   elseif risk == 'low' then
     j.imageindex = 23
+  elseif risk == 'info' then
+    j.imageindex = 24
   end
   local jsonstr = tostring(j)
   j:release()
   --hs:logcustomalert(ctk.base64.encode(jsonstr))
-  runtabcmd('resaddcustomitem',jsonstr)
+  runtabcmd('resaddcustomitem', jsonstr)
+  runtabcmd('setaffecteditems',hs.vulnurls)
 end
 
 function log(s)
@@ -49,13 +60,26 @@ function printscanresult()
 			print('Found '..hs.vulncount..' vulnerabilities')
 		end
 	  runtabcmd('seticon','@ICON_CHECKED_RED')
-    runtabcmd('runtbtis','MarkAsVulnerable();')
-		printfailure(task.status)
+      runtabcmd('runtbtis','MarkAsVulnerable();')
+	  printfailure(task.status)
 	else
-		print('Secure.')
-	  runtabcmd('seticon','@ICON_CHECKED')
-    runtabcmd('runtbtis','MarkAsSecure();')
-		printsuccess(task.status)
+	  if hs.aborted == false then
+        if params.huntmethod == 'spider' then
+	      runtabcmd('seticon','@ICON_CHECKED')
+          runtabcmd('runtbtis','MarkAsDone();')
+	      printsuccess(task.status)
+        else
+          print('Secure.')
+	      runtabcmd('seticon','@ICON_CHECKED')
+          runtabcmd('runtbtis','MarkAsSecure();')
+	      printsuccess(task.status)
+        end
+	  else
+        print('Undetermined (scan aborted).')
+	    runtabcmd('seticon','@ICON_STOP')
+        runtabcmd('runtbtis','MarkAsUndetermined();')
+	    printfailure(task.status)
+	  end
 	end
 end
 
@@ -71,7 +95,7 @@ function requestdone(r)
 end
 
 task.caption = 'Syhunt Hybrid Task'
-task:setscript('ondblclick',"browser.showbottombar('taskmon')")
+task:setscript('ondblclick',"browser.showbottombar('task messages')")
 
 -- if running in background mode, all runtabcmds will be ignored
 if parambool('runinbg',true) == true then
@@ -93,6 +117,8 @@ hs.monitor = params.monitor
 hs.onlogmessage = log
 hs.onvulnfound = addvuln
 hs.onprogressupdate = updateprogress
+hs.onmapupdate = sitemapupdate
+hs.onstatsupdate = statsupdate
 hs.onrequestdone = requestdone
 hs:start()
 hs.starturl = params.starturl
@@ -101,12 +127,7 @@ hs.huntmethod = params.huntmethod
 hs.sessionname = params.sessionname
 hs:scan()
 task.status = 'Done.'
-
-if params.huntmethod == 'spider' then
-	printsuccess(task.status)
-else
-	printscanresult()
-end
+printscanresult()
 
 if hs.warnings ~= '' then
   runcmd('showmsg',hs.warnings)

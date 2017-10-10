@@ -16,19 +16,21 @@ function SyhuntDynamic:ClearResults()
   if self:IsScanInProgress(true) == false then
     local ui = self.ui
     ui.url.value = ''
-    tab:resources_clear()
+    tab:results_clear()
+    tab:tree_clear()
   	tab:userdata_set('session','')
   	tab:userdata_set('taskid','')
-	  tab:runsrccmd('showmsgs',false)
-	  tab.toolbar:eval('MarkReset();')
-	  tab.status = ''
-	  tab.icon = '@ICON_EMPTY'
-	  tab.title = 'New Scan'
-	end
+	tab:runsrccmd('showmsgs',false)
+	tab.toolbar:eval('MarkReset();')
+	tab.status = ''
+	tab.icon = '@ICON_EMPTY'
+	tab.title = 'New Scan'
+	self:LoadProgressPanel()
+  end
 end
 
-function SyhuntDynamic:EditPreferences(dialoghtml)
-	dialoghtml = dialoghtml or 'dynamic/prefs/prefs.html'
+function SyhuntDynamic:EditPreferences(html)
+	html = html or SyHybrid:getfile('dynamic/prefs/prefs.html')
 	local slp = ctk.string.loop:new()
 	local ds = symini.dynamic:new()
 	ds:start()
@@ -36,9 +38,10 @@ function SyhuntDynamic:EditPreferences(dialoghtml)
 	while slp:parsing() do
 		prefs.regdefault(slp.current,ds:prefs_getdefault(slp.current))
 	end
+	html = ctk.string.replace(html,'%dynamic_checks%',SyHybrid:GetOptionsHTML(ds.options_checks))
+	html = ctk.string.replace(html,'%dynamic_injection_checks%',SyHybrid:GetOptionsHTML(ds.options_checksinj))
 	local t = {}
-	t.pak = SyHybrid.filename
-	t.filename = dialoghtml
+	t.html = html
 	t.id = 'syhuntdynamic'
 	t.options = ds.options
 	t.options_disabled = ds.options_locked
@@ -49,7 +52,8 @@ function SyhuntDynamic:EditPreferences(dialoghtml)
 end
 
 function SyhuntDynamic:EditNetworkPreferences()
-	self:EditPreferences('dynamic/prefs_net/prefs.html')
+    local html = SyHybrid:getfile('dynamic/prefs_net/prefs.html')
+	self:EditPreferences(html)
 end
 
 function SyhuntDynamic:EditSitePreferences(url)
@@ -64,8 +68,7 @@ function SyhuntDynamic:EditSitePreferences(url)
 			prefs.regdefault(slp.current,hs:prefs_getdefault(slp.current))
 		end
 		local t = {}
-		t.pak = SyHybrid.filename
-		t.filename = 'dynamic/prefs_site/prefs.html'
+		t.html = SyHybrid:getfile('dynamic/prefs_site/prefs.html')
 		t.id = 'syhuntsiteprefs'
 		t.options = hs.options
 		t.jsonfile = jsonfile
@@ -113,12 +116,48 @@ function SyhuntDynamic:Load()
 	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntDynamic'
 	browser.pagebar:eval('Tabs.RemoveAll()')
 	browser.pagebar:eval([[$("#tabstrip").insert("<include src='SyHybrid.scx#dynamic/pagebar.html'/>",1);]])
-	browser.pagebar:eval('SandcatUIX.Update();Tabs.Select("resources");')
+	browser.pagebar:eval('SandcatUIX.Update();Tabs.Select("results");')
 	PageMenu.newtabscript = 'SyhuntDynamic:NewTab(false)'
 end
 
-function SyhuntDynamic:LoadVulnDetails(url)
-  browser.newtab(url)
+function SyhuntDynamic:LoadVulnDetails(filename)
+  local vuln = {}
+  local ses = symini.session:new()
+  ses.name = tab:userdata_get('session')
+  vuln = ses:getvulndetails(filename)
+  --browser.showurl(url)
+  ses:release()
+  -- load the info screen
+  if VulnInfo == nil then
+    SyHybrid:dofile('hybrid/vulninfo.lua')
+  end
+  VulnInfo:load(vuln)
+end
+
+function SyhuntDynamic.LoadURLDetails(url)
+  --app.showmessage(url)
+  browser.setactivepage('response')
+  local ses = symini.session:new()
+  local req = {}
+  ses.name = tab:userdata_get('session')
+  req = ses:getrequestdetails(url,'snapshot.first')
+  ses:release()
+  tab:response_load(req)
+  if req.isseccheck == true then
+    SyhuntDynamic:LoadVulnDetails(req.vulnfilename)
+  end
+end
+
+function SyhuntDynamic:LoadTree(dir)
+	tab.showtree = true
+	tab.tree_loaditem = SyhuntDynamic.LoadURLDetails
+	tab:tree_clear()
+	local opt = {}
+	opt.dir = dir..'\\'
+	opt.recurse = true
+	opt.makebold = true
+	--opt.affscripts = affscripts
+	--tab:tree_loaddir(opt)
 end
 
 function SyhuntDynamic:NewScan(runinbg)
@@ -130,7 +169,8 @@ function SyhuntDynamic:NewScan(runinbg)
   end
   if canscan == true then
     prefs.set('syhunt.dynamic.options.target.editsiteprefs',false)
-    local ok = self:EditPreferences('dynamic/prefs_scan/prefs.html')
+    local html = SyHybrid:getfile('dynamic/prefs_scan/prefs.html')
+    local ok = self:EditPreferences(html)
     if ok == true then
       local targeturl = prefs.get('syhunt.dynamic.options.target.url','')
       local huntmethod = prefs.get('syhunt.dynamic.options.huntmethod','appscan')
@@ -148,7 +188,7 @@ end
 
 function SyhuntDynamic:NewTab()
   local cr = {}
-  cr.dblclickfunc = 'SyhuntDynamic:LoadVulnDetails'
+  cr.clickfunc = 'SyhuntDynamic:LoadVulnDetails'
   cr.columns = SyHybrid:getfile('dynamic/vulncols.lst')
 	local j = {}
 	if browser.info.initmode == 'syhuntdynamic' then
@@ -159,16 +199,27 @@ function SyhuntDynamic:NewTab()
 	j.title = 'New Tab'
 	j.toolbar = 'SyHybrid.scx#dynamic\\toolbar\\toolbar.html'
 	j.table = 'SyhuntDynamic.ui'
-	j.activepage = 'resources'
+	j.activepage = 'results'
 	j.showpagestrip = true
 	local newtab = browser.newtabx(j)
 	if newtab ~= '' then 
-	  tab:resources_customize(cr)
-		browser.setactivepage(j.activepage)
-		app.update()
+	  self:LoadTree('')
+	  tab:results_customize(cr)
+      self:LoadProgressPanel()
+	  browser.setactivepage(j.activepage)
+	  app.update()
 	  self:NewScan(false)
 	end
 	return newtab
+end
+
+function SyhuntDynamic:LoadProgressPanel()
+  local defstats = [[
+    s=code.stats-links,v=1
+  ]]
+  local html = SyHybrid:getfile('dynamic/progress.html')
+  tab:results_loadx(html)
+  tab:results_updatehtml(defstats)
 end
 
 function SyhuntDynamic:NormalizeTargetURL(url)
@@ -214,11 +265,12 @@ function SyhuntDynamic:ScanSite(runinbg,url,method)
 		end
 		if runinbg == false then
 		  -- Updates the tab user interface
-  	  tab:userdata_set('session',j.sessionname)
-  	  tab:userdata_set('taskid',tid)
-  	  tab.title = ctk.url.crack(url).host
-  	  self.ui.url.value = url
-  	  browser.setactivepage('resources')
+	  	  self:LoadTree('')
+  	      tab:userdata_set('session',j.sessionname)
+  	      tab:userdata_set('taskid',tid)
+  	      tab.title = ctk.url.crack(url).host
+  	      self.ui.url.value = url
+  	      browser.setactivepage('results')
 		end
 		j:release()
 	end

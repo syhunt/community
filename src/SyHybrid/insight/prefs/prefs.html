@@ -31,37 +31,11 @@
 
 <!-- checks tab begin-->
 <div name="panel-checks" class="tab" selected>
-<fieldset><br>
-<div .optgroup>
-<table width="100%">
-<tr>
-<td width="50%" valign="top">
-<button type="checkbox" cid="syhunt.insight.checks.sqli">SQL Injection</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.xss">Cross-Site Scripting (XSS)</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.afr">Arbitrary File Reading</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.bof">Buffer Overflow</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.dirtrav">Directory Traversal</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.fmtstr">Format String Attack</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.codeinj">Server-Side Code Injection</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.shcode">Shell Code Attack</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.ssiinj">SSI Injection</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.suspreq">Suspicious Requests</button><br>
-</td>
-<td width="50%" valign="top">
-<button type="checkbox" cid="syhunt.insight.checks.idsev">IDS Evasion Techniques</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.wafrej">WAF Rejection</button><br>
-<button type="checkbox" cid="syhunt.insight.checks.hacktools">Hacking Tools</button><br><br>
-<fieldset><legend>Special</legend>
-<div .optgroup>
-<button type="checkbox" cid="syhunt.insight.options.profileatk">Build attacker profile</button><br>
-<button type="checkbox" cid="syhunt.insight.options.detbreach">Determine if breach occurred</button>
-</div>
-</fieldset>
-</td>
-</tr>
+<widget type="select" style="padding:0;width:100%;height:*;">
+<table name="reportview" style="width:100%;height:*;" cellspacing=-1px fixedrows=1>
+%insight_checks%
 </table>
-</div>
-</fieldset>
+</widget>
 </div>
 <!-- checks tab end-->
 
@@ -94,6 +68,7 @@
 <div .sep/>
 <fieldset><br>
 <div .optgroup>
+<button type="checkbox" cid="syhunt.insight.options.profileatk">Build attacker profile</button><br>
 <button type="checkbox" cid="syhunt.insight.options.resolveip">Resolve attacker IP addresses (Slow)</button><br>
 <!--button type="checkbox" cid="syhunt.insight.checks.knownexp">Check for known exploits (Slow)</button-->
 </div>

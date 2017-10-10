@@ -32,10 +32,14 @@ function AttackerProfile:load(ip)
   j:load(prof)
   local html = self.page
   local slp = ctk.string.loop:new()
-  if browser.bottombar.uix ~= self.uitable then
-    browser.bottombar:loadx(html,self.uitable)
-  end
-  browser.bottombar:eval('ClearProfile();')
+  browser.loadpagex({
+    name='attacker profile',
+    html=html,
+    table=self.uitable,
+    noreload=true
+    }
+   )
+  browser.pagex:eval('ClearProfile();')
   local ui = self.ui
   ui.iptext.value = ip
   ui.atkcount.value = tostring(j.attackcount)
@@ -55,7 +59,7 @@ function AttackerProfile:load(ip)
       local tool = ctk.json.object:new()
       tool.icon = icon
       tool.title = toolinfo.title
-      browser.bottombar:eval('AddTool('..tool:getjson_unquoted()..');')
+      browser.pagex:eval('AddTool('..tool:getjson_unquoted()..');')
       tool:release()
     end
   end
@@ -63,7 +67,7 @@ function AttackerProfile:load(ip)
   slp:load(j.techniques)
   while slp:parsing() do
     if slp.current ~= '' then
-      browser.bottombar:eval('AddTechnique("'..ctk.html.escape(slp.current)..'");')
+      browser.pagex:eval('AddTechnique("'..ctk.html.escape(slp.current)..'");')
     end
   end
   
@@ -81,7 +85,7 @@ function AttackerProfile:load(ip)
       local plat = ctk.json.object:new()
       plat.icon = icon
       plat.title = toolinfo.title
-      browser.bottombar:eval('AddPlatform('..plat:getjson_unquoted()..');')
+      browser.pagex:eval('AddPlatform('..plat:getjson_unquoted()..');')
       plat:release()
     end
   end

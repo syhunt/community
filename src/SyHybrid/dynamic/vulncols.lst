@@ -1,6 +1,5 @@
 "c=Vulnerability Name",w=180
-"c=Location",w=180,a=1
+"c=Location",w=260,a=1
 "c=Affected Param(s)",w=100
 "c=Line(s)",w=80
-"c=Type/Result",w=100
 "c=Risk",w=80

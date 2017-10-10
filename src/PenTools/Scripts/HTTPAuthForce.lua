@@ -2,7 +2,7 @@ HTTPAuthForce = {}
 
 function HTTPAuthForce:load()
  local html = PenTools:getfile('Scripts/HTTPAuthForce.html')
- browser.loadpagex('authforce',html,'HTTPAuthForce.ui')
+ browser.loadpagex({name='authforce',html=html,table='HTTPAuthForce.ui'})
  local ui = self.ui
  ui.url.value = tab.url
 end

@@ -24,7 +24,7 @@
 <input cid="syhunt.dynamic.emulation.cookies.maxnumber" type="number" step=1 minvalue="1" value="50" size="10"> Maximum number of cookies per site<br>
 </popup>
 <div .sep/>
-<button .adv type="checkbox" cid="syhunt.dynamic.emulation.autofill.forms">Automatically fill forms</button> <button #btnaddinps onclick="prefs.editlist('syhunt.dynamic.lists.form.values','Form Values','Example: phone=555-6842')">Values...</button> <button #btnadvffill>Advanced...</button>
+<button .adv type="checkbox" cid="syhunt.dynamic.emulation.autofill.forms">Automatically fill forms (name, address, phone, email, etc)</button> <button #btnaddinps onclick="prefs.editlist('syhunt.dynamic.lists.form.values','Additional Form Values','Example: myfield=value')">Custom Values...</button> <button #btnadvffill>Advanced...</button>
 <popup #advffill>
 <button type="checkbox" cid="syhunt.dynamic.emulation.autofill.loginforms">Auto fill login web forms</button><br>
 <button type="checkbox" cid="syhunt.dynamic.options.logout.prevent">Prevent logout</button><br>
@@ -36,6 +36,8 @@
 <button type="checkbox" cid="syhunt.dynamic.emulation.intelparser">Use intelligent HTML parsing</button> (Handles malformed HTML)
 <div .sep/>
 <button type="checkbox" cid="syhunt.dynamic.emulation.usenavbehavior">Use browser behavior</button>
+<div .sep/>
+<button type="checkbox" cid="syhunt.dynamic.emulation.referer.send">Send Referer</button>
 <div .sep/>
 User agent: <input type="text" cid="syhunt.dynamic.emulation.useragent"> <button #btnadvuagent>Advanced...</button>
 <popup #advuagent>

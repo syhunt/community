@@ -41,7 +41,7 @@ function XHREditor:load(url,head)
  if Fuzzer == nil then
   PenTools:dofile('Scripts/Fuzzer.lua')
  end
- browser.bottombar:loadx(html,'XHREditor.ui')
+ browser.loadpagex({name='xhr editor',html=html,table='XHREditor.ui'})
  local ui = self.ui
  if url ~= nil then
   ui.url.value = url

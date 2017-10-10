@@ -43,7 +43,7 @@ function ReportMaker:do_template(action)
 	self:do_tpl_item('High Risk Vulnerabilities')
 	self:do_tpl_item('Medium Risk Vulnerabilities')
 	self:do_tpl_item('Low Risk Vulnerabilities')
-	self:do_tpl_item('Minimal Risk Vulnerabilities')
+	self:do_tpl_item('Info Risk Vulnerabilities')
 	self:do_tpl_item('Request')
 	self:do_tpl_item('Response (Header)')
 	self:do_tpl_item('Response')
@@ -61,10 +61,11 @@ function ReportMaker:set_template(name)
 end
 
 function ReportMaker:gen_report()
-  require 'Repmaker'
+    require 'SyMini'
+    require 'Repmaker'
 	rm = SyRepmaker:new()
 	local ui = self.ui
-	local filename = app.savefile(rm.Filter,'html',session_getsessionsdir()..'Report_'..self.session_name)
+	local filename = app.savefile(rm.Filter,'html',symini.info.sessionsdir..'Report_'..self.session_name)
 	local reptitle = ui.report_title.value
 	debug.print('file:'..filename)
 	if filename ~= '' then
@@ -333,7 +334,7 @@ function ReportMaker:show_options()
 	<div class="tabs">
 	<div class="strip" role="page-tab-list">
 	<div panel="panel-id2" selected role="page-tab">General</div>
-	<div panel="panel-id1" role="page-tab">Editor</div>
+	<!div panel="panel-id1" role="page-tab"><!Editor><!/div>
 	</div>
 	]]
 	local rep_options = [[
@@ -361,7 +362,7 @@ function ReportMaker:show_options()
 	<tr role="option"><td><input type="checkbox" tplname="High Risk Vulnerabilities" checked>High Risk Vulnerabilities</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Medium Risk Vulnerabilities" checked>Medium Risk Vulnerabilities</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Low Risk Vulnerabilities" checked>Low Risk Vulnerabilities</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Minimal Risk Vulnerabilities" checked>Minimal Risk Vulnerabilities</td></tr>
+	<tr role="option"><td><input type="checkbox" tplname="Info Risk Vulnerabilities" checked>Info Risk Vulnerabilities</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Request" checked>Request</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Response (Header)">Response (Header)</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Response">Response</td></tr>
@@ -415,12 +416,14 @@ function ReportMaker:show_options()
 end
 
 function ReportMaker:loadtab(s)
-	require 'SyHybrid'
-	self.session_name = s
-	self.session_dir = session_getsessionsdir()..'\\'..s..'\\'
-	if self.session_name == '' then app.showmessage(self.msg_nosession)
-else self:show_options()
-end
+   require 'SyMini'
+   self.session_name = s
+   self.session_dir = symini.info.sessionsdir..'\\'..s..'\\'
+   if self.session_name == '' then
+     app.showmessage(self.msg_nosession)
+   else
+     self:show_options()
+   end
 end
 
 function ReportMaker:newtab()

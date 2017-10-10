@@ -2,7 +2,12 @@ CGIScanner = {}
 
 function CGIScanner:load()
  local html = PenTools:getfile('Scripts/CGIScanner.html')
- browser.loadpagex('cgiscanner',html,'CGIScanner.ui')
+ browser.loadpagex( {
+   name = 'dirscanner',
+   html = html,
+   table = 'CGIScanner.ui'
+  }
+ )
  local ui = self.ui
  ui.url.value = tab.url
 end

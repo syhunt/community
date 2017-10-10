@@ -20,6 +20,11 @@ function SyHybrid:Init()
 	elseif browser.info.initmode == 'syhuntcode' then
 		browser.tabbar:inserthtml("#newtab",'#tabmenuext',bt_html)
 	end
+	
+	-- Change browser to pen test mode
+	-- Disable XSS protection
+	prefs.set('sandcat.browser.security.xssauditor.enabled', false)
+	prefs.save()
 
 	-- Adds CatSense tab
 	--browser.bottombar:addtiscript('Tabs.Add("catsense","SyHybrid:ViewCatSense()")')
@@ -46,13 +51,38 @@ function SyHybrid:AfterInit()
 	browser.addlibinfo('PDF Creation library','2.0','K. Nishita')
 	browser.addlibinfo('RTF Creation library','1.0','K. Nishita')
 	browser.addlibinfo('TAR Components','2.1.1','Stefan Heymann')
-  browser.addlibinfo('XML Components','1.0.17','Stefan Heymann','Sandcat:ShowLicense(SyHybrid.filename,[[hybrid\\docs\\Licence_XMLComps.txt]])')
+    browser.addlibinfo('XML Components','1.0.17','Stefan Heymann','Sandcat:ShowLicense(SyHybrid.filename,[[hybrid\\docs\\Licence_XMLComps.txt]])')
 
 	-- Adds new Sandcat Console commands
 	SyhuntDynamic:AddCommands()
 
 	-- Checks the current installation for user details and a valid configuration
 	SyHybridUser:CheckInst()
+end
+
+function SyHybrid:GetOptionsHTML(options)
+    local html_opt = [[<tr role="option"><td>%s<input type="checkbox" cid="%s">%s</td><td></td></tr>]]
+    --local html_opt = [[<tr role="option"><td>%s<input type="checkbox" cid="%s">%s</td><td><a href="#" onclick="prefs.editlist('syhunt.dynamic.lists.extensions.bkp','Backup Extensions','Example: .bak')">Edit</a></td></tr>]]
+	local slp = ctk.string.loop:new()
+	local html = ctk.string.list:new()
+	local opt = {}
+	local level = ''
+	html:add([[<tr><th style="width:*;">Check Name</th><th style="width:70px;"></th></tr>]])
+	slp:load(options)
+	while slp:parsing() do
+		opt = symini.getoptdetails(slp.current)
+		if opt.level == 1 then
+		   level = '&nbsp;&nbsp;&nbsp;&nbsp;'
+		else
+		   level = ''
+		   opt.caption = '<b>'..opt.caption..'</b>'
+		end
+		html:add(string.format(html_opt,level,slp.current,opt.caption))
+	end
+	local res = html.text
+	html:release()
+	slp:release()
+	return res
 end
 
 function SyHybrid:LoadLauncher()

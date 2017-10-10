@@ -51,7 +51,7 @@ if params.huntmethod == 'reconstruct' then
   task.caption = task.caption..' Session Reconstruction'
 end
 
-task:setscript('ondblclick',"browser.showbottombar('taskmon')")
+task:setscript('ondblclick',"browser.showbottombar('task messages')")
 runtabcmd('seticon','@ICON_LOADING')
 runtabcmd('runtbtis','MarkAsScanning();')
 runtabcmd('syncwithtask','1')

@@ -7,6 +7,7 @@ VulnList = {
 
 function VulnList:addinterface(p)
 	p:add([[
+	<div style="display:none">
 	<select id="searchtype" size="1">
 	<option value="none" SELECTED></OPTION>
 	<option value="vulnname">Vulnerability Name</OPTION>
@@ -16,6 +17,7 @@ function VulnList:addinterface(p)
 	<option value="bid">Bugtraq ID</OPTION>
 	</select>&nbsp;&nbsp;<input type="text" style="width:300px;" id="searchinput">&nbsp;&nbsp;<button onclick="VulnList:dosearch()">Search</button>
 	<br><br>
+	</div>
 	<widget type="select" style="padding:0;">
 	<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>
 	<tr><th width="50%">Vulnerability Name/Category</th><th width="10%">Total</th><th width="10%">CWE</th><th width="10%">CVE</th><th width="10%">OSVDB</th><th width="10%">BID</th><th></th></tr>
@@ -75,59 +77,47 @@ function VulnList:dosearch()
 	ui.searchtype.value = searchtype
 end
 
-function VulnList:loadtab()
+function VulnList:addchecks(options)
 	local NA = '<font color="gray">N/A</font>'
+	local opt = {}
+	local cwe = ''
+	local slp = ctk.string.loop:new()
+	slp:load(options)
+	while slp:parsing() do
+		opt = symini.getoptdetails(slp.current, true)
+		if opt.level == 1 then
+		  opt.caption = '&nbsp;&nbsp;&nbsp;&nbsp;<font color="navy">'..opt.caption..'</font>'
+		end
+		cwe = tostring(opt.cwe)
+		if cwe == '0' then
+		 cwe = NA
+		end
+		self:additem(h,opt.caption,opt.count,cwe,NA,NA,NA)
+	end
+	slp:release()
+end
+
+function VulnList:loadtab()
 	h = ctk.string.list:new()
 	self:addinterface(h)
 
 	-- Name/Total/CWE/CVE/OSVDB/BID
-	-- TODO: Convert this list to CSV
+	local ds = symini.dynamic:new()
+	ds:start()
 	self:addsection(h,'Application Checks')
-	self:additem(h,'Backdoors',symini.getrescount('DYN_BDOORS'),NA,NA,NA,NA)
-	self:additem(h,'Database Disclosure',symini.getrescount('DYN_BFORCE'),NA,NA,NA,NA)
-	self:additem(h,'Extension Checking',symini.getrescount('DYN_BKPEXT'),NA,NA,NA,NA)
-	self:additem(h,'Extra Files',symini.getrescount('DYN_XPDAT'),NA,NA,NA,NA)
-	self:additem(h,'Suspicious Strings',symini.getrescount('DYN_SWORDS'),NA,NA,NA,NA)
-
+	self:addchecks(ds.options_checks)
 	self:addsection(h,'Application Checks - Fault Injection')
-	self:additem(h,'File Inclusion',symini.getrescount('DYN_CHK_FI'),NA,NA,NA,NA)
-	self:additem(h,'XSS / Cross-Site Scripting',symini.getrescount('DYN_CHK_XSS'),'79',NA,NA,NA)
+	self:addchecks(ds.options_checksinj)
+    --[[
 	self:additem(h,'XSS / Cross-Site Scripting (HTML5)',symini.getrescount('DYN_CHK_XSS5'),'79',NA,NA,NA)
-	self:additem(h,'Directory Traversal',symini.getrescount('DYN_CHK_DT'),'98',NA,NA,NA)
-	self:additem(h,'Remote Command Execution',symini.getrescount('DYN_CHK_RCE'),NA,NA,NA,NA)
 	self:additem(h,'SQL Exposures',symini.getrescount('DYN_CHK_SQL'),'89',NA,NA,NA)
-	self:additem(h,'SQL Injection',symini.getrescount('DYN_CHK_SQLI'),'89',NA,NA,NA)
-	self:additem(h,'NoSQL Injection',symini.getrescount('DYN_CHK_NOSQLI'),NA,NA,NA,NA)
-	self:additem(h,'Server-Side JavaScript Injection',symini.getrescount('DYN_CHK_SSJSI'),NA,NA,NA,NA)
-	self:additem(h,'Arbitrary File Reading',symini.getrescount('DYN_CHK_AFR'),NA,NA,NA,NA)
-	self:additem(h,'Path Disclosure',symini.getrescount('DYN_CHK_PD'),'200',NA,NA,NA)
-	self:additem(h,'Information Disclosure',symini.getrescount('DYN_CHK_ID'),'200',NA,NA,NA)
-	self:additem(h,'Directory Listing',symini.getrescount('DYN_CHK_DL'),NA,NA,NA,NA)
-	self:additem(h,'Password Disclosure',symini.getrescount('DYN_CHK_PWD'),'472',NA,NA,NA)
-	self:additem(h,'Default Account',symini.getrescount('DYN_CHK_DA'),NA,NA,NA,NA)
-	self:additem(h,'Miscellaneous',symini.getrescount('DYN_CHK_ML'),NA,NA,NA,NA)
-	self:additem(h,'IIS',symini.getrescount('DYN_CHK_IIS'),NA,NA,NA,NA)
-	self:additem(h,'iPlanet',symini.getrescount('DYN_CHK_IPL'),NA,NA,NA,NA)
-	self:additem(h,'Buffer Overflow',symini.getrescount('DYN_CHK_BO'),NA,NA,NA,NA)
-	self:additem(h,'Internal IP Address Disclosure','1','212',NA,NA,NA)
-	self:additem(h,'Default Welcome Page','1',NA,NA,NA,NA)
-	self:additem(h,'WebDAV Enabled','1',NA,NA,NA,NA)
-	self:additem(h,'PUT Method Enabled','1',NA,NA,NA,NA)
-	self:additem(h,'TRACE Method Enabled','1',NA,NA,NA,NA)
-	self:additem(h,'DELETE Method Enabled','1',NA,NA,NA,NA)
-	self:additem(h,'TRACK Method Enabled','1',NA,NA,NA,NA)
-	self:additem(h,'CONNECT Method Enabled','1',NA,NA,NA,NA)
-	self:additem(h,'Cross Frame Scripting',symini.getrescount('DYN_CHK_CFS'),NA,NA,NA,NA)
-	self:additem(h,'CRLF Injection',symini.getrescount('DYN_CHK_INJ'),'93',NA,NA,NA)
-	self:additem(h,'Source Code Disclosure',symini.getrescount('DYN_CHK_SCD'),NA,NA,NA,NA)
-	self:additem(h,'PHP Code Injection',symini.getrescount('DYN_CHK_PHPCI'),'74',NA,NA,NA)
-	self:additem(h,'XPath Injection',symini.getrescount('DYN_CHK_XPT'),'91',NA,NA,NA)
-	self:additem(h,'LDAP Injection',symini.getrescount('DYN_CHK_LDAP'),'90',NA,NA,NA)
-	self:additem(h,'MX Injection',symini.getrescount('DYN_CHK_IMAPI'),'74',NA,NA,NA)
-	self:additem(h,'Cookie Manipulation',symini.getrescount('DYN_CHK_CKM'),NA,NA,NA,NA)
-	self:additem(h,'Unvalidated Redirect',symini.getrescount('DYN_CHK_UR'),'601',NA,NA,NA)
+	]]
+	ds:release()
 
+    local cs = symini.code:new()
 	self:addsection(h,'Source Checks')
+	--self:addchecks(cs.options_checks)
+	--self:addchecks(cs.options_checksmap)
 	self:additem(h,'ASP',symini.getrescount('CODE_ASP'),NA,NA,NA,NA)
 	self:additem(h,'Generic',symini.getrescount('CODE_GENERIC'),NA,NA,NA,NA)
 	self:additem(h,'HTML',symini.getrescount('CODE_HTML'),NA,NA,NA,NA)
@@ -136,8 +126,9 @@ function VulnList:loadtab()
 	self:additem(h,'Perl',symini.getrescount('CODE_PL'),NA,NA,NA,NA)
 	self:additem(h,'Python',symini.getrescount('CODE_PY'),NA,NA,NA,NA)
 	self:additem(h,'PHP',symini.getrescount('CODE_PHP'),NA,NA,NA,NA)
+	cs:release()
+	
 	self:closeinterface(h)
-
 	local j = {}
 	j.title = self.title
 	j.icon = self.icon

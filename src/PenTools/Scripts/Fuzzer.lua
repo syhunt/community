@@ -81,7 +81,7 @@ function Fuzzer:loadui(url,script,ext)
    advoptions = PenTools:getfile('Scripts/XHREditor_Adv.html')
   end
   html = ctk.string.replace(html,'<!advoptions>',advoptions)
-  browser.loadpagex('fuzzer',html,'Fuzzer.ui')
+  browser.loadpagex({name='fuzzer',html=html,table='Fuzzer.ui'})
   local ui = self.ui
   ui.isxhr.value = true
   ui.url.value = url..'{$1}'

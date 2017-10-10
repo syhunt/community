@@ -21,12 +21,14 @@
 <div class="icontabs">
 <div #mainstrip class="strip">
 <div panel="panel-general" accesskey="G" selected><center><img #icon_general><br>General</center></div>
+<div panel="panel-tech" accesskey="T"><center><img #icon_tech><br>Technologies</center></div>
 <div panel="panel-auth" accesskey="U"><center><img #icon_auth><br>Authentication</center></div>
 <div panel="panel-certs" accesskey="C"><center><img #icon_certs><br>Certificates</center></div>
 <div panel="panel-ignore" accesskey="N"><center><img #icon_ignore><br>Exclusions</center></div>
 <div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
 </div>
 
+<!-- general tab begin-->
 <div name="panel-general" class="tab" selected>
 <button type="checkbox" cid="site.enabled"><b>Enabled</b></button>
 <fieldset><legend>Source</legend>
@@ -43,6 +45,56 @@ Note: Be sure to specify a directory where the index files of your web content a
 <button #btnstarturls onclick="prefs.editlist('site.syhunt.dynamic.lists.starturls','Start URLs','Example: /url.php')">Start URLs...</button> 
 <button #btnalerts onclick="prefs.editlist('site.syhunt.dynamic.lists.emailalerts','Email Alerts','Example: admin@domain.com')">Email Alerts...</button> 
 <button #btncookies onclick="prefs.editlist('site.syhunt.dynamic.lists.cookies','Cookies','')">Cookies...</button>
+</div>
+</fieldset>
+</div>
+
+<!-- tech tab begin-->
+<div name="panel-tech" class="tab">
+<fieldset><legend></legend><br>
+<div .optgroup>
+Server-Side Scripting Language:<br>
+<select class="tag-list" type="select" cid="site.syhunt.dynamic.webtech.slang">
+<option value="auto" selected>Auto Detect</option>
+<option value="lang.asp">ASP (Classic)</option>
+<option value="lang.aspx">ASP.NET</option>
+<option value="lang.java">Java</option>
+<option value="lang.lua">Lua</option>
+<option value="lang.perl">Perl</option>
+<option value="lang.php">PHP</option>
+<option value="lang.python">Python</option>
+<option value="lang.ruby">Ruby</option>
+</select><br><br>
+Web Server:<br>
+<select class="tag-list" type="select" cid="site.syhunt.dynamic.webtech.server">
+<option value="auto" selected>Auto Detect</option>
+<option value="server.apache">Apache</option>
+<option value="server.tomcat">Apache Tomcat</option>
+<option value="server.iis">IIS</option>
+<option value="server.nginx">Nginx</option>
+</select><br><br>
+Server OS:<br>
+<select class="tag-list" type="select" cid="site.syhunt.dynamic.webtech.os">
+<option value="auto" selected>Auto Detect</option>
+<option value="os.bsd">BSD</option>
+<option value="os.linux">Linux</option>
+<option value="os.solaris">Solaris</option>
+<option value="os.unix">Unix</option>
+<option value="os.windows">Windows</option>
+</select><br><br>
+Database:<br>
+<select class="tag-list" type="select" cid="site.syhunt.dynamic.webtech.datsql">
+<option value="auto" selected>Auto Detect</option>
+<option value="db.sql.access">Access</option>
+<option value="db.sql.db2">DB2</option>
+<option value="db.sql.informix">Informix</option>
+<option value="db.sql.mysql">MySQL</option>
+<option value="db.sql.oracle">Oracle</option>
+<option value="db.sql.postgresql">PostgreSQL</option>
+<option value="db.sql.sqlserver">SQL Server</option>
+<option value="db.sql.sqlite">SQLite</option>
+<option value="db.sql.sybase">Sybase</option>
+</select>
 </div>
 </fieldset>
 </div>

@@ -10,7 +10,7 @@ function Base64Encoder:view()
   <button onclick="Base64Encoder:decode()">Decode</button>
   <button onclick="Base64Encoder:view()">Reset</button>
   ]]
-  browser.loadpagex('b64encoder',html,'Base64Encoder.ui')
+  browser.loadpagex({name='b64encoder',html=html,table='Base64Encoder.ui'})
 end
 
 function Base64Encoder:encode()
@@ -36,7 +36,7 @@ function URLEncoder:view()
   <button onclick="URLEncoder:decode()">Decode</button>
   <button onclick="URLEncoder:view()">Reset</button>
   ]]
-  browser.loadpagex('urlencoder',html,'URLEncoder.ui')
+  browser.loadpagex({name='urlencoder',html=html,table='URLEncoder.ui'})
 end
 
 function URLEncoder:encode(full)
@@ -64,7 +64,7 @@ function MD5Encoder:view()
   <button onclick="MD5Encoder:encode()">Encode</button>
   <button onclick="MD5Encoder:view()">Reset</button>
   ]]
-  browser.loadpagex('md5encoder',html,'MD5Encoder.ui')
+  browser.loadpagex({name='md5encoder',html=html,table='MD5Encoder.ui'})
 end
 
 function MD5Encoder:encode()
@@ -83,7 +83,7 @@ function SHA1Encoder:view()
   <button onclick="SHA1Encoder:encode()">Encode</button>
   <button onclick="SHA1Encoder:view()">Reset</button>
   ]]
-  browser.loadpagex('sha1encoder',html,'SHA1Encoder.ui')
+  browser.loadpagex({name='sha1encoder',html=html,table='SHA1Encoder.ui'})
 end
 
 function SHA1Encoder:encode()

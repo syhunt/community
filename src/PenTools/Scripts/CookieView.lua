@@ -24,7 +24,8 @@ function CookieView:display()
   <td width="5%" valign="top"><button onclick="CookieView:load()">Refresh</button></td>
   </tr></table>
   ]]
-  browser.bottombar:loadx(html)
+  --browser.bottombar:loadx(html)
+  browser.loadpagex({name='cookieview', html=html})
 end
 
 function CookieView:load()

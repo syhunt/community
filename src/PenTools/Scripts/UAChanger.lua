@@ -54,7 +54,7 @@ function UAChanger:DisplayUserAgentList()
   </td>
   </tr></table>
  ]]
-  browser.bottombar:loadx(html,'UAChanger.ui')
+  browser.loadpagex({name='uachanger', html=html,table='UAChanger.ui'})
 end
 
 function UAChanger:GetUserAgentList()

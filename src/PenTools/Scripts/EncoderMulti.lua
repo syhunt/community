@@ -58,7 +58,7 @@ function MultiEncoder:vieweditor(mode,script,pakfilename)
  if script ~= nil then
   defaultencoder = browser.getpackfile(pakfilename,script)
  end
- browser.loadpagex('encoder',html,'MultiEncoder.ui')
+ browser.loadpagex({name='encoder',html=html,table='MultiEncoder.ui'})
  local ui = self.ui
  ui.btnrun:setattrib('onclick',"MultiEncoder:runscript('"..mode.."')")
  ui.btncaption.value = mode

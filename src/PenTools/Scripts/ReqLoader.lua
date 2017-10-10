@@ -33,7 +33,7 @@ end
 
 function ReqLoader:loadui(url)
  local html = PenTools:getfile('Scripts/ReqLoader.html')
- browser.bottombar:loadx(html,'ReqLoader.ui')
+ browser.loadpagex({name='request loader',html=html,table='ReqLoader.ui'})
  local ui = self.ui
  if url ~= nil then
   ui.url.value = url

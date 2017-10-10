@@ -1,16 +1,16 @@
 SyhuntCode = {}
 
 function SyhuntCode:Load()
-  local mainexe = app.dir..'SyCode.exe'
-	self.NewTab()
-  app.seticonfromfile(mainexe)
+    local mainexe = app.dir..'SyCode.exe'
+	self:NewTab()
+    app.seticonfromfile(mainexe)
 	browser.info.fullname = 'Syhunt Code'
 	browser.info.name = 'Code'
 	browser.info.exefilename = mainexe
 	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntCode'
 	browser.pagebar:eval('Tabs.RemoveAll()')
 	browser.pagebar:eval([[$("#tabstrip").insert("<include src='SyHybrid.scx#code/pagebar.html'/>",1);]])
-	browser.pagebar:eval('SandcatUIX.Update();Tabs.Select("source");')
+	browser.pagebar:eval('SandcatUIX.Update();Tabs.Select("results");')
 	PageMenu.newtabscript = 'SyhuntCode:NewTab()'
 end
 
@@ -44,8 +44,9 @@ function SyhuntCode:EditPreferences()
 	while slp:parsing() do
 		prefs.regdefault(slp.current,cs:prefs_getdefault(slp.current))
 	end
-	t.pak = SyHybrid.filename
-	t.filename = 'code/prefs/prefs.html'
+	t.html = SyHybrid:getfile('code/prefs/prefs.html')
+	t.html = ctk.string.replace(t.html,'%code_checks%',SyHybrid:GetOptionsHTML(cs.options_checks))
+	t.html = ctk.string.replace(t.html,'%code_mapping_checks%',SyHybrid:GetOptionsHTML(cs.options_checksmap))
 	t.id = 'syhuntcode'
 	t.options = cs.options
 	t.options_disabled = cs.options_locked
@@ -71,26 +72,31 @@ function SyhuntCode:IsScanInProgress(warn)
   end
 end
 
+function SyhuntCode:LoadProgressPanel()
+    local html = SyHybrid:getfile('code/progress.html')
+    tab:results_loadx(html)
+end
+
 function SyhuntCode:NewScan()
   if self:IsScanInProgress(true) == false then
 	  tab:tree_clear()
-	  SyhuntCode.ui.dir.value = ''
+	  self.ui.dir.value = ''
 	  tab.source = ''
 	  tab:loadsourcemsgs('')
 	  tab:userdata_set('session','')
-    tab:userdata_set('taskid','')
+      tab:userdata_set('taskid','')
 	  tab:runsrccmd('showmsgs',false)
 	  tab.toolbar:eval('MarkReset();')
+	  tab:results_clear()
+	  self:LoadProgressPanel()
 	end
 end
 
 function SyhuntCode:NewTab()
-	local aliases =
-[[
-Alert=Alerts
-Key Area=Key Areas
-Interesting=Interesting Findings
-]]
+    local cr = {}
+    cr.clickfunc = 'SyhuntDynamic:LoadVulnDetails'
+    cr.columns = SyHybrid:getfile('dynamic/vulncols.lst')
+	local aliases = SyHybrid:getfile('code/aliases.lst')
 	local j = {}
 	if browser.info.initmode == 'syhuntcode' then
 	  j.icon = 'url(PenTools.scx#images\\icon_sast.png)'
@@ -100,13 +106,18 @@ Interesting=Interesting Findings
 	j.title = 'New Tab'
 	j.toolbar = 'SyHybrid.scx#code\\toolbar\\toolbar.html'
 	j.table = 'SyhuntCode.ui'
-	j.activepage = 'source'
+	j.activepage = 'results'
 	j.showpagestrip = true
-	if browser.newtabx(j) ~= '' then
-		browser.setactivepage('source')
+	local newtab = browser.newtabx(j)
+	if newtab ~= '' then
+	    tab.showtree = true
+		browser.setactivepage(j.activepage)
 		--browser.pagebar:eval('Tabs.Select("source");')
+		tab:results_customize(cr)
+        self:LoadProgressPanel()
 		tab:loadsourcetabs([[All,Alerts,"Key Areas",JavaScript,HTML,"Interesting Findings"]],aliases)
 	end
+	return newtab
 end
 
 function SyhuntCode:Search()
@@ -131,6 +142,8 @@ function SyhuntCode.OpenFile(f)
 		tab:runsrccmd('loadfromfile',file)
 		if ctk.re.match(ext,'.bmp|.gif|.ico|.jpg|.jpeg|.png|.svg') == true then
 			browser.setactivepage('browser')
+		else
+		    browser.setactivepage('source')
 		end
 		ses:release()
 	end
@@ -171,7 +184,12 @@ function SyhuntCode:LoadTree(dir,affscripts)
 	tab.showtree = true
 	tab.tree_loaditem = SyhuntCode.OpenFile
 	tab:tree_clear()
-	tab:tree_loaddir(dir..'\\',true,affscripts)
+	local opt = {}
+	opt.dir = dir..'\\'
+	opt.recurse = true
+	opt.makebold = true
+	opt.affscripts = affscripts
+	tab:tree_loaddir(opt)
 	tab.title = ctk.file.getname(dir)
 end
 
@@ -196,7 +214,7 @@ function SyhuntCode:ScanFolder(huntmethod)
   		j.codedir = dir..'\\'
   		j.huntmethod = huntmethod
 		  local menu = [[
-		  <li onclick="browser.showbottombar('taskmon')">View Messages</li>
+		  <!--li onclick="browser.showbottombar('task messages')">View Messages</li-->
 		  <li onclick="SessionManager:show_sessiondetails('%s')">View Vulnerabilities</li>
 	  	<li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="ReportMaker:loadtab('%s')">Generate Report</li>
 	  	]]
@@ -204,7 +222,7 @@ function SyhuntCode:ScanFolder(huntmethod)
   		local tid = tab:runtask(script,tostring(j),menu)
       tab:userdata_set('taskid',tid)
   		j:release()
-  		browser.setactivepage('source')
+  		browser.setactivepage('results')
   	end
   end
 end
@@ -214,7 +232,6 @@ function SyhuntCode:ShowResults(list)
 	local slp = ctk.string.loop:new()
 	local script = ctk.string.list:new()
 	local j = ctk.json.object:new()
-	slp.iscsv = true
 	slp:load(list)
 	while slp:parsing() do
 		j.line = slp:curgetvalue('l')

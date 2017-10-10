@@ -1,0 +1,78 @@
+<style>
+body { overflow-x: hidden; } 
+input[type="text"] {height:17px;width:*;}
+richtext { color:black; }
+#matchedsig { background-color:#ffffaa; }
+#checkname { font-weight: bold; }
+</style>
+<link rel="stylesheet" type="text/css" href="Common.pak#tabs.css">
+<link rel="stylesheet" type="text/css" href="Common.pak#widget.editor.css">
+
+<script type="text/tiscript">
+ function ClearProfile() {
+   for(var e in $$("img[plat]")) e.remove();
+   for(var e in $$("option[tool]")) e.remove();
+   for(var e in $$("option[technique]")) e.remove();
+ }
+</script>
+
+<div class="tabs">
+<div class="strip" role="page-tab-list">
+<div panel="panel-general" role="page-tab" selected>Description</div>
+<div panel="panel-solution" role="page-tab">Solution</div>
+<div panel="panel-vulncode" role="page-tab">Vulnerable Code</div>
+<div panel="panel-log" role="page-tab">Log</div>
+</div>
+
+<!--panel-general-->
+<div name="panel-general" class="tab" selected>
+<div style="margin:10px;width:*;height:*;">
+
+<widget class="editor" toolbar="widget.generaltoolbar">
+ <widget .toolbar .generaltoolbar>
+  <widget .tb-button onclick="VulnInfo:replayattack(VulnInfo.vuln)" title="Replay Attack"><img style="foreground-image: url(Resources.pak#16\icon_go.png);" /></widget>
+  <widget .tb-button onclick="browser.newtab(VulnInfo.ui.locationtext.value)" title="Open URL in New Tab"><img style="foreground-image: url(Resources.pak#16\icon_opennewtab.png);" /></widget>
+ </widget>
+<table>
+<tr><td>Name:</td><td>&nbsp;</td><td><code id="checkname"></code></td></tr>
+<tr style="margin-bottom:2px;"><td>Location:</td><td>&nbsp;</td><td><input id="locationtext" type=text style="width:500px;" value="" readonly="true"></td></tr>
+<tr><td>Risk:</td><td>&nbsp;</td><td><code id="risk"></code></td></tr>
+<tr><td>Matched Signature:</td><td>&nbsp;</td><td><code id="matchedsig"></code></td></tr>
+</table>
+</widget>
+<widget class="editor">
+ <richtext id="rt_description" readonly="true" style="width:*;height:*;"></richtext>
+</widget>
+</div>
+</div>
+<!--panel general end-->
+
+<!--panel-solution-->
+<div name="panel-solution" class="tab">
+<div style="margin:10px;width:*;height:*;">
+<widget class="editor">
+ <richtext id="rt_solution" readonly="true" style="width:*;height:*;"></richtext>
+</widget>
+</div>
+</div>
+<!--panel solution end-->
+
+<!--panel-vulncode-->
+<div name="panel-vulncode" class="tab">
+<div style="margin:10px;width:*;height:*;">
+<widget class="editor">
+ <richtext id="rt_vulncode" readonly="true" style="width:*;height:*;"></richtext>
+</widget>
+</div>
+</div>
+<!--panel vulncode end-->
+
+<!--panel-log-->
+<div name="panel-log" class="tab">
+<div style="margin:10px;width:*;height:*;">
+<plaintext id="checklog" readonly="true" style="width:*;height:*;"></plaintext>
+</div>
+</div>
+<!--panel log end-->
+
+</div>

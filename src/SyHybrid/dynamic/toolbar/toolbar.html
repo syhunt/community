@@ -1,7 +1,14 @@
 <style>
 @const ICON_WARNING: url(Resources.pak#16\icon_engerror.png);
+@const ICON_UNDETERMINED: url(Resources.pak#16\icon_help.png);
 </style>
 <script type="text/tiscript">
+function MarkAsUndetermined() {
+ $(#scanstat).style["background-color"]="#3d80e2";
+ $(#scanstat).value="Undetermined";
+ $(#scanstat).style["foreground-image"]="@ICON_UNDETERMINED";
+ $(#scanstat).enabled = true;
+}
 function MarkAsSecure() {
  $(#scanstat).style["background-color"]="#62e973";
  $(#scanstat).value="Secure";
@@ -23,6 +30,10 @@ function MarkReset() {
 function MarkAsScanning() {
  MarkReset();
  $(#scanstat).value="Scanning";
+}
+function MarkAsDone() {
+ MarkReset();
+ $(#scanstat).value="Done";
 }
 function MarkAsStopped() {
  if($(#scanstat).value == "Scanning") {

@@ -11,7 +11,7 @@ function SyhuntInsight:Load()
 	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntInsight'
 	browser.pagebar:eval('Tabs.RemoveAll()')
 	browser.pagebar:eval([[$("#tabstrip").insert("<include src='SyHybrid.scx#insight/pagebar.html'/>",1);]])
-	browser.pagebar:eval('SandcatUIX.Update();Tabs.Select("resources");')
+	browser.pagebar:eval('SandcatUIX.Update();Tabs.Select("results");')
 	PageMenu.newtabscript = 'SyhuntInsight:NewTab()'
 end
 
@@ -20,7 +20,7 @@ function SyhuntInsight:LoadAttackLog(filename)
     local slp = ctk.string.loop:new()
     slp:loadfromfile(filename)
     while slp:parsing() do
-      tab:resources_add(ctk.base64.decode(slp.current))
+      tab:results_add(ctk.base64.decode(slp.current))
     end
     tab.status = string.format('Found %i possible attacks.', slp.count)
     slp:release()
@@ -61,8 +61,8 @@ function SyhuntInsight:EditPreferences()
 	while slp:parsing() do
 		prefs.regdefault(slp.current,cs:prefs_getdefault(slp.current))
 	end
-	t.pak = SyHybrid.filename
-	t.filename = 'insight/prefs/prefs.html'
+	t.html = SyHybrid:getfile('insight/prefs/prefs.html')
+	t.html = ctk.string.replace(t.html,'%insight_checks%',SyHybrid:GetOptionsHTML(cs.options_checks))
 	t.id = 'syhuntinsight'
 	t.options = cs.options
 	t.options_disabled = cs.options_locked
@@ -75,7 +75,7 @@ function SyhuntInsight:NewScan()
   if self:IsScanInProgress(true) == false then
     local ui = self.ui
     ui.file.value = ''
-    tab:resources_clear()
+    tab:results_clear()
   	tab:userdata_set('session','')
   	tab:userdata_set('taskid','')
 	  tab:runsrccmd('showmsgs',false)
@@ -106,11 +106,11 @@ function SyhuntInsight:NewTab()
 	j.title = 'New Tab'
 	j.toolbar = 'SyHybrid.scx#insight\\toolbar\\toolbar.html'
 	j.table = 'SyhuntInsight.ui'
-	j.activepage = 'resources'
+	j.activepage = 'results'
 	j.showpagestrip = true
 	local newtab = browser.newtabx(j)
 	if newtab ~= '' then 
-	  tab:resources_customize(cr)
+	  tab:results_customize(cr)
 		browser.setactivepage(j.activepage)
 	end
 	return newtab
@@ -203,7 +203,7 @@ function SyhuntInsight:ScanFile(filename,huntmethod,targetip)
   local targetip = targetip or ''
   if SyHybridUser:IsMethodAvailable(huntmethod, true) then
 	  if filename ~= '' then
-	    tab:resources_clear()
+	    tab:results_clear()
 	    tab.title = ctk.file.getname(filename)
 	    if ctk.file.getsize(filename) < 1024*500 then
 	      tab:runsrccmd('loadfromfile',filename)
@@ -230,7 +230,7 @@ function SyhuntInsight:ScanFile(filename,huntmethod,targetip)
   		local tid = tab:runtask(script,tostring(j),menu)
   		tab:userdata_set('taskid',tid)
   		j:release()
-  		browser.setactivepage('resources')
+  		browser.setactivepage('results')
   	end
   end
 end

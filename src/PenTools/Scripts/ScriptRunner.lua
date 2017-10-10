@@ -172,7 +172,7 @@ function ScriptRunner:vieweditor(lang_name,lang_ext,lang_desc)
   html = ctk.string.replace(html,'<!examplemenuitems>',helpitems)
   html = ctk.string.replace(html,'<!scriptlist>',self:get_scriptlist(lang_ext))
   html = ctk.string.replace(html,'<!extraoptions>',extraoptions)
-  browser.loadpagex(lang_ext..'runner',html,'ScriptRunner.ui')
+  browser.loadpagex({name=lang_ext..' runner',html=html,table='ScriptRunner.ui'})
   --tab:showcodeedit('','.'..lang_ext,html)
 
   local ui = self.ui

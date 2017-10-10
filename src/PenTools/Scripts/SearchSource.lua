@@ -57,7 +57,8 @@ function SearchSource:search(text)
    html:add('<b>Search string not found.</b>')
    end
   end
-  browser.bottombar:loadx(self.page..html.text,self.uitable)
+  --browser.bottombar:loadx(self.page..html.text,self.uitable)
+  browser.loadpagex({name='search source',html=self.page..html.text,table=self.uitable})
   ui.searchtext.value = text
   ui.matchcase.value = matchcase
   html:release()
@@ -65,5 +66,5 @@ function SearchSource:search(text)
 end
 
 function SearchSource:load()
- browser.bottombar:loadx(self.page,self.uitable)
+ browser.loadpagex({name='search source',html=self.page,table=self.uitable})
 end
