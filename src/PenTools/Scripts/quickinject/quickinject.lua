@@ -29,7 +29,7 @@ end
 
 function quickinject:editprefs()
  local t = {}
- t.html = PenTools:getfile('insight/prefs/prefs.html')
+ t.html = PenTools:getfile('Scripts/quickinject/prefs.html')
  t.id = 'syhuntquickinject'
  t.options = [[
  quickinject.shell.php.url
