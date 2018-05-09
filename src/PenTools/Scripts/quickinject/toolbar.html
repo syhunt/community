@@ -24,8 +24,8 @@ li.str { foreground-image: url(PenTools.scx#images\icon_textfile.png) }
   <div .sepv />
 	<div .button style="foreground-image: url(Resources.pak#16\icon_plus_green.png)" onclick="Sandcat.reqbuildermenu:run(quickinject.addtosel)" titleid="for_addtosel"/>
 	<div .button style="foreground-image: url(Resources.pak#16\icon_minus.png)" onclick="Sandcat.reqbuildermenu:run(quickinject.subtosel)" titleid="for_subtosel"/>
-	<div .sepv />
-	<div .button style="foreground-image: url(Resources.pak#16\icon_exec.png)" onclick="quickinject:runjs()" titleid="for_runjs"/>
+	<div #runjssep class="sepv" />
+	<div #runjsbtn class="button" style="foreground-image: url(Resources.pak#16\icon_exec.png)" onclick="quickinject:runjs()" titleid="for_runjs"/>
 	<div .sepv />
 	<div #textmanip class="button" style="behavior: ~ popup-menu;foreground-image: url(Resources.pak#16\icon_text.png);" titleid="for_textmanip">6
    <include src="PenTools.scx#Scripts\quickinject\toolbar_text.html"/>
