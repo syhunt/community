@@ -1,5 +1,9 @@
 SyHybridUser = {}
 
+function SyHybridUser:BuyNow()
+    browser.newtab('http://www.syhunt.com/en/?n=Pricing.AppScanner')
+end
+
 function SyHybridUser:CheckInst()
 	if symini.checkinst() == false then
 		self:Register(true)
