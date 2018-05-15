@@ -206,6 +206,7 @@ function SyhuntCode:ScanFolder(huntmethod)
 	  local dir = app.selectdir('Select a code directory to scan:')
 	  if dir ~= '' then
   		prefs.save()
+  		self:NewScan()
   		self:LoadTree(dir,'')
   		local script = SyHybrid:getfile('code/scantask.lua')
   		local j = ctk.json.object:new()
