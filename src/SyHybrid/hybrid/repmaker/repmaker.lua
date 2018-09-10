@@ -2,12 +2,14 @@ ReportMaker = {
 	title = 'Report Maker',
 	icon = 'url(SyHybrid.scx#images\\16\\saverep.png)',
 	default_template = 'Standard',
+	default_template_sort = 'CVSS3',
 	msg_nosession = 'You need to start a session before generating a report',
 	session_name = '',
 	session_dir = '',
 	xmllist = '',
 	template_action = '',
-	template_name = ''
+	template_name = '',
+	template_sort = ''
 }
 
 function ReportMaker:can_open_report()
@@ -60,6 +62,10 @@ function ReportMaker:set_template(name)
 	rm:release()
 end
 
+function ReportMaker:set_templatesort(name)
+	self.template_sort = name
+end
+
 function ReportMaker:gen_report()
     require 'SyMini'
     require 'Repmaker'
@@ -73,6 +79,7 @@ function ReportMaker:gen_report()
 		rm.SessionName = self.session_name
 		rm.SessionDir = self.session_dir
 		rm.Template = self.template_name
+		rm.VulnSortMethod = self.template_sort
 		self:do_template('set_user')
 		if reptitle ~= '' then rm.ReportTitle = reptitle end
 		tab.status = 'Generating report...'
@@ -383,13 +390,17 @@ function ReportMaker:show_options()
 	r:add('<div name="panel-id2" class="tab" selected>') -- panel 2
 	r:add('<table width="100%" height="100%"><tr>')
 	r:add('<td width="40%" valign="top">')
-	r:add('<fieldset style="height:100%;"><legend style="color:black">Report Details for: '..self.session_name..'</legend>')
+	r:add('<fieldset style="height:450px;"><legend style="color:black">Report Details for: '..self.session_name..'</legend>')
 	r:add('<div style="width:*;padding-right:5px;">')
 	r:add('Report Title:<br><input type="text" id="report_title" style="width:*;" value="'..ctk.html.escape(report_title)..'"><br><br>')
 	r:add([[Notes:<br><plaintext id="usernotes" style="width:*;height:200px;" onchange="ReportMaker:save_xmlfield('user notes','usernotes')">]]..ctk.html.escape(ReportMaker:get_xmlfield('user notes'))..[[</plaintext><br>]])
 	r:add([[Footer:<br><plaintext id="footer" style="width:*;height:200px;" onchange="ReportMaker:save_xmlfield('footer','footer')">]]..ctk.html.escape(ReportMaker:get_xmlfield('footer'))..[[</plaintext>]])
 	r:add('</div>')
 	r:add('</fieldset>')
+	r:add('Choose a vulnerability sorting method:<br>')
+	r:add([[<input type="radio" id="templatesort" onclick="ReportMaker:set_templatesort('CVSS3')" checked>CVSS3<br>]])
+	r:add([[<input type="radio" id="templatesort" onclick="ReportMaker:set_templatesort('CVSS2')">CVSS2<br>]])
+	r:add([[<input type="radio" id="templatesort" onclick="ReportMaker:set_templatesort('4STEP')">Four Step (High, Medium, Low, Info)<br><br>]])
 	r:add('</td>')
 	r:add('<td width="60%" valign="top">')
 	r:add('<fieldset style="height:100%;"><legend style="color:black">Template</legend>')
@@ -413,6 +424,7 @@ function ReportMaker:show_options()
 	browser.newtabx(j)
 	r:release()
 	self:set_template(self.default_template)
+	self:set_templatesort(self.default_template_sort)
 end
 
 function ReportMaker:loadtab(s)

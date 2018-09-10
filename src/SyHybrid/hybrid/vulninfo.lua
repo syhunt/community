@@ -19,6 +19,7 @@ function VulnInfo:replayattack(v)
 end
 
 function VulnInfo:load(t)
+  require "SyCVSS"
   debug.print('Loading vuln info...')
   self.vuln = t
   self.page = SyHybrid:getfile('hybrid/vulninfo.html')
@@ -28,10 +29,6 @@ function VulnInfo:load(t)
   pset.table = self.uitable
   pset.noreload = true
   browser.loadpagex(pset)
-  --if browser.bottombar.uix ~= self.uitable then
-  --  browser.bottombar:loadx(html,self.uitable)
-  --end
-  --browser.bottombar:eval('ClearProfile();')
   local ui = self.ui
   ui.checkname.value = t.checkname
   ui.risk.value = t.risk
@@ -44,4 +41,6 @@ function VulnInfo:load(t)
   ui.rt_solution.value = t.recommendations
   ui.rt_vulncode.value = t.vulncode
   ui.checklog.value = t.checklog
+  ui.cvss3score.value = cvssutils.cvss3_vectortoscore(t.ref_cvss3_vector).basescoreseverity
+  ui.cvss3vector.value = ' ('..t.ref_cvss3_vector..')'
 end
