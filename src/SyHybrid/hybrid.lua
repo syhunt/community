@@ -1,6 +1,5 @@
 SyHybrid = extensionpack:new()
 SyHybrid.filename = 'SyHybrid.scx'
-SyHybrid.SessionManager = function() SessionManager:loadtab(true) end
 SyHybrid.ViewCatSense = function() tab:loadx(catsense_analyze(tab.source,tab.url)) end
 
 function SyHybrid:Init()
@@ -9,6 +8,7 @@ function SyHybrid:Init()
 	browser.setinitmode('syhuntcode','SyhuntCode:Load()')
 	browser.setinitmode('syhuntdynamic','SyhuntDynamic:Load()')
 	browser.setinitmode('syhuntinsight','SyhuntInsight:Load()')
+	browser.setinitmode('syhuntsesman','SyHybrid:SessionManager()')
 
 	-- Inserts new toolbar menu options for each mode
 	local ct_html = "<li id='tnewsyhuntcodetab' style='foreground-image: url(SyHybrid.scx#images\\16\\code.png)' onclick='SyhuntCode:NewTab()'>New Code Tab</li>"
@@ -85,15 +85,26 @@ function SyHybrid:GetOptionsHTML(options)
 	return res
 end
 
+function SyHybrid:SetHybridMode()
+    local mainexe = app.dir..'SyHybrid.exe'
+    --app.seticonfromres('SYHUNTICON')
+    app.seticonfromfile(mainexe)
+    browser.info.fullname = 'Syhunt Hybrid'..' - ['..symini.info.modename..']'
+    browser.info.name = 'Hybrid'..' - ['..symini.info.modename..']'
+    browser.info.exefilename = mainexe
+    browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntHybrid'
+end
+
+function SyHybrid:SessionManager()
+    if browser.info.initmode == 'syhuntsesman' then
+      self:SetHybridMode()
+    end
+    SessionManager:loadtab(true)
+end
+
 function SyHybrid:LoadLauncher()
-  local mainexe = app.dir..'SyHybrid.exe'
-	self:NewTab()
-	--app.seticonfromres('SYHUNTICON')
-  app.seticonfromfile(mainexe)
-	browser.info.fullname = 'Syhunt Hybrid'..' - ['..symini.info.modename..']'
-	browser.info.name = 'Hybrid'..' - ['..symini.info.modename..']'
-	browser.info.exefilename = mainexe
-	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntHybrid'
+    self:NewTab()
+    self:SetHybridMode()
 end
 
 function SyHybrid:NewTab()
