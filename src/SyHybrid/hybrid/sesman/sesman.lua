@@ -4,27 +4,37 @@ SessionManager = {
  title = 'Session Manager'
 }
 
+function SessionManager:add_sessiondetails(r, sesname, iscomp)
+  local details = symini.getsessiondetails(sesname)
+  local stfontcolor = 'black'
+  if details.resultsdesc == 'Vulnerable' then
+    stfontcolor = 'red'
+  end
+  if details.resultsdesc == 'Secure' then
+    stfontcolor = 'green'
+  end
+  r:add('<fieldset><legend style="color:black">'..sesname..'</legend>')
+  r:add('Date: '..details.datetime..'<br>')
+  r:add('Target(s): '..details.targetdesc..'<br>')
+  r:add('Hunt Method: '..details.huntmethod..'<br>')
+  r:add('Vulnerability Count: '..details.vulncount..'<br>')
+  r:add('Status: <font color='..stfontcolor..'><b>'..details.resultsdesc..'</b></font>')
+  r:add('<p align="right">')
+  r:add([[<button onclick="ReportMaker:loadtab(']]..sesname..[[')">Generate Report</button>]])
+  if iscomp == false then
+    r:add([[<button onclick="SessionManager:delsession(']]..sesname..[[')">Delete</button>]])
+  end
+  r:add('</p>')
+  r:add('</fieldset><br>')
+end
+
 function SessionManager:show_sessiondetails(sesname)
  local details = symini.getsessiondetails(sesname)
  local sesdir = symini.info.sessionsdir
  local r = ctk.string.list:new()
   r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
-  r:add('<fieldset><legend style="color:black">'..sesname..'</legend>')
-  r:add('Date: '..details.datetime..'<br>')
-  if details.sourcedir ~= '' then
-   r:add('Target(s): '..details.sourcedir..'<br>')
-  elseif details.targetfile ~= '' then
-   r:add('Target(s): '..details.targetfile..'<br>')
-  else
-   r:add('Target(s): '..details.targets..' ('..details.ports..')<br>')
-  end
-  r:add('Hunt Method: '..details.huntmethod..'<br>')
-  r:add('Status: '..details.resultsdesc)
-  r:add('<p align="right">')
-  r:add([[<button onclick="ReportMaker:loadtab(']]..sesname..[[')">Generate Report</button>]])
-  r:add([[<button onclick="SessionManager:delsession(']]..sesname..[[')">Delete</button>]])
-  r:add('</p>')
-  r:add('</fieldset><br>')
+  self:add_sessiondetails(r, sesname, false)
+  
   r:add('Vulnerabilities:')
   r:add('<div style="width:100%%;height:100%%;">')
   r:add('<widget type="select" style="padding:0;">')
@@ -39,8 +49,12 @@ function SessionManager:show_sessiondetails(sesname)
     local vname=ctk.html.escape(v:curgetvalue('vname'))
     local vpath=ctk.html.escape(v:curgetvalue('vpath'))
     local vpars=ctk.html.escape(v:curgetvalue('vpars'))
+    local vpath_desc = vpath
     local vpath_hex = ctk.convert.strtohex(v:curgetvalue('vpath'))
-    r:add('<tr role="option" ><td>'..vname..'</td><td><a href="#" onclick="browser.showurl(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..v:curgetvalue('vrisk')..'</td></tr>')
+    if details.huntmethod == 'Source Code Scan' then
+      vpath_desc = ctk.string.after(vpath_desc,'http://127.0.0.1')
+    end
+    r:add('<tr role="option" ><td>'..vname..'</td><td><a href="#" onclick="browser.showurl(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath_desc..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..v:curgetvalue('vrisk')..'</td></tr>')
    end
   end
   v:release()
@@ -48,12 +62,125 @@ function SessionManager:show_sessiondetails(sesname)
   r:add('</table>')
   r:add('</widget>')
   r:add('</div>')
+  
   local j = {}
   j.title = 'Session Details - '..sesname
-  j.icon = 'SyHybrid.scx#images\\icon_dast.png'
+  j.icon = 'url(SyHybrid.scx#images\\icon_dast.png)'
   j.html = r.text
   browser.newtabx(j)
- r:release()
+  r:release()
+end
+
+function SessionManager:save_comparison(basesesname,secondsesname)
+  local sesdir = symini.info.sessionsdir
+  local fn = 'Comparison '..basesesname..'vs'..secondsesname..'.html'
+  local srcfile = sesdir..basesesname..'\\'..fn
+  local destfile = app.savefile('Comparison results (*.html)|*.html','html',fn)
+  if destfile ~= '' then  
+    ctk.file.copy(srcfile, destfile)
+    browser.newtab(destfile)
+  end
+end
+
+function SessionManager:comparesessions(basesesname,secondsesname)
+  local bdetails = symini.getsessiondetails(basesesname)
+  local sdetails = symini.getsessiondetails(secondsesname)
+  local sesdir = symini.info.sessionsdir
+  local bothcode = false
+  local r = ctk.string.list:new()
+  
+  if bdetails.huntmethod == sdetails.huntmethod then
+    if bdetails.huntmethod == 'Source Code Scan' then
+      bothcode = true
+    end
+  end
+  
+  r:add('<html>')
+  r:add('<head>')
+  r:add('<title>Syhunt Session Comparison Results</title>')
+  r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
+  r:add('<!--repstyle-->')
+  r:add('</head>')
+  r:add('<body>')
+  r:add('<table width="100%"><tr><td width="45%">')
+  self:add_sessiondetails(r, basesesname, true)
+  r:add('</td><td>&nbsp;<b>VS</b>&nbsp;</td><td width="45%">')
+  self:add_sessiondetails(r, secondsesname, true)
+  r:add('</td></tr></table>')
+
+  r:add('Vulnerabilities:')
+  r:add('<div style="width:100%%;height:100%%;">')
+  r:add('<widget type="select" style="padding:0;">')
+  r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
+  r:add('<tr><th width="20%">Description</th><th width="30%">Location</th><th width="20%">Affected Param(s)</th><th width="10%">Line(s)</th><th width="10%">Risk</th><th width="10%">Comparison Status</th></tr>')
+  v = ctk.string.loop:new()
+  v:load(symini.comparesessions(basesesname,secondsesname))
+   while v:parsing() do
+    local vname=ctk.html.escape(v:curgetvalue('vname'))
+    local vpath=ctk.html.escape(v:curgetvalue('vpath'))
+    local vpars=ctk.html.escape(v:curgetvalue('vpars'))
+    local vpath_desc = vpath
+    local vpath_hex = ctk.convert.strtohex(v:curgetvalue('vpath'))
+    local bgcolor = '#eeeeee'
+    if bothcode == true then
+      vpath_desc = ctk.string.after(vpath_desc,'http://127.0.0.1')
+    end
+    if v:curgetvalue('cmpstat') == 'removed' then
+      bgcolor = '#f3dddf'
+    end
+    if v:curgetvalue('cmpstat') == 'added' then
+      bgcolor = '#ecf7ea'
+    end
+    r:add('<tr role="option" bgcolor="'..bgcolor..'"><td>'..vname..'</td><td><a href="#" outhref="'..vpath..'" onclick="browser.showurl(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath_desc..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..v:curgetvalue('vrisk')..'</td><td>'..v:curgetvalue('cmpstat')..'</td></tr>')
+   end
+  v:release()
+  r:add('</table>')
+  r:add('</widget>')
+  r:add('</div>')
+  r:add('<p align="right"><button onclick="SessionManager:save_comparison([['..basesesname..']],[['..secondsesname..']])">Save Comparison As...</button></p>')
+  r:add('</body>')
+  r:add('</html>')
+  
+  local j = {}
+  j.title = 'Session Comparison - '..basesesname..' vs '..secondsesname
+  j.icon = 'url(SyHybrid.scx#images\\16\\diff.png)'
+  j.html = r.text
+  browser.newtabx(j)
+
+  local repstyle = [[
+  <style>
+  body { border:15px; font:normal 12px Tahoma; }
+  button { display:none; }
+  </style>
+  ]]
+  r.text = ctk.string.replace(r.text, '<!--repstyle-->',repstyle)
+  r.text = ctk.string.replace(r.text, '<a href="#" outhref','<a target="_out" href')
+  r.text = ctk.string.replace(r.text, 'onclick="browser.showurl','xonclick="browser.showurl')
+  r:savetofile(sesdir..basesesname..'\\Comparison '..basesesname..'vs'..secondsesname..'.html')  
+  r:release()
+end
+
+function SessionManager:comparechecked()
+ local e = self.ui.element
+ local repdir=symini.info.sessionsdir
+ local state = false
+ local p = ctk.string.loop:new()
+ local sl = ctk.string.list:new()
+ p:load(ctk.dir.getdirlist(repdir))
+ while p:parsing() do
+   e:select('input[session="'..p.current..'"]')
+   state=e.value
+   if state==true then
+    sl:add(p.current)
+   end
+  end
+ if sl.count == 2 then
+   self:comparesessions(sl:get(0),sl:get(1))
+ else
+   app.showmessage('Two sessions must be selected!')
+ end
+ sl:release()
+ p:release()
 end
 
 function SessionManager:load_session(name)
@@ -76,7 +203,7 @@ function SessionManager:checkuncheckall(state)
  local repdir=symini.info.sessionsdir
  local boolstate = false
  if state==1 then boolstate=true end
- p = ctk.string.loop:new()
+ local p = ctk.string.loop:new()
  p:load(ctk.dir.getdirlist(repdir))
  while p:parsing() do
   e:select('input[session="'..p.current..'"]')
@@ -114,7 +241,7 @@ function SessionManager:getcounticon(i)
  return icon
 end
 
-function SessionManager:add_session(sesname)
+function SessionManager:add_session(r, sesname)
  local details = symini.getsessiondetails(sesname)
  local sesnamehex = ctk.convert.strtohex(sesname)
  local icon = 'SyHybrid.scx#images/16/shield_tick.png'
@@ -151,8 +278,8 @@ end
 function SessionManager:loadtab(newtab)
  local html = SyHybrid:getfile('hybrid/sesman/list.html')
  local repdir=symini.info.sessionsdir
- r = ctk.string.list:new()
- p = ctk.string.loop:new()
+ local r = ctk.string.list:new()
+ local p = ctk.string.loop:new()
  p:load(ctk.dir.getdirlist(repdir))
  --[[
  r:add('<meta id="element">')
@@ -168,7 +295,7 @@ function SessionManager:loadtab(newtab)
  while p:parsing() do
   sesfile=repdir..'\\'..p.current..'\\_Main.jrm'
   if ctk.file.exists(sesfile) then
-   self:add_session(p.current)
+   self:add_session(r, p.current)
   end
  end
  --r:add('</widget>')
@@ -194,14 +321,13 @@ function SessionManager:deleteallchecked()
  local state = false
  local resp=app.ask_yn('Are you sure you want to delete the selected sessions?',self.title)
  if resp==true then 
-  p = ctk.string.loop:new()
+  local p = ctk.string.loop:new()
   p:load(ctk.dir.getdirlist(repdir))
   while p:parsing() do
    e:select('input[session="'..p.current..'"]')
    state=e.value
    if state==true then
     ctk.dir.delete(repdir..'\\'..p.current)
-    --if UI.SessionName == p.current then UI:NewSession() end
    end
   end
   p:release()
@@ -222,7 +348,6 @@ function SessionManager:delsession(sesname)
  if resp==true then 
   if repdir ~= '' then
    ctk.dir.delete(repdir..'\\'..sesname)
-   --if UI.SessionName == sesname then UI:NewSession() end
   end
   self:loadtab(false)
  end

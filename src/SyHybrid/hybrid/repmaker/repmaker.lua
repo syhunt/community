@@ -36,6 +36,7 @@ function ReportMaker:do_template(action)
 	self:do_tpl_item('Charts')
 	self:do_tpl_item('Flash Content')
 	self:do_tpl_item('Dynamic Content')
+	self:do_tpl_item('Comparison Info')	
 	self:do_tpl_item('Compliance Info')
 	self:do_tpl_item('Compliance (OWASP PHP Top 5)')
 	self:do_tpl_item('Compliance (OWASP Top 10)')
@@ -347,6 +348,7 @@ function ReportMaker:show_options()
 	local rep_options = [[
 	Choose a report template:<br>
 	<input type="radio" id="template" onclick="ReportMaker:set_template('Standard')" checked>Standard<br>
+	<input type="radio" id="template" onclick="ReportMaker:set_template('Comparison')">Comparison<br>
 	<input type="radio" id="template" onclick="ReportMaker:set_template('Compliance')">Compliance<br>
 	<input type="radio" id="template" onclick="ReportMaker:set_template('Complete')">Complete<br><br>
 	The following items will be included:<br>
@@ -360,6 +362,7 @@ function ReportMaker:show_options()
 	<tr role="option"><td><input type="checkbox" tplname="Charts" checked>Charts</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Flash Content">Flash Content</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Dynamic Content" checked>Dynamic Content</td></tr>
+	<tr role="option"><td><input type="checkbox" tplname="Comparison Info">Comparison Info</td></tr>	
 	<tr role="option"><td><input type="checkbox" tplname="Compliance Info">Compliance Info</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Compliance (OWASP PHP Top 5)" checked>Compliance (OWASP PHP Top 5)</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Compliance (OWASP Top 10)" checked>Compliance (OWASP Top 10)</td></tr>
