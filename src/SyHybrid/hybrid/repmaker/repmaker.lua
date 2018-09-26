@@ -41,7 +41,6 @@ function ReportMaker:do_template(action)
 	self:do_tpl_item('Compliance (OWASP PHP Top 5)')
 	self:do_tpl_item('Compliance (OWASP Top 10)')
 	self:do_tpl_item('Compliance (PCI)')
-	self:do_tpl_item('Compliance (SANS Top 20)')
 	self:do_tpl_item('Vulnerabilities')
 	self:do_tpl_item('High Risk Vulnerabilities')
 	self:do_tpl_item('Medium Risk Vulnerabilities')
@@ -367,7 +366,6 @@ function ReportMaker:show_options()
 	<tr role="option"><td><input type="checkbox" tplname="Compliance (OWASP PHP Top 5)" checked>Compliance (OWASP PHP Top 5)</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Compliance (OWASP Top 10)" checked>Compliance (OWASP Top 10)</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Compliance (PCI)" checked>Compliance (PCI)</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Compliance (SANS Top 20)" checked>Compliance (SANS Top 20)</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Vulnerabilities" checked>Vulnerabilities</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="High Risk Vulnerabilities" checked>High Risk Vulnerabilities</td></tr>
 	<tr role="option"><td><input type="checkbox" tplname="Medium Risk Vulnerabilities" checked>Medium Risk Vulnerabilities</td></tr>
