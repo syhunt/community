@@ -14,6 +14,7 @@ function AttackerProfile:ReconstructSession(ip)
 end
 
 function AttackerProfile:load(ip)
+  local icon = ''
   local tipak = extensionpack:new()
   tipak.filename = 'ToolInfo.pak'
   debug.print('Loading attacker profile: '..ip)
@@ -45,8 +46,14 @@ function AttackerProfile:load(ip)
   ui.atkcount.value = tostring(j.attackcount)
   ui.teccount.value = tostring(j.techniques_count)
   ui.toolcount.value = tostring(j.tools_count)
-  ui.country.value = ipcountry.country.names.en
-  ui.countryflag:setattrib('src','flags.pak#16\\'..string.lower(ipcountry.country.iso_code)..'.png')
+  if ipcountry ~= nil then
+    ui.country.value = ipcountry.country.names.en
+    icon = 'flags.pak#16\\'..string.lower(ipcountry.country.iso_code)..'.png'
+  else
+    ui.country.value = 'N/A'
+    icon = 'resources.pak#16\\icon_blank.png'
+  end
+  ui.countryflag:setattrib('src', icon)
   
   slp:load(j.tools)
   while slp:parsing() do

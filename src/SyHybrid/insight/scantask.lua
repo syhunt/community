@@ -16,7 +16,11 @@ function addattack(t)
   j.subitem3 = t.request
   j.subitem4 = tostring(t.statuscode)
   j.subitem5 = t.description
-  j.subitem6 = ipcountry.country.names.en
+  if ipcountry ~= nil then
+    j.subitem6 = ipcountry.country.names.en
+  else
+    j.subitem6 = 'N/A'
+  end  
   j.subitem7 = t.tooltitle
   j.subitem8 = t.ip
   j.imageindex = 0
