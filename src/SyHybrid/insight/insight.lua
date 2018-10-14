@@ -111,7 +111,8 @@ function SyhuntInsight:NewTab()
 	local newtab = browser.newtabx(j)
 	if newtab ~= '' then 
 	  tab:results_customize(cr)
-		browser.setactivepage(j.activepage)
+	  browser.setactivepage(j.activepage)
+	  self:ScanSelectedFile('')
 	end
 	return newtab
 end

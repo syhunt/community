@@ -1,0 +1,97 @@
+<html>
+<head>
+  <style>
+    body { margin:0; }
+    #logo { background-color: #72828a #72828a #c5cfcf #c5cfcf;} 
+    div.body 
+    {
+      font: system;
+      height:*;  // takes the rest of the view
+      padding:25px 10px 10px 10px;
+      flow:horizontal;     // two columns
+      border-spacing:10px; // with 20 px margin in between
+    }
+    
+    #left { width:20em; }    
+    
+    div.panel
+    {
+      padding: 0 10px 10px 10px;
+      margin-bottom:20px;
+    }
+    div.panel > caption
+    {
+      /*background-image: url(images/panel-caption-back.png);
+      background-repeat: expand stretch-left stretch-middle stretch-right; */
+      background-color: #72828a #72828a #c5cfcf #c5cfcf;
+      background-position: 3px 3px 3px 3px; // top right bottom left offsets/margins
+      padding:6px 6px;
+      color:white;
+      font-weight:bold;
+      position:relative;
+      top:-0.7em;
+      margin-bottom:-0.6em;
+    }
+        
+    div.panel :link { text-decoration:none; cursor:pointer; behavior:hyperlink; }
+    div.panel :link:hover { color:red; }
+    div.panel :link:active { text-decoration:none; }
+    div.panel :link:focus { color:orange; }
+    div.panel :link:tab-focus { text-decoration:double-underline; }
+    div.panel ul { padding: 0 6px; margin: 10px 0; }
+    div.panel li { display:block; margin: 2px 0; }
+    div.panel dl { padding: 0 6px; }
+    div.panel dt { font-weight:bold; margin-bottom:4px; font-size:14px; }
+    div.panel dt:not(:first-child) { border-top: 1px dotted #8b8368; margin-top:6px; padding-top:6px;}
+    div.panel dd { padding-left:12px; color:gray; }
+    
+    #recent-projects ul { border-bottom: 1px dashed #8b8368;}
+    #recent-projects table { margin:0 auto; }
+    #recent-projects table td:first-child { text-align:right; }
+    
+    button.launch { width:50px;margin-right:5px; height:16px; }
+    button.prefs { 
+       margin-right:5px; height:16px; 
+       width:16px; 
+       foreground-image: url(Resources.pak#16\icon_advanced.png); 
+       foreground-repeat:no-repeat;
+	   foreground-position: 50% 50%;       
+     }
+    dd.buttons { padding-top:10px; }
+    div.icon { float:left;padding-right:10px; }
+    
+  	img.shell-icon 
+    {
+	  width:16px;
+      height:16px;
+      behavior: shell-icon;
+      vertical-align:middle;
+	  }
+  </style>  
+<head>
+<body>
+  <div id="logo" width="100%">
+  <div style="padding-left:18px;"><img src="SyHybrid.scx#images\misc\syhunt-logo-white.png"></div>
+  </div>
+  <div .body>
+    <div .panel #apps style="border:0;">
+      <dl><include src="SyHybrid.scx#hybrid/launcher/startapps.html" /></dl>
+      <p style="text-align:right;"><a href="#" onclick="SyHybrid:SessionManager()">Past Sessions</a></p>
+    </div>
+    <div .panel #tools>
+      <dl><include src="SyHybrid.scx#hybrid/launcher/starttools.html" /></dl>
+    </div>
+    <div #left>
+      <div .panel #extratools>
+        <caption>Tools</caption>
+        <ul>
+        <include src="Professional.pak#hybrid/launcher/startextra.html" />
+<li href="#" onclick="SyHybrid:ShowConsole('sc')"><img class="shell-icon" src="Resources.pak#16\icon_consoleview.png"/> Sandcat Console</li>
+<li href="#" onclick="SyHybrid:ShowConsole('lua')"><img class="shell-icon" src="PenTools.scx#images\icon_lang_lua.png"/> Lua Console</li>
+        </ul>
+      </div>
+    </div>
+  </div> 
+<popup id="for-prefsbtn">Preferences</popup>
+</body>
+</html>

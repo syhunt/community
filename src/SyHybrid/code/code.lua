@@ -116,6 +116,7 @@ function SyhuntCode:NewTab()
 		tab:results_customize(cr)
         self:LoadProgressPanel()
 		tab:loadsourcetabs([[All,Alerts,"Key Areas",JavaScript,HTML,"Interesting Findings"]],aliases)
+		self:ScanFolder('')
 	end
 	return newtab
 end
@@ -203,7 +204,7 @@ function SyhuntCode:ScanFolder(huntmethod)
     end
   end
   if canscan == true then
-	  local dir = app.selectdir('Select a code directory to scan:')
+	  local dir = app.selectdir('Select a source code directory to scan:')
 	  if dir ~= '' then
   		prefs.save()
   		self:NewScan()

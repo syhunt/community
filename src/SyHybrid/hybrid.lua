@@ -108,7 +108,7 @@ function SyHybrid:LoadLauncher()
 end
 
 function SyHybrid:NewTab()
-	local html = SyHybrid:getfile('hybrid/launcher/launcher.html')
+	local html = SyHybrid:getfile('hybrid/launcher/startpage.html')
 	local j = {}
 	j.icon = 'url(SyHybrid.scx#images\\16\\launcher.png)'
 	j.title = 'Launcher'
