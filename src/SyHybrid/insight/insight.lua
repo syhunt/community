@@ -93,6 +93,13 @@ function SyhuntInsight:LoadAttackerProfile(ip)
   AttackerProfile:load(ip)
 end
 
+function SyhuntInsight:NewScanDialog()
+  local tab = self:NewTab()
+  if tab ~= '' then
+     self:ScanSelectedFile('')
+  end 
+end
+
 function SyhuntInsight:NewTab()
   local cr = {}
   cr.clickfunc = 'SyhuntInsight:LoadAttackerProfile'
@@ -112,7 +119,6 @@ function SyhuntInsight:NewTab()
 	if newtab ~= '' then 
 	  tab:results_customize(cr)
 	  browser.setactivepage(j.activepage)
-	  self:ScanSelectedFile('')
 	end
 	return newtab
 end

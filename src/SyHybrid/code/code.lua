@@ -92,6 +92,13 @@ function SyhuntCode:NewScan()
 	end
 end
 
+function SyhuntCode:NewScanDialog()
+  local tab = self:NewTab()
+  if tab ~= '' then
+     self:ScanFolder('')
+  end 
+end
+
 function SyhuntCode:NewTab()
     local cr = {}
     cr.clickfunc = 'SyhuntDynamic:LoadVulnDetails'
@@ -116,7 +123,6 @@ function SyhuntCode:NewTab()
 		tab:results_customize(cr)
         self:LoadProgressPanel()
 		tab:loadsourcetabs([[All,Alerts,"Key Areas",JavaScript,HTML,"Interesting Findings"]],aliases)
-		self:ScanFolder('')
 	end
 	return newtab
 end

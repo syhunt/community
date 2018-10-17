@@ -30,27 +30,12 @@ end
 
 function ReportMaker:do_template(action)
 	self.template_action = action
-	self:do_tpl_item('Organization Logo')
-	self:do_tpl_item('User Notes')
-	self:do_tpl_item('Session Details')
-	self:do_tpl_item('Charts')
-	self:do_tpl_item('Flash Content')
-	self:do_tpl_item('Dynamic Content')
-	self:do_tpl_item('Comparison Info')	
-	self:do_tpl_item('Compliance Info')
-	self:do_tpl_item('Compliance (OWASP PHP Top 5)')
-	self:do_tpl_item('Compliance (OWASP Top 10)')
-	self:do_tpl_item('Compliance (PCI)')
-	self:do_tpl_item('Vulnerabilities')
-	self:do_tpl_item('High Risk Vulnerabilities')
-	self:do_tpl_item('Medium Risk Vulnerabilities')
-	self:do_tpl_item('Low Risk Vulnerabilities')
-	self:do_tpl_item('Info Risk Vulnerabilities')
-	self:do_tpl_item('Request')
-	self:do_tpl_item('Response (Header)')
-	self:do_tpl_item('Response')
-	self:do_tpl_item('Link List')
-	self:do_tpl_item('Email List')
+	local ro = ctk.string.loop:new()
+	ro:load(rm.IncludeList)
+	while ro:parsing() do
+	  self:do_tpl_item(ro.current)
+    end
+	ro:release()
 end
 
 function ReportMaker:set_template(name)
@@ -337,6 +322,11 @@ function ReportMaker:save_xmlfield(field,inputname)
 end
 
 function ReportMaker:show_options()
+    require 'Repmaker'
+	local rm = SyRepmaker:new()
+	local options = rm.IncludeList
+	rm:release()
+	
 	local tabs_begin = [[
 	<div class="tabs">
 	<div class="strip" role="page-tab-list">
@@ -344,7 +334,7 @@ function ReportMaker:show_options()
 	<!div panel="panel-id1" role="page-tab"><!Editor><!/div>
 	</div>
 	]]
-	local rep_options = [[
+	local rep_options_html = [[
 	Choose a report template:<br>
 	<input type="radio" id="template" onclick="ReportMaker:set_template('Standard')" checked>Standard<br>
 	<input type="radio" id="template" onclick="ReportMaker:set_template('Comparison')">Comparison<br>
@@ -355,31 +345,22 @@ function ReportMaker:show_options()
 	<widget type="select" style="padding:0;">
 	<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>
 	<tr><td></td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Organization Logo" checked>Organization Logo</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="User Notes" checked>User Notes</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Session Details" checked>Session Details</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Charts" checked>Charts</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Flash Content">Flash Content</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Dynamic Content" checked>Dynamic Content</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Comparison Info">Comparison Info</td></tr>	
-	<tr role="option"><td><input type="checkbox" tplname="Compliance Info">Compliance Info</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Compliance (OWASP PHP Top 5)" checked>Compliance (OWASP PHP Top 5)</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Compliance (OWASP Top 10)" checked>Compliance (OWASP Top 10)</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Compliance (PCI)" checked>Compliance (PCI)</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Vulnerabilities" checked>Vulnerabilities</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="High Risk Vulnerabilities" checked>High Risk Vulnerabilities</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Medium Risk Vulnerabilities" checked>Medium Risk Vulnerabilities</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Low Risk Vulnerabilities" checked>Low Risk Vulnerabilities</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Info Risk Vulnerabilities" checked>Info Risk Vulnerabilities</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Request" checked>Request</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Response (Header)">Response (Header)</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Response">Response</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Link List">Link List</td></tr>
-	<tr role="option"><td><input type="checkbox" tplname="Email List">Email List</td></tr>
+	%reloptions%
 	</table>
 	</widget>
 	</div>
 	]]
+	
+	local rep_options = ctk.string.list:new()
+	local ro = ctk.string.loop:new()
+	ro:load(options)
+	while ro:parsing() do
+	  rep_options:add('<tr role="option"><td><input type="checkbox" tplname="'..ro.current..'">'..ro.current..'</td></tr>')
+	end
+	rep_options_html = ctk.string.replace(rep_options_html, '%reloptions%', rep_options.text)
+	ro:release()
+	rep_options:release()
+	
 	self.xmllist = ctk.dir.getfilelist(self.session_dir..'*.xrm')
 	local report_title = 'Syhunt Scanner Report'
 
@@ -405,7 +386,7 @@ function ReportMaker:show_options()
 	r:add('</td>')
 	r:add('<td width="60%" valign="top">')
 	r:add('<fieldset style="height:100%;"><legend style="color:black">Template</legend>')
-	r:add(rep_options)
+	r:add(rep_options_html)
 	r:add('</fieldset>')
 	r:add('</td>')
 	r:add('</tr></table><br>')

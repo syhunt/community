@@ -186,6 +186,13 @@ function SyhuntDynamic:NewScan(runinbg)
   end
 end
 
+function SyhuntDynamic:NewScanDialog()
+  local tab = self:NewTab()
+  if tab ~= '' then
+     self:NewScan(false)
+  end 
+end
+
 function SyhuntDynamic:NewTab()
   local cr = {}
   cr.clickfunc = 'SyhuntDynamic:LoadVulnDetails'
@@ -208,7 +215,6 @@ function SyhuntDynamic:NewTab()
       self:LoadProgressPanel()
 	  browser.setactivepage(j.activepage)
 	  app.update()
-	  self:NewScan(false)
 	end
 	return newtab
 end
