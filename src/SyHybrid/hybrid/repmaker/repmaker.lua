@@ -341,7 +341,7 @@ function ReportMaker:show_options()
 	<input type="radio" id="template" onclick="ReportMaker:set_template('Compliance')">Compliance<br>
 	<input type="radio" id="template" onclick="ReportMaker:set_template('Complete')">Complete<br><br>
 	The following items will be included:<br>
-	<div style="width:100%%;height:100%%;">
+	<div style="width:100%%;height:220px;">
 	<widget type="select" style="padding:0;">
 	<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>
 	<tr><td></td></tr>
@@ -372,11 +372,11 @@ function ReportMaker:show_options()
 	r:add('<div name="panel-id2" class="tab" selected>') -- panel 2
 	r:add('<table width="100%" height="100%"><tr>')
 	r:add('<td width="40%" valign="top">')
-	r:add('<fieldset style="height:450px;"><legend style="color:black">Report Details for: '..self.session_name..'</legend>')
+	r:add('<fieldset><legend style="color:black">Report Details for: '..self.session_name..'</legend>')
 	r:add('<div style="width:*;padding-right:5px;">')
 	r:add('Report Title:<br><input type="text" id="report_title" style="width:*;" value="'..ctk.html.escape(report_title)..'"><br><br>')
-	r:add([[Notes:<br><plaintext id="usernotes" style="width:*;height:200px;" onchange="ReportMaker:save_xmlfield('user notes','usernotes')">]]..ctk.html.escape(ReportMaker:get_xmlfield('user notes'))..[[</plaintext><br>]])
-	r:add([[Footer:<br><plaintext id="footer" style="width:*;height:200px;" onchange="ReportMaker:save_xmlfield('footer','footer')">]]..ctk.html.escape(ReportMaker:get_xmlfield('footer'))..[[</plaintext>]])
+	r:add([[Notes:<br><plaintext id="usernotes" style="width:*;height:120px;" onchange="ReportMaker:save_xmlfield('user notes','usernotes')">]]..ctk.html.escape(ReportMaker:get_xmlfield('user notes'))..[[</plaintext><br>]])
+	r:add([[Footer:<br><plaintext id="footer" style="width:*;height:120px;" onchange="ReportMaker:save_xmlfield('footer','footer')">]]..ctk.html.escape(ReportMaker:get_xmlfield('footer'))..[[</plaintext>]])
 	r:add('</div>')
 	r:add('</fieldset>')
 	r:add('Choose a vulnerability sorting method:<br>')
