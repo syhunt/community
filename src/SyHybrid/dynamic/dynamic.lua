@@ -298,3 +298,45 @@ function SyhuntDynamic:StopScan()
     tab.toolbar:eval('MarkAsStopped()')
   end
 end
+
+function SyhuntDynamic:AddToTargetList()
+  local url = app.showinputdialog('Enter URL:','')
+  if url ~= '' then
+    local item  = {}
+    item.url = self:NormalizeTargetURL(url)
+    PageMenu:AddURLLogItem(item, 'Targets Dynamic')
+  end
+  self:ViewTargetList(false)
+end
+
+function SyhuntDynamic:DoTargetListAction(action, itemid)
+  local item = PageMenu:GetURLLogItem(itemid, 'Targets Dynamic')
+  if item ~= nil then
+    if action == 'scan' then
+      prefs.set('syhunt.dynamic.options.target.url', item.url)
+      self:NewScanDialog()
+    end
+    if action == 'editprefs' then
+      self:EditSitePreferences(item.url)
+      self:ViewTargetList(false)
+    end
+  end
+end
+
+function SyhuntDynamic:ViewTargetList(newtab)
+ local t = {}
+ t.newtab = newtab
+ t.toolbar = 'SyHybrid.scx#dynamic/histview_tbtargets.html'
+ t.histname = 'Targets Dynamic'
+ t.tabicon = 'url(SyHybrid.scx#images\\16\\dynamic_bookmarks.png);'
+ t.readsiteprefs = true
+ t.style = [[
+  ]]
+ t.menu = [[
+  <li onclick="SyhuntDynamic:DoTargetListAction('scan','%i')">Scan Site...</li>
+  <li onclick="SyhuntDynamic:DoTargetListAction('editprefs','%i')">Edit Site Preferences...</li>
+  <hr/>
+  <li onclick="PageMenu:DeleteURLLogItem('%i','Targets Dynamic')">Delete</li>
+  ]]  
+ PageMenu:ViewURLLogFile(t)
+end
