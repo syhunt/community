@@ -270,6 +270,14 @@ function SessionManager:add_session(r, sesname)
  r:add([[<li onclick="SessionManager:show_sessiondetails(']]..sesname..[[')">View Vulnerabilities</li>]])
  r:add([[<li onclick="SessionManager:load_session(']]..sesname..[[')">Load In New Tab</li>]])
  r:add('<hr/>')
+ r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[')">Export Session As...</li>]]) 
+ r:add('<li>Debug')
+ r:add('<menu>')
+ r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[','dbgmain')">Export Main Data</li>]])
+ r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[','dbglog')">Export Log</li>]])
+ r:add('</menu>')
+ r:add('</li>')
+ r:add('<hr/>')
  r:add([[<li style="foreground-image: url(Resources.pak#16\icon_remove.png);" onclick="SessionManager:delsession(']]..sesname..[[')">Delete</li>]])
  r:add('</menu>')
  r:add('</tr>')
@@ -339,6 +347,25 @@ function SessionManager:actionmenuchanged()
  local ui = self.ui
  if ui.action.value=='delchecked' then
   self:deleteallchecked()
+ end
+end
+
+function SessionManager:export_session(sesname,mode)
+ local repdir=symini.info.sessionsdir
+ local sugfn = 'syhunt_'..sesname
+ local mode = mode or ''
+ local mask = '*.*'
+ if mode == 'dbgmain' then
+   mask = '*.json'
+   sugfn = sugfn..'_dbgmain'
+ end
+ if mode == 'dbglog' then
+   mask = '*.log'
+   sugfn = sugfn..'_dbglog'
+ end 
+ local destfile = app.savefile('Syhunt Session Export file (*.sse)|*.sse','sse',sugfn)
+ if destfile ~= '' then
+  ctk.dir.packtotar(repdir..'\\'..sesname,destfile,mask)
  end
 end
  
