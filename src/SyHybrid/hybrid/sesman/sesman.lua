@@ -350,6 +350,17 @@ function SessionManager:actionmenuchanged()
  end
 end
 
+function SessionManager:import_session()
+ local repdir=symini.info.sessionsdir
+ local srcfile = app.openfile('Syhunt Session Export file (*.sse)|*.sse','sse')
+ if ctk.file.exists(srcfile) == true then
+   local sesname = ctk.file.getname(srcfile)
+   sesname = ctk.string.before(sesname, '.sse')
+   ctk.dir.unpackfromtar(srcfile, repdir..'\\'..sesname)
+   self:loadtab(false)
+ end
+end
+
 function SessionManager:export_session(sesname,mode)
  local repdir=symini.info.sessionsdir
  local sugfn = 'syhunt_'..sesname
