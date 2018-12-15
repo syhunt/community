@@ -46,7 +46,14 @@ progress.vuln-prog-info {
 <tr><td .sub>Medium:</td><td><code .vuln-medium></code></td><td><progress .vuln-prog-medium maxvalue='100' value='0'/></td></tr>
 <tr><td .sub>Low:</td><td><code .vuln-low></code></td><td><progress .vuln-prog-low maxvalue='100' value='0'/></td></tr>
 <tr><td .sub>Info:</td><td><code .vuln-info></code></td><td><progress .vuln-prog-info maxvalue='100' value='0'/></td></tr>
-<tr><td><b>Vulnerable URLs:</b></td><td><code .vulnurls-count></code></td><td></td></tr>
+</table><br>
+<table width="100%">
+<tr><td><b>Detection:<b></td><td><code .vuln-count></code></td><td></td></tr>
+<tr><td .sub>Detected Web Technologies:</td><td><code .fingerprint-webtech-detected></code></td></tr>
+<tr><td .sub>OS Type:</td><td><code .fingerprint-os-type></code></td><td></td></tr>
+<tr><td .sub>Languages:</td><td><code .fingerprint-langs></code></td><td></td></tr>
+<tr><td .sub>Security Checks:</td><td><code .http-req-checks></code></td><td></td></tr>
+<tr><td .sub>Vulnerable URLs:</td><td><code .vulnurls-count></code></td><td></td></tr>
 </table>
 
 </td><td width="50%" valign="top">
@@ -55,7 +62,6 @@ progress.vuln-prog-info {
 <tr><td><b>Spidering</b></td><td></td></tr>
 <tr><td .sub>Duration:</td><td><code .spider-duration></code></td></tr>
 <tr><td .sub>Reached Depth:</td><td><code .spider-depth-reached></code></td></tr>
-<tr><td .sub>Detected Web Technologies:</td><td><code .webtech-detected></code></td></tr>
 <tr><td .sub>URLs:</td><td><code .spider-urls></code></td></tr>
 <tr><td .sub>URLs using POST:</td><td><code .spider-urls-post></code></td></tr>
 <tr><td .sub>URLs using Form Auth:</td><td><code .spider-urls-formauth></code></td></tr>
