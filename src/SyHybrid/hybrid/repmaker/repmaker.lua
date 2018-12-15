@@ -71,9 +71,11 @@ function ReportMaker:gen_report()
 		rm:savereport()
 		debug.print('report saved')
 		if self:can_open_report() then
-			browser.newtab(filename)
-			--browser.setactivepage('browser')
-			--tab:gotourl(filename)
+		    if rm.CanOpenInBrowser == true then
+			  browser.newtab(filename)
+			else
+			  ctk.file.exec(filename)
+			end
 		end
 		tab.status = ''
 	end
