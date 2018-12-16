@@ -160,6 +160,22 @@ function SyhuntDynamic:LoadTree(dir)
 	--tab:tree_loaddir(opt)
 end
 
+function SyhuntDynamic:GetTargetListHTML()
+  local histfile = browser.info.configdir..'Targets Dynamic'..'.sclist'
+  local html = ''
+  if ctk.file.exists(histfile) == true then
+    local slp = ctk.string.loop:new()
+    slp:loadfromfile(histfile)
+     while slp:parsing() do
+       local url = ctk.string.after(slp.current, 'url="')
+       url = ctk.string.before(url,'"')
+       html = html..'<li class="urlsetter" targeturl="'..url..'">'..url..'</li>'
+     end
+    slp:release()
+  end
+  return html
+end
+
 function SyhuntDynamic:NewScan(runinbg)
   canscan = true
   if runinbg == false then
@@ -170,6 +186,7 @@ function SyhuntDynamic:NewScan(runinbg)
   if canscan == true then
     prefs.set('syhunt.dynamic.options.target.editsiteprefs',false)
     local html = SyHybrid:getfile('dynamic/prefs_scan/prefs.html')
+    html = ctk.string.replace(html,'%dynamic_targets%',SyhuntDynamic:GetTargetListHTML())
     local ok = self:EditPreferences(html)
     if ok == true then
       local targeturl = prefs.get('syhunt.dynamic.options.target.url','')
@@ -304,13 +321,13 @@ function SyhuntDynamic:AddToTargetList()
   if url ~= '' then
     local item  = {}
     item.url = self:NormalizeTargetURL(url)
-    PageMenu:AddURLLogItem(item, 'Targets Dynamic')
+    HistView:AddURLLogItem(item, 'Targets Dynamic')
   end
   self:ViewTargetList(false)
 end
 
 function SyhuntDynamic:DoTargetListAction(action, itemid)
-  local item = PageMenu:GetURLLogItem(itemid, 'Targets Dynamic')
+  local item = HistView:GetURLLogItem(itemid, 'Targets Dynamic')
   if item ~= nil then
     if action == 'scan' then
       prefs.set('syhunt.dynamic.options.target.url', item.url)
@@ -336,7 +353,8 @@ function SyhuntDynamic:ViewTargetList(newtab)
   <li onclick="SyhuntDynamic:DoTargetListAction('scan','%i')">Scan Site...</li>
   <li onclick="SyhuntDynamic:DoTargetListAction('editprefs','%i')">Edit Site Preferences...</li>
   <hr/>
-  <li onclick="PageMenu:DeleteURLLogItem('%i','Targets Dynamic')">Delete</li>
+  <li onclick="HistView:DeleteURLLogItem('%i','Targets Dynamic')">Delete</li>
   ]]  
- PageMenu:ViewURLLogFile(t)
+ HistView = HistView or Sandcat:require('histview')  
+ HistView:ViewURLLogFile(t)
 end

@@ -1,7 +1,18 @@
 <div id="toolbar" class="toolbar">
 <div .button onclick="SyhuntDynamic:ViewTargetList(false)" style="foreground-image: @ICON_RELOAD" titleid="for-reload"/>
 <div .button onclick="SyhuntDynamic:AddToTargetList()" style="foreground-image: url(SyHybrid.scx#images\16\dynamic_bookmarks_add.png);" titleid="for-add"/>
+<div .sepv />
+<div #setmanmenu .button style="foreground-image: url(Resources.pak#16\icon_settings_man.png); behavior: ~ popup-menu;" titleid="for-setmanmenu" >6
+  <menu.popup id="setmanmenu-list">
+  <li onclick="HistView:ImportURLLogFile('Targets Dynamic','SyhuntDynamic:ViewTargetList(false)')">Import targets from file...</li>
+  <hr/>
+  <li onclick="HistView:ExportURLLogFile('Targets Dynamic')">Export targets to file...</li>
+  <hr/>  
+  <li onclick="HistView:ClearURLLogFile('Targets Dynamic','SyhuntDynamic:ViewTargetList(false)')">Clear target list</li>  
+  </menu>
+</div>
 </div>
 
 <popup id="for-reload">Reload</popup>
 <popup id="for-add">Add URL...</popup>
+<popup id="for-setmanmenu">Import/Export Targets...</popup>
