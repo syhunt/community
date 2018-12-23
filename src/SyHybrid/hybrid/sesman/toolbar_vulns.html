@@ -1,0 +1,26 @@
+<div id="toolbar" class="toolbar">
+<div .button onclick="SessionManager:checkuncheckall_vulns(1)" style="foreground-image: url(SyHybrid.scx#images\16\box_check.png);" titleid="for-checkall"/>
+<div #checkspecific .button style="foreground-image: url(SyHybrid.scx#images\16\risk_all.png); behavior: ~ popup-menu;" titleid="for-checkspecific" >6
+  <menu.popup id="checkspecific-list">
+  <li onclick="SessionManager:checkuncheckall_vulns(1,'high')">High</li>
+  <li onclick="SessionManager:checkuncheckall_vulns(1,'medium')">Medium</li>
+  <li onclick="SessionManager:checkuncheckall_vulns(1,'low')">Low</li>
+  <li onclick="SessionManager:checkuncheckall_vulns(1,'info')">Info</li>
+  </menu>
+</div>
+<div .sepv />
+<div .button onclick="SessionManager:checkuncheckall_vulns(0)" style="foreground-image: url(SyHybrid.scx#images\16\box_uncheck.png);" titleid="for-uncheckall"/>
+<div #uncheckspecific .button style="foreground-image: url(SyHybrid.scx#images\16\risk_all.png); behavior: ~ popup-menu;" titleid="for-uncheckspecific" >6
+  <menu.popup id="uncheckspecific-list">
+  <li onclick="SessionManager:checkuncheckall_vulns(0,'high')">High</li>
+  <li onclick="SessionManager:checkuncheckall_vulns(0,'medium')">Medium</li>
+  <li onclick="SessionManager:checkuncheckall_vulns(0,'low')">Low</li>
+  <li onclick="SessionManager:checkuncheckall_vulns(0,'info')">Info</li>
+  </menu>
+</div>
+</div>
+
+<popup id="for-checkall">Check All</popup>
+<popup id="for-checkspecific">Check By Risk</popup>
+<popup id="for-uncheckall">Uncheck All</popup>
+<popup id="for-uncheckspecific">Uncheck By Risk</popup>

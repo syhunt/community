@@ -32,7 +32,9 @@ richtext { color:black; }
  <widget .toolbar .generaltoolbar>
   <widget .tb-button onclick="VulnInfo:replayattack(VulnInfo.vuln)" title="Replay Attack"><img style="foreground-image: url(Resources.pak#16\icon_go.png);" /></widget>
   <widget .tb-button onclick="browser.newtab(VulnInfo.ui.locationtext.value)" title="Open URL in New Tab"><img style="foreground-image: url(Resources.pak#16\icon_opennewtab.png);" /></widget>
+  %issue_trackers%
  </widget>
+<input id="vulnfilename" type=text style="display:none;" value=""> 
 <table>
 <tr><td>Name:</td><td>&nbsp;</td><td><code id="checkname"></code></td></tr>
 <tr style="margin-bottom:2px;"><td>Location:</td><td>&nbsp;</td><td><input id="locationtext" type=text style="width:500px;" value="" readonly="true"></td></tr>

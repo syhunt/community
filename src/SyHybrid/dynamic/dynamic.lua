@@ -125,7 +125,6 @@ function SyhuntDynamic:LoadVulnDetails(filename)
   local ses = symini.session:new()
   ses.name = tab:userdata_get('session')
   vuln = ses:getvulndetails(filename)
-  --browser.showurl(url)
   ses:release()
   -- load the info screen
   if VulnInfo == nil then

@@ -4,7 +4,33 @@ SessionManager = {
  title = 'Session Manager'
 }
 
-function SessionManager:add_sessiondetails(r, sesname, iscomp)
+function SessionManager:submitselected_vulns(trackername)
+  local list = self:getlistofchecked_vulns(true)
+  if list == '' then
+    app.showmessage('You must select at least 1 vulnerability.')
+  else
+    TrackerManager:SubmitIssue_FromVulnFileList(trackername, list)
+  end
+end
+
+function SessionManager:gettrackermenuitems()
+  local list = TrackerManager:GetIssueTrackerList()
+  local menu = ctk.string.list:new()
+  local slp = ctk.string.loop:new()
+  slp:load(list)
+  while slp:parsing() do
+    local name = slp.current
+    local name_hex = ctk.convert.strtohex(name)
+    local app = TrackerManager:GetTrackerApp(name)
+    menu:add('<li onclick="SessionManager:submitselected_vulns(ctk.convert.hextostr([['..name_hex..']]))">Issue Tracker: '..ctk.html.escape(name)..' ('..app:upper()..')</li>')
+  end
+  local menuhtml = menu.text
+  menu:release()
+  slp:release()
+  return menuhtml
+end
+
+function SessionManager:add_sessiondetails(r, sesname, iscomparison)
   local details = symini.getsessiondetails(sesname)
   local stfontcolor = 'black'
   if details.resultsdesc == 'Vulnerable' then
@@ -19,10 +45,18 @@ function SessionManager:add_sessiondetails(r, sesname, iscomp)
   r:add('Hunt Method: '..details.huntmethod..'<br>')
   r:add('Vulnerability Count: '..details.vulncount..'<br>')
   r:add('Status: <font color='..stfontcolor..'><b>'..details.resultsdesc..'</b></font>')
+  r:add('<p align="left">')
+  if iscomparison == false then
+    r:add([[<button type="selector" menu="#trackerlist-items" style="width:60px;">Send To</button>]])
+    r:add([[<menu id="trackerlist-items" style="display:none;">]])
+    r:add(self:gettrackermenuitems())
+    r:add([[</menu>]])  
+  end
+  r:add('</p>')
   r:add('<p align="right">')
   r:add([[<button onclick="ReportMaker:loadtab(']]..sesname..[[')">Generate Report</button>]])
-  if iscomp == false then
-    r:add([[<button onclick="SessionManager:delsession(']]..sesname..[[')">Delete</button>]])
+  if iscomparison == false then
+    r:add([[<button onclick="SessionManager:delsession(']]..sesname..[[')">Delete Session</button>]])
   end
   r:add('</p>')
   r:add('</fieldset><br>')
@@ -31,44 +65,107 @@ end
 function SessionManager:show_sessiondetails(sesname)
  local details = symini.getsessiondetails(sesname)
  local sesdir = symini.info.sessionsdir
+ local cursesdir = sesdir..'\\'..sesname..'\\'
+ local vfilename_list = ctk.string.list:new()
  local r = ctk.string.list:new()
+ local hasvuln = false
   r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
   self:add_sessiondetails(r, sesname, false)
   
-  r:add('Vulnerabilities:')
+  r:add('Vulnerabilities: (Double-click an item for more details')
   r:add('<div style="width:100%%;height:100%%;">')
   r:add('<widget type="select" style="padding:0;">')
   r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
   r:add('<tr><th width="20%">Description</th><th width="30%">Location</th><th width="20%">Affected Param(s)</th><th width="10%">Line(s)</th><th width="10%">Risk</th></tr>')
   l = ctk.string.loop:new()
   v = ctk.string.loop:new()
-  l:load(ctk.dir.getfilelist(sesdir..'\\'..sesname..'\\*_Vulns.log'))
+  l:load(ctk.dir.getfilelist(cursesdir..'*_Vulns.log'))
   while l:parsing() do
-   v:load(ctk.file.getcontents(sesdir..'\\'..sesname..'\\'..l.current))
+   v:load(ctk.file.getcontents(cursesdir..l.current))
    while v:parsing() do
+    hasvuln = true
+    local vfilename = v:curgetvalue('f')
+    local vfilename_full_hex = ctk.convert.strtohex(cursesdir..v:curgetvalue('f'))
     local vname=ctk.html.escape(v:curgetvalue('vname'))
     local vpath=ctk.html.escape(v:curgetvalue('vpath'))
     local vpars=ctk.html.escape(v:curgetvalue('vpars'))
+    local vrisk=v:curgetvalue('vrisk')
+    local ricon = 'SyHybrid.scx#images/16/risk_'..vrisk..'.png'
     local vpath_desc = vpath
     local vpath_hex = ctk.convert.strtohex(v:curgetvalue('vpath'))
+    vfilename_list:add(vfilename)
     if details.huntmethod == 'Source Code Scan' then
       vpath_desc = ctk.string.after(vpath_desc,'http://127.0.0.1')
     end
-    r:add('<tr role="option" ><td>'..vname..'</td><td><a href="#" onclick="browser.showurl(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath_desc..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..v:curgetvalue('vrisk')..'</td></tr>')
+    r:add('<tr role="option" ondblclick="SyhuntDynamic:LoadVulnDetails(ctk.convert.hextostr([['..vfilename_full_hex..']]))"><td><input type="checkbox" vrisk="'..vrisk..'" vfilename="'..vfilename..'"><img .lvfileicon src="'..ricon..'">&nbsp;'..vname..'</td><td><a href="#" onclick="browser.showurl(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath_desc..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..vrisk..'</td></tr>')
    end
   end
   v:release()
   l:release()
+  
   r:add('</table>')
   r:add('</widget>')
   r:add('</div>')
   
   local j = {}
   j.title = 'Session Details - '..sesname
-  j.icon = 'url(SyHybrid.scx#images\\icon_dast.png)'
+  if hasvuln == false then
+    j.icon = 'url(SyHybrid.scx#images\\16\\shield_tick.png)'
+  else
+    j.icon = 'url(SyHybrid.scx#images\\16\\shield_exclamation.png)'
+  end
   j.html = r.text
-  browser.newtabx(j)
+  j.toolbar = 'SyHybrid.scx#hybrid\\sesman\\toolbar_vulns.html'
+  if browser.newtabx(j) ~= 0 then
+    tab:userdata_set('sessiondir',cursesdir)
+    tab:userdata_set('vfilename_list',vfilename_list.text)
+  end
   r:release()
+  vfilename_list:release()
+end
+
+function SessionManager:checkuncheckall_vulns(state,risk)
+ local e = self.ui.element
+ local boolstate = false
+ if state==1 then boolstate=true end
+ local p = ctk.string.loop:new()
+ p:load(tab:userdata_get('vfilename_list',''))
+ while p:parsing() do
+  e:select('input[vfilename="'..p.current..'"]')
+  if risk ~= nil then
+    if e:getattrib('vrisk') == risk then
+      e.value = boolstate
+    end
+  else
+    e.value = boolstate
+  end
+ end
+ p:release()
+end
+
+function SessionManager:getlistofchecked_vulns(fullfilename)
+ local sl = ctk.string.list:new()
+ local e = self.ui.element
+ local state = false
+ local sesdir = tab:userdata_get('sessiondir','')
+ fullfilename = fullfilename or false
+  local p = ctk.string.loop:new()
+  p:load(tab:userdata_get('vfilename_list',''))
+  while p:parsing() do
+   e:select('input[vfilename="'..p.current..'"]')
+   state=e.value
+   if state==true then
+    local name = p.current
+    if fullfilename == true then
+      name = sesdir..name
+    end
+    sl:add(name)
+   end
+  end
+  local checkedlist = sl.text  
+  p:release()
+  sl:release()
+  return checkedlist
 end
 
 function SessionManager:save_comparison(basesesname,secondsesname)

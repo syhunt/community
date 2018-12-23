@@ -18,6 +18,21 @@ function VulnInfo:replayattack(v)
   end
 end
 
+function VulnInfo:gettrackerbuttons()
+ local slp = ctk.string.loop:new()
+ slp:load(TrackerManager:GetIssueTrackerList())
+ local btns = ''
+ while slp:parsing() do
+  local tracker_hex = ctk.convert.strtohex(slp.current)
+  local tracker_escaped = ctk.html.escape(slp.current)
+  local app = TrackerManager:GetTrackerApp(slp.current)
+  app = ctk.html.escape(app:upper())
+  btns = btns..'<widget .tb-button onclick="TrackerManager:SubmitIssue_FromVulnFile(ctk.convert.hextostr([['..tracker_hex..']]),VulnInfo.ui.vulnfilename.value)" title="Send Issue To Tracker: '..tracker_escaped..' ('..app..')"><img style="foreground-image: url(SyHybrid.scx#images\\16\\bug_alt.png);" /></widget>'
+ end
+ slp:release()
+ return btns
+end
+
 function VulnInfo:load(t)
   require "SyCVSS"
   debug.print('Loading vuln info...')
@@ -25,11 +40,13 @@ function VulnInfo:load(t)
   self.page = SyHybrid:getfile('hybrid/vulninfo.html')
   local pset = {}
   pset.html = self.page
+  pset.html = ctk.string.replace(pset.html,'%issue_trackers%',self:gettrackerbuttons())
   pset.name = 'vulnerability info'
   pset.table = self.uitable
   pset.noreload = true
   browser.loadpagex(pset)
   local ui = self.ui
+  ui.vulnfilename.value = t.filename
   ui.checkname.value = t.checkname
   ui.risk.value = t.risk
   ui.locationtext.value = t.location

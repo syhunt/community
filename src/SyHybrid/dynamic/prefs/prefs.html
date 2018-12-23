@@ -13,6 +13,7 @@
       }
  }
 
+ $(#edit_targets).onClick = function() { Sandcat.RunLua("SyhuntDynamic:ViewTargetList()"); cancel_edit(); }
  $(#ok).onClick = function() { confirm_edit(); }
  $(#cancel).onClick = function() { cancel_edit(); }
  $(#btnadvjs).onClick = function() { this.popup( $(popup#advjs)); } 

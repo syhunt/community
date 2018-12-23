@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Issue Tracker Preferences</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#code\prefs_tracker\prefs.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+       Sandcat.PrefsSet("tracker.defaultapp","github");
+      }
+ }
+
+ $(#ok).onClick = function() { confirm_edit(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-github" accesskey="G" selected><center><img #icon_github><br>GitHub</center></div>
+</div>
+
+<!-- github tab begin-->
+<div name="panel-github" class="tab" selected>
+<fieldset><legend>GitHub Preferences</legend>
+<div .optgroup>
+<br><b>GitHub support is not available yet.</b>
+</div>
+</fieldset>
+</div>
+<!-- auth tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>
