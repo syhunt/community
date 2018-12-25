@@ -54,6 +54,14 @@ function SyHybridUser:ContactSupport()
 	r:release()
 end
 
+function SyHybridUser:IsOptionAvailable(warnuser)
+  local v = (symini.info.modename ~= 'Community Edition')
+  if warnuser == true and v == false then
+    app.showalert('This option is not available in the Community Edition.')
+  end
+  return v
+end
+
 function SyHybridUser:IsMethodAvailable(method,warnuser)
   local warnuser = warnuser or false
   local mode = symini.info.modename

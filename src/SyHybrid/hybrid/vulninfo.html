@@ -8,14 +8,6 @@ richtext { color:black; }
 <link rel="stylesheet" type="text/css" href="Common.pak#tabs.css">
 <link rel="stylesheet" type="text/css" href="Common.pak#widget.editor.css">
 
-<script type="text/tiscript">
- function ClearProfile() {
-   for(var e in $$("img[plat]")) e.remove();
-   for(var e in $$("option[tool]")) e.remove();
-   for(var e in $$("option[technique]")) e.remove();
- }
-</script>
-
 <div class="tabs">
 <div class="strip" role="page-tab-list">
 <div panel="panel-general" role="page-tab" selected>Description</div>
@@ -30,7 +22,7 @@ richtext { color:black; }
 
 <widget class="editor" toolbar="widget.generaltoolbar">
  <widget .toolbar .generaltoolbar>
-  <widget .tb-button onclick="VulnInfo:replayattack(VulnInfo.vuln)" title="Replay Attack"><img style="foreground-image: url(Resources.pak#16\icon_go.png);" /></widget>
+  <widget .tb-button onclick="VulnInfo:replayattack(VulnInfo.ui.vulnfilename.value)" title="Replay Attack"><img style="foreground-image: url(Resources.pak#16\icon_go.png);" /></widget>
   <widget .tb-button onclick="browser.newtab(VulnInfo.ui.locationtext.value)" title="Open URL in New Tab"><img style="foreground-image: url(Resources.pak#16\icon_opennewtab.png);" /></widget>
   %issue_trackers%
  </widget>

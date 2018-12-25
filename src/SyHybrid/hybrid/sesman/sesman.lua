@@ -9,7 +9,16 @@ function SessionManager:submitselected_vulns(trackername)
   if list == '' then
     app.showmessage('You must select at least 1 vulnerability.')
   else
-    TrackerManager:SubmitIssue_FromVulnFileList(trackername, list)
+    local sl = ctk.string.list:new()
+    sl.text = list
+    if sl.count == 1 then
+      -- no need to launch external task
+      TrackerManager:SubmitIssue_FromVulnFile(trackername, sl.text) 
+    else
+      -- launch external task to submit multiple issues
+      TrackerManager:SubmitIssue_FromVulnFileList(trackername, list) 
+    end
+    sl:release()
   end
 end
 
@@ -72,7 +81,7 @@ function SessionManager:show_sessiondetails(sesname)
   r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
   self:add_sessiondetails(r, sesname, false)
   
-  r:add('Vulnerabilities: (Double-click an item for more details')
+  r:add('Vulnerabilities: (Double-click an item for more details)')
   r:add('<div style="width:100%%;height:100%%;">')
   r:add('<widget type="select" style="padding:0;">')
   r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
@@ -97,7 +106,7 @@ function SessionManager:show_sessiondetails(sesname)
     if details.huntmethod == 'Source Code Scan' then
       vpath_desc = ctk.string.after(vpath_desc,'http://127.0.0.1')
     end
-    r:add('<tr role="option" ondblclick="SyhuntDynamic:LoadVulnDetails(ctk.convert.hextostr([['..vfilename_full_hex..']]))"><td><input type="checkbox" vrisk="'..vrisk..'" vfilename="'..vfilename..'"><img .lvfileicon src="'..ricon..'">&nbsp;'..vname..'</td><td><a href="#" onclick="browser.showurl(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath_desc..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..vrisk..'</td></tr>')
+    r:add('<tr role="option" ondblclick="SyhuntDynamic:EditVulnDetails(ctk.convert.hextostr([['..vfilename_full_hex..']]))"><td><input type="checkbox" vrisk="'..vrisk..'" vfilename="'..vfilename..'"><img .lvfileicon src="'..ricon..'">&nbsp;'..vname..'</td><td><a href="#" onclick="browser.showurl(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath_desc..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..vrisk..'</td></tr>')
    end
   end
   v:release()
@@ -117,6 +126,7 @@ function SessionManager:show_sessiondetails(sesname)
   j.html = r.text
   j.toolbar = 'SyHybrid.scx#hybrid\\sesman\\toolbar_vulns.html'
   if browser.newtabx(j) ~= 0 then
+    tab:userdata_set('session', sesname) 
     tab:userdata_set('sessiondir',cursesdir)
     tab:userdata_set('vfilename_list',vfilename_list.text)
   end

@@ -394,7 +394,7 @@ function ReportMaker:show_options()
 	r:add('</tr></table><br>')
 	r:add('</div>') -- panel2 end
 	r:add('<div name="panel-id1" class="tab">') -- panel 1
-	self:add_repdata()
+	--self:add_repdata()
 	r:add('</div>') -- panel 1 end
 	r:add('</div>') -- tabs end
 	r:add('<p align="right"><input type="checkbox" id="openrep" checked>Open report after generation&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="ReportMaker:gen_report()">Save Report</button></p>')

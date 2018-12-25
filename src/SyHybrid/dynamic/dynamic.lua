@@ -23,8 +23,8 @@ function SyhuntDynamic:ClearResults()
 	tab:runsrccmd('showmsgs',false)
 	tab.toolbar:eval('MarkReset();')
 	tab.status = ''
-	tab.icon = '@ICON_EMPTY'
-	tab.title = 'New Scan'
+	tab.icon = 'url(SyHybrid.scx#images\\16\\dynamic.png)'
+	tab.title = 'New Tab'
 	self:LoadProgressPanel()
   end
 end
@@ -120,17 +120,18 @@ function SyhuntDynamic:Load()
 	PageMenu.newtabscript = 'SyhuntDynamic:NewTab(false)'
 end
 
-function SyhuntDynamic:LoadVulnDetails(filename)
-  local vuln = {}
-  local ses = symini.session:new()
-  ses.name = tab:userdata_get('session')
-  vuln = ses:getvulndetails(filename)
-  ses:release()
-  -- load the info screen
+function SyhuntDynamic:EditVulnDetails(filename)
   if VulnInfo == nil then
     SyHybrid:dofile('hybrid/vulninfo.lua')
   end
-  VulnInfo:load(vuln)
+  VulnInfo:editvulnfile(filename)
+end
+
+function SyhuntDynamic:LoadVulnDetails(filename)
+  if VulnInfo == nil then
+    SyHybrid:dofile('hybrid/vulninfo.lua')
+  end
+  VulnInfo:loadvulnfile(filename)
 end
 
 function SyhuntDynamic.LoadURLDetails(url)
@@ -211,7 +212,7 @@ end
 
 function SyhuntDynamic:NewTab()
   local cr = {}
-  cr.clickfunc = 'SyhuntDynamic:LoadVulnDetails'
+  cr.clickfunc = 'SyhuntDynamic:EditVulnDetails'
   cr.columns = SyHybrid:getfile('dynamic/vulncols.lst')
 	local j = {}
 	if browser.info.initmode == 'syhuntdynamic' then

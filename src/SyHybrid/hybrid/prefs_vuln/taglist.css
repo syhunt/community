@@ -1,0 +1,71 @@
+  select.tag-list { 
+      padding:0; 
+      display:block; 
+      flow:horizontal; 
+      width:*; 
+      height:2.2em; 
+      overflow-x:scroll-indicator; 
+      overflow-y:none; 
+      vertical-align:middle;
+    }
+    select.tag-list > option { 
+      prototype:ArrowLabel; 
+      /*border:1px solid threedshadow;*/
+      background-color:#FFF; 
+      vertical-align:center;
+      width:max-intrinsic; 
+      height:*;
+      margin:3px; 
+      padding:1px 0.4em 0px 0.7em;
+      hit-margin:3px 6px;
+    }
+    select.tag-list > option:current 
+    { 
+      background-color:threeddarkshadow; 
+      color:highlighttext;  
+    }
+    select.tag-list > option[value='high']:current 
+    { 
+      background-color:#d00000; 
+      color:highlighttext;  
+    }        
+    select.tag-list > option[value='medium']:current 
+    { 
+      background-color:#d07c00; 
+      color:highlighttext;  
+    }    
+    select.tag-list > option[value='low']:current 
+    { 
+      background-color:#d0d000; 
+      color:highlighttext;  
+    }   
+    select.tag-list > option[value='info']:current 
+    { 
+      background-color:#3d80e2; 
+      color:highlighttext;  
+    }    
+    select.tag-list:focus > option:current 
+    { 
+      background-color:highlight; 
+      color:highlighttext;  
+    }
+    select.tag-list:focus > option[value='high']:current 
+    { 
+      background-color:#d00000; 
+      color:highlighttext;  
+    }        
+    select.tag-list:focus > option[value='medium']:current 
+    { 
+      background-color:#d07c00; 
+      color:highlighttext;  
+    }    
+    select.tag-list:focus > option[value='low']:current 
+    { 
+      background-color:#d0d000; 
+      color:highlighttext;  
+    }   
+    select.tag-list:focus > option[value='info']:current 
+    { 
+      background-color:#3d80e2; 
+      color:highlighttext;  
+    }  

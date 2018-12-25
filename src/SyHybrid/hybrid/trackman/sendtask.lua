@@ -1,6 +1,6 @@
 require "SyMini"
 
-task.caption = 'Issue Tracker Submission Task'
+task.caption = 'Issues Submission Task'
 local ses = symini.session:new()
 local hs = symini.hybrid:new()
 local itemfailed = false

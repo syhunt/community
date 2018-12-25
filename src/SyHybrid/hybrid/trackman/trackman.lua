@@ -44,10 +44,10 @@ function TrackerManager:SubmitIssue_FromVulnFileList(tracker, filenamelist)
 end
 
 function TrackerManager:SubmitIssue_FromVulnFile(tracker, filename)
-  local app = self:GetTrackerApp(tracker)
+  local trackerapp = self:GetTrackerApp(tracker)
   local issue = {}
   local ses = symini.session:new()
-  issue = ses:gettrackerissue(filename, app)
+  issue = ses:gettrackerissue(filename, trackerapp)
   issue.tracker = tracker
   ses:release()
   self:SubmitIssue(issue)
@@ -74,15 +74,17 @@ function TrackerManager:TestIssueTracker(name)
 end
 
 function TrackerManager:AddIssueTracker(appname)
-  local name = app.showinputdialog('Enter name:','')
-  name = ctk.file.cleanname(name)
-  if name ~= '' then
-    local item  = {}
-    item.name = name
-    item.url = appname
-    HistView:AddURLLogItem(item, 'Issue Trackers')
+  if SyHybridUser:IsOptionAvailable(true) == true then
+    local name = app.showinputdialog('Enter name:','')
+    name = ctk.file.cleanname(name)
+    if name ~= '' then
+      local item  = {}
+      item.name = name
+      item.url = appname
+      HistView:AddURLLogItem(item, 'Issue Trackers')
+    end
+    self:ViewIssueTrackers(false)
   end
-  self:ViewIssueTrackers(false)
 end
 
 function TrackerManager:DoIssueTrackerAction(action, itemid)
