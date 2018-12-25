@@ -13,6 +13,9 @@ function sendissuefromfile(tracker, filename)
   issue.tracker = tracker
   print('Sending issue: '..issue.summary..'...')
   local res = hs:tracker_sendissue(issue)
+  if res.alreadysent == true then
+    print('Already sent!')
+  end
   if res.success == false then
     itemfailed = true
     failed_count = failed_count + 1
