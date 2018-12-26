@@ -13,10 +13,23 @@
        sethandlers();
       }
  }
+ 
+ function GoToRefURL(url, value) {
+  if (value != "") {
+    exit_to_url(url + value);
+  } else {
+    Sandcat.ShowMessage("Reference is empty!");
+  }
+ }
 
  $(#ok).onClick = function() { confirm_edit(); }
  $(#cancel).onClick = function() { cancel_edit(); }
- $(#replay).onClick = function() { Sandcat.RunLua("VulnInfo:replayattack([["+$(#vulnfilename).value+"]])"); cancel_edit(); }
+ if ($(#replay) != undefined) {
+   $(#replay).onClick = function() { Sandcat.RunLua("VulnInfo:replayattack([["+$(#vulnfilename).value+"]])"); cancel_edit(); }
+ }
+ $(#btnrefcwe).onClick = function() { GoToRefURL("http://cwe.mitre.org/data/definitions/", $(#refcwe).value); }
+ $(#btnrefcve).onClick = function() { GoToRefURL("http://cve.mitre.org/cgi-bin/cvename.cgi?name=", $(#refcve).value); }
+ $(#btnlocation).onClick = function() { exit_to_url($(#locationurl).value); }
 </script>
 </head>
 <body marginwidth="0" marginheight="0">
@@ -48,7 +61,7 @@ Risk: <select class="tag-list" type="select" cid="data.risk">
 <div .sep/>
 Description: <plaintext cid="data.description" style="width:*;height:100px;"></plaintext>
 <div .sep/><br>
-Location (URL): <input type="text" cid="data.location">
+Location (URL): <input #locationurl type="text" cid="data.location">  <button #btnlocation>Go</button>
 <div .sep/>
 Location (Source): <input type="file-path" novalue="No source code file" filter="All files:*.*" cid="data.location_app_source">
 Line(s): <input type="text" cid="data.lines">
@@ -152,9 +165,9 @@ CVSS2 Vector: <input type="text" cid="data.references_cvss2_vector">
 <fieldset><legend>References</legend>
 <div .optgroup>
 <table>
-<tr><td>CWE: </td><td><input type="text" cid="data.references_cwe" style="width:50px;"></td></tr>
-<tr><td>CVE: </td><td><input type="text" cid="data.references_cve" style="width:50px;"></td></tr>
-<tr><td>OSVDB: </td><td><input type="text" cid="data.references_osvdb" style="width:50px;"></td></tr>
+<tr><td>CWE: </td><td><input #refcwe type="text" cid="data.references_cwe" style="width:50px;"> <button #btnrefcwe>Details...</button></td></tr>
+<tr><td>CVE: </td><td><input #refcve type="text" cid="data.references_cve" style="width:50px;"> <button #btnrefcve>Details...</button></td></tr>
+<tr><td>OSVDB: </td><td><input #refosvdb type="text" cid="data.references_osvdb" style="width:50px;"></td></tr>
 </table>
 </div>
 </fieldset>
