@@ -135,7 +135,6 @@ function SyhuntDynamic:LoadVulnDetails(filename)
 end
 
 function SyhuntDynamic.LoadURLDetails(url)
-  --app.showmessage(url)
   browser.setactivepage('response')
   local ses = symini.session:new()
   local req = {}
@@ -144,7 +143,9 @@ function SyhuntDynamic.LoadURLDetails(url)
   ses:release()
   tab:response_load(req)
   if req.isseccheck == true then
-    SyhuntDynamic:LoadVulnDetails(req.vulnfilename)
+    if ctk.url.crack(req.url).path ~= '' then
+      SyhuntDynamic:LoadVulnDetails(req.vulnfilename)
+    end
   end
 end
 
