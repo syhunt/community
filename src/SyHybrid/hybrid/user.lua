@@ -87,10 +87,15 @@ end
 function SyHybridUser:Register(warnlimit)
 	local k = app.showinputdialog('Enter your Pen-Tester Key:','')
 	if k ~= '' then
-		app.showmessagex(symini.setptk(k).resulthtml)
+	    local res = symini.setptk(k)
+		app.showmessagex(res.resulthtml)
+		if res.result == false then
+		  browser.exit()
+		end
 	else
 		if warnlimit then
-			app.showmessagesmpl('Syhunt is now running in restricted mode.')
+			app.showmessagesmpl('Syhunt needs a valid key to run.')
+			browser.exit()
 		end
 	end
 end

@@ -396,6 +396,7 @@ function SessionManager:loadtab(newtab)
  local r = ctk.string.list:new()
  local p = ctk.string.loop:new()
  p:load(ctk.dir.getdirlist(repdir))
+ p:reverse()
  --[[
  r:add('<meta id="element">')
  r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
