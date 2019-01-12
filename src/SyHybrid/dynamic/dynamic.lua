@@ -57,7 +57,8 @@ function SyhuntDynamic:EditNetworkPreferences()
 end
 
 function SyhuntDynamic:EditSitePreferences(url)
-  url = url or tab.url
+    url = url or tab.url
+    local res = false
 	if ctk.string.beginswith(string.lower(url),'http') then
 		local jsonfile = prefs.getsiteprefsfilename(url)
 		local slp = ctk.string.loop:new()
@@ -72,12 +73,14 @@ function SyhuntDynamic:EditSitePreferences(url)
 		t.id = 'syhuntsiteprefs'
 		t.options = hs.options
 		t.jsonfile = jsonfile
-		Sandcat.Preferences:EditCustomFile(t)
+		res = Sandcat.Preferences:EditCustomFile(t)
+		--app.showmessage(tostring(res))
 		hs:release()
 		slp:release()
 	else
 		app.showmessage('No site loaded.')
 	end
+	return res
 end
 
 function SyhuntDynamic:GenerateReport()
@@ -196,9 +199,11 @@ function SyhuntDynamic:NewScan(runinbg)
       if targeturl ~= '' then
         targeturl = self:NormalizeTargetURL(targeturl)
         if editsiteprefs == true then
-          self:EditSitePreferences(targeturl)
+          ok = self:EditSitePreferences(targeturl)
         end
-        self:ScanSite(runinbg,targeturl,huntmethod)
+        if ok == true then
+          self:ScanSite(runinbg,targeturl,huntmethod)
+        end
       end
     end
   end
@@ -318,10 +323,15 @@ function SyhuntDynamic:StopScan()
 end
 
 function SyhuntDynamic:AddToTargetList()
-  local url = app.showinputdialog('Enter URL:','')
-  if url ~= '' then
+  local d = {}
+  d.title = 'Add Dynamic Target'
+  d.name_caption = 'Name (eg: MySite)'
+  d.value_caption = 'URL'
+  local r = Sandcat.Preferences:EditNameValue(d)
+  if r.res == true then
     local item  = {}
-    item.url = self:NormalizeTargetURL(url)
+    item.name = r.name
+    item.url = self:NormalizeTargetURL(r.value)
     HistView:AddURLLogItem(item, 'Targets Dynamic')
   end
   self:ViewTargetList(false)
