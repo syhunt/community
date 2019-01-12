@@ -264,3 +264,12 @@ function SyhuntCode:StopScan()
     tab.toolbar:eval('MarkAsStopped()')
   end
 end
+
+function SyhuntCode:ViewVulnerabilities()
+  local sesname = tab:userdata_get('session','')
+  if sesname ~= '' then
+      SessionManager:show_sessiondetails(sesname)
+  else
+    app.showmessage('No session loaded.')
+  end
+end

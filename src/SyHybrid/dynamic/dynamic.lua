@@ -369,3 +369,12 @@ function SyhuntDynamic:ViewTargetList(newtab)
  HistView = HistView or Sandcat:require('histview')  
  HistView:ViewURLLogFile(t)
 end
+
+function SyhuntDynamic:ViewVulnerabilities()
+  local sesname = tab:userdata_get('session','')
+  if sesname ~= '' then
+      SessionManager:show_sessiondetails(sesname)
+  else
+    app.showmessage('No session loaded.')
+  end
+end
