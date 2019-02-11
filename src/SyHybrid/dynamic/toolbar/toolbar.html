@@ -71,6 +71,14 @@ $(#search).onKey = function(evt) {
    <hr/>
    <li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="SyhuntDynamic:GenerateReport()">Generate Report...</li>
    <li onclick="SyhuntDynamic:ViewVulnerabilities()">View Vulnerabilities</li>
+   <hr/>
+   <li>Miscellaneous
+     <menu>
+      <li onclick="SyhuntDynamic:CaptureCookie()">Save Page Session</li>
+      <hr/>
+      <li onclick="SyhuntDynamic:CaptureURLs()">Capture URLs</li>
+     </menu>
+   </li>
    </menu>
 	</div>
 	<div #navbarmenu .button style="foreground-image: url(Resources.pak#16\icon_menu.png); behavior: ~ popup-menu;" titleid="for-navbarmenu" >

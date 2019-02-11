@@ -5,11 +5,51 @@ function SyhuntDynamic:AddCommands()
 	console.addcmd('spider',"SyhuntDynamic:ScanThisSite('spider')",'Spiders the current site')
 end
 
-function SyhuntDynamic:CaptureURLs()
+function SyhuntDynamic:CaptureCookie(onlogscript)
+ if tab:hasloadedurl(true) then
+  local onlogscript = onlogscript or ''
+  tab:runluaonlog('done','SyhuntDynamic:CaptureCookieEnd() '..onlogscript)
+  tab:runjs("console.log(document.cookie);console.log('done');",tab.url,0)
+ end
+end
+
+function SyhuntDynamic:CaptureCookieEnd()
+  local cookie = tab.lastjslogmsg
+  local jsonfile = prefs.getsiteprefsfilename(tab.url)
+  local j = ctk.json.object:new()
+  if ctk.file.exists(jsonfile) == true then
+    j:loadfromfile(jsonfile)
+  end
+  j['site.syhunt.dynamic.lists.cookies'] = cookie
+  j:savetofile(jsonfile)
+  j:release()
+  tab.status = 'Page session details saved.'
+end
+
+function SyhuntDynamic:SaveCapturedURLs()
+ local destfile = app.savefile('Syhunt URL list (*.lst)|*.lst','lst','')
+ if destfile ~= '' then
+   local sl = ctk.string.list:new()
+   sl.text = tab.urllist
+   sl:savetofile(destfile)
+   sl:release()
+ end
+end
+
+function SyhuntDynamic:CaptureURLsEnd()
 	if tab:hasloadedurl(true) then
 		tab.captureurls = true
 		app.showmessage('URL Logger enabled.')
 	end
+end
+
+function SyhuntDynamic:CaptureURLs()
+    browser.setactivepage('browser')
+    local url = app.showinputdialog('Start URL:', '', 'Start URL')
+    tab.loadend = 'SyhuntDynamic:CaptureURLsEnd()'
+    if url ~= '' then
+      tab:gotourl(url)
+    end
 end
 
 function SyhuntDynamic:ClearResults()
@@ -305,12 +345,21 @@ function SyhuntDynamic:ScanSite(runinbg,url,method)
 	end
 end
 
-function SyhuntDynamic:ScanThisSite(method)
+-- Starts a scan against the loaded web page
+function SyhuntDynamic:ScanThisSite_Std(method)
 	if tab:hasloadedurl(true) then
 	  if SyHybridUser:IsMethodAvailable(method, true) then
-		  self:ScanSite(true,tab.url,method)
+		   prefs.set('syhunt.dynamic.options.target.url', tab.url)
+		   prefs.set('syhunt.dynamic.options.huntmethod', method)
+           self:NewScanDialog()
+		  --self:ScanSite(true,tab.url,method)
 		end
 	end
+end
+
+-- Starts a scan against the loaded web page and its cookie data
+function SyhuntDynamic:ScanThisSite(method)
+  self:CaptureCookie('SyhuntDynamic:ScanThisSite_Std("'..method..'")')
 end
 
 function SyhuntDynamic:StopScan()
