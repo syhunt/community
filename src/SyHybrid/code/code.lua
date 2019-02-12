@@ -22,6 +22,7 @@ function SyhuntCode:LoadSession(sesname)
   s.name = sesname
   local dir = s:getvalue('source code directory')
   if dir ~= '' then
+   tab:userdata_set('dir',dir)
    self:LoadTree(dir,s:getvalue('vulnerable scripts'))
   end
   if s.vulnerable then
@@ -80,9 +81,9 @@ end
 function SyhuntCode:NewScan()
   if self:IsScanInProgress(true) == false then
 	  tab:tree_clear()
-	  self.ui.dir.value = ''
 	  tab.source = ''
 	  tab:loadsourcemsgs('')
+	  tab:userdata_set('dir','')
 	  tab:userdata_set('session','')
       tab:userdata_set('taskid','')
 	  tab:runsrccmd('showmsgs',false)
@@ -132,8 +133,8 @@ function SyhuntCode:Search()
 	SearchSource:search(self.ui.search.value)
 end
 
-function SyhuntCode.OpenFile(f)
-	local file = SyhuntCode.ui.dir.value..'\\'..f
+function SyhuntCode:OpenFile(f)
+	local file = tab:userdata_get('dir','')..'\\'..f
 	local ext = ctk.file.getext(file)
 	if ctk.file.exists(file) then
 		tab.title = ctk.file.getname(f)
@@ -187,9 +188,8 @@ function SyhuntCode:ScanFile(f)
 end
 
 function SyhuntCode:LoadTree(dir,affscripts)
-	SyhuntCode.ui.dir.value = dir
 	tab.showtree = true
-	tab.tree_loaditem = SyhuntCode.OpenFile
+	tab.tree_loaditemfunc = 'SyhuntCode:OpenFile'
 	tab:tree_clear()
 	local opt = {}
 	opt.dir = dir..'\\'
@@ -214,6 +214,7 @@ function SyhuntCode:ScanFolder(huntmethod)
 	  if dir ~= '' then
   		prefs.save()
   		self:NewScan()
+  		tab:userdata_set('dir',dir)  		
   		self:LoadTree(dir,'')
   		local script = SyHybrid:getfile('code/scantask.lua')
   		local j = ctk.json.object:new()

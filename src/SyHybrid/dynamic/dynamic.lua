@@ -177,7 +177,7 @@ function SyhuntDynamic:LoadVulnDetails(filename)
   VulnInfo:loadvulnfile(filename)
 end
 
-function SyhuntDynamic.LoadURLDetails(url)
+function SyhuntDynamic:LoadURLDetails(url)
   browser.setactivepage('response')
   local ses = symini.session:new()
   local req = {}
@@ -187,14 +187,14 @@ function SyhuntDynamic.LoadURLDetails(url)
   tab:response_load(req)
   if req.isseccheck == true then
     if ctk.url.crack(req.url).path ~= '' then
-      SyhuntDynamic:LoadVulnDetails(req.vulnfilename)
+      self:LoadVulnDetails(req.vulnfilename)
     end
   end
 end
 
 function SyhuntDynamic:LoadTree(dir)
 	tab.showtree = true
-	tab.tree_loaditem = SyhuntDynamic.LoadURLDetails
+	tab.tree_loaditemfunc = 'SyhuntDynamic:LoadURLDetails'
 	tab:tree_clear()
 	local opt = {}
 	opt.dir = dir..'\\'
