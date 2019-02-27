@@ -4,6 +4,13 @@ SessionManager = {
  title = 'Session Manager'
 }
 
+function SessionManager:setsessionstatus(sesname,status)
+  local ses = symini.session:new()
+  ses.name = sesname
+  ses:setvalue('Status', status)
+  ses:release()
+end
+
 function SessionManager:submitselected_vulns(trackername)
   local list = self:getlistofchecked_vulns(true)
   if list == '' then

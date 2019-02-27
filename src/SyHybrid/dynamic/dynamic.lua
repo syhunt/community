@@ -364,10 +364,12 @@ end
 
 function SyhuntDynamic:StopScan()
   local tid = tab:userdata_get('taskid','')
+  local sesname = tab:userdata_get('session','')
   if tid ~= '' then
     browser.stoptask(tid,'User requested')
     tab.icon = '@ICON_STOP'
     tab.toolbar:eval('MarkAsStopped()')
+    SessionManager:setsessionstatus(sesname, 'Canceled')
   end
 end
 

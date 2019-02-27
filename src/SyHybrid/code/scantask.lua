@@ -2,6 +2,7 @@ require "SyMini"
 
 task.caption = 'Syhunt Code Task'
 task:setscript('ondblclick',"browser.showbottombar('task messages')")
+task:setscript('onstop',"SessionManager:setsessionstatus([["..params.sessionname.."]], 'Canceled')")
 runtabcmd('seticon','@ICON_LOADING')
 runtabcmd('runtbtis','MarkAsScanning();')
 runtabcmd('syncwithtask','1')

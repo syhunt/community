@@ -96,6 +96,7 @@ end
 
 task.caption = 'Syhunt Hybrid Task'
 task:setscript('ondblclick',"browser.showbottombar('task messages')")
+task:setscript('onstop',"SessionManager:setsessionstatus([["..params.sessionname.."]], 'Canceled')")
 
 -- if running in background mode, all runtabcmds will be ignored
 if parambool('runinbg',true) == true then
