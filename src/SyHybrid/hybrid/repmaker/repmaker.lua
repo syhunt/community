@@ -303,24 +303,29 @@ function ReportMaker:add_repdata()
 	-- vuln editor end
 end
 
-function ReportMaker:get_xmlfield(field)
-	local xml = GXMLIniList:new()
-	xml:loadfromfile(self.session_dir..'_Main.xrm')
-	local notes = xml:getvalue(field)
-	xml:release()
+function ReportMaker:get_jsonfield(field)
+	local j = ctk.json.object:new()
+	local fn = self.session_dir..'_Main.jrm'
+	if ctk.file.exists(fn) then
+	  j:loadfromfile(fn)
+	end
+	local notes = j['data.'..field]
+	j:release()
 	return notes
 end
 
-function ReportMaker:save_xmlfield(field,inputname)
+function ReportMaker:save_jsonfield(field,inputname)
 	local e = self.ui.element
-	local xml = GXMLIniList:new()
-	local fn = self.session_dir..'_Main.xrm'
-	xml:loadfromfile(fn)
+	local j = ctk.json.object:new()
+	local fn = self.session_dir..'_Main.jrm'
+	if ctk.file.exists(fn) then
+	  j:loadfromfile(fn)
+	end
 	e:select('plaintext[id="'..inputname..'"]')
 	local notes = e.value
-	xml:setvalue(field,notes)
-	xml:savetofile(fn)
-	xml:release()
+	j['data.'..field] = notes
+	j:savetofile(fn)
+	j:release()
 end
 
 function ReportMaker:show_options()
@@ -377,8 +382,8 @@ function ReportMaker:show_options()
 	r:add('<fieldset><legend style="color:black">Report Details for: '..self.session_name..'</legend>')
 	r:add('<div style="width:*;padding-right:5px;">')
 	r:add('Report Title:<br><input type="text" id="report_title" style="width:*;" value="'..ctk.html.escape(report_title)..'"><br><br>')
-	r:add([[Notes:<br><plaintext id="usernotes" style="width:*;height:120px;" onchange="ReportMaker:save_xmlfield('user notes','usernotes')">]]..ctk.html.escape(ReportMaker:get_xmlfield('user notes'))..[[</plaintext><br>]])
-	r:add([[Footer:<br><plaintext id="footer" style="width:*;height:120px;" onchange="ReportMaker:save_xmlfield('footer','footer')">]]..ctk.html.escape(ReportMaker:get_xmlfield('footer'))..[[</plaintext>]])
+	r:add([[Notes:<br><plaintext id="usernotes" style="width:*;height:120px;" onchange="ReportMaker:save_jsonfield('user_notes','usernotes')">]]..ctk.html.escape(ReportMaker:get_jsonfield('user_notes'))..[[</plaintext><br>]])
+	r:add([[Footer:<br><plaintext id="footer" style="width:*;height:120px;" onchange="ReportMaker:save_jsonfield('footer','footer')">]]..ctk.html.escape(ReportMaker:get_jsonfield('footer'))..[[</plaintext>]])
 	r:add('</div>')
 	r:add('</fieldset>')
 	r:add('Choose a vulnerability sorting method:<br>')
