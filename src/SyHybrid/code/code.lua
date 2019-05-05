@@ -80,6 +80,8 @@ end
 
 function SyhuntCode:NewScan()
   if self:IsScanInProgress(true) == false then
+      local ui = self.ui
+      ui.dir.value = ''
 	  tab:tree_clear()
 	  tab.source = ''
 	  tab:loadsourcemsgs('')
@@ -212,9 +214,11 @@ function SyhuntCode:ScanFolder(huntmethod)
   if canscan == true then
 	  local dir = app.selectdir('Select a source code directory to scan:')
 	  if dir ~= '' then
+	    local ui = self.ui
   		prefs.save()
   		self:NewScan()
-  		tab:userdata_set('dir',dir)  		
+  		tab:userdata_set('dir',dir)  	
+  		ui.dir.value = dir
   		self:LoadTree(dir,'')
   		local script = SyHybrid:getfile('code/scantask.lua')
   		local j = ctk.json.object:new()
