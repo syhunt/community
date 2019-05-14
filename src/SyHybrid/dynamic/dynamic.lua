@@ -320,6 +320,7 @@ function SyhuntDynamic:ScanSite(runinbg,url,method)
 		local menu = SyHybrid:getfile('dynamic/scantaskmenu.html')
 		local j = ctk.json.object:new()
 		local tid = 0
+		local stat = symini.checkinst()
 		j.sessionname = symini.getsessionname()
 		j.huntmethod = method
 		j.monitor = tab.handle
@@ -327,10 +328,10 @@ function SyhuntDynamic:ScanSite(runinbg,url,method)
 		j.starturl = url
 		j.runinbg = runinbg
 		menu = ctk.string.replace(menu,'%s',j.sessionname)
-		if symini.checkinst() then
+		if stat.result == true then
 			tid = tab:runtask(script,tostring(j),menu)
 		else
-			app.showmessage('Unable to run (no Pen-Tester Key found).')
+			app.showmessage(stat.resultstr)
 		end
 		if runinbg == false then
 		  -- Updates the tab user interface

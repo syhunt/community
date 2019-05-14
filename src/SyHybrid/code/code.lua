@@ -220,6 +220,7 @@ function SyhuntCode:ScanFolder(huntmethod)
   		tab:userdata_set('dir',dir)  	
   		ui.dir.value = dir
   		self:LoadTree(dir,'')
+  		local tid = 0
   		local script = SyHybrid:getfile('code/scantask.lua')
   		local j = ctk.json.object:new()
 	  	j.sessionname = symini.getsessionname()
@@ -232,8 +233,13 @@ function SyhuntCode:ScanFolder(huntmethod)
 	  	<li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="ReportMaker:loadtab('%s')">Generate Report</li>
 	  	]]
 	  	menu = ctk.string.replace(menu,'%s',j.sessionname)
-  		local tid = tab:runtask(script,tostring(j),menu)
-      tab:userdata_set('taskid',tid)
+	  	local stat = symini.checkinst()
+	  	if stat.result == true then
+  		    tid = tab:runtask(script,tostring(j),menu)
+		else
+			app.showmessage(stat.resultstr)
+		end
+        tab:userdata_set('taskid',tid)
   		j:release()
   		browser.setactivepage('results')
   	end

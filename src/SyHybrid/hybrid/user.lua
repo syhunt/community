@@ -5,8 +5,21 @@ function SyHybridUser:BuyNow()
 end
 
 function SyHybridUser:CheckInst()
-	if symini.checkinst() == false then
-		self:Register(true)
+    local stat = symini.checkinst()
+	if stat.result == false then
+	    app.showalert(stat.resultstr)
+	    if stat.offline == false then
+		  self:Register(true)
+		end
+	end
+end
+
+function SyHybridUser:GenerateWebAPIKey()
+    local k = symini.genwebapikey()
+    if k.result == true then
+	  app.showalerttext(k.key) 
+	else
+	  app.showalert('Make sure the web API server is running.')
 	end
 end
 
