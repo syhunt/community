@@ -1,9 +1,10 @@
 SyhuntCode = {}
 
 function SyhuntCode:Load()
-    local mainexe = app.dir..'SyCode.exe'
+    local mainexe = app.dir..'SyHybrid.dll'
+    local mainico = app.dir..'\\Packs\\Icons\\SyCode.ico'
 	self:NewTab()
-    app.seticonfromfile(mainexe)
+    app.seticonfromfile(mainico)
 	browser.info.fullname = 'Syhunt Code'
 	browser.info.name = 'Code'
 	browser.info.exefilename = mainexe

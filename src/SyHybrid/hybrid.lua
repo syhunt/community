@@ -87,9 +87,10 @@ function SyHybrid:GetOptionsHTML(options)
 end
 
 function SyHybrid:SetHybridMode()
-    local mainexe = app.dir..'SyHybrid.exe'
+    local mainexe = app.dir..'SyHybrid.dll'
+    local mainico = app.dir..'\\Packs\\Icons\\SyHybrid.ico'
     --app.seticonfromres('SYHUNTICON')
-    app.seticonfromfile(mainexe)
+    app.seticonfromfile(mainico)
     browser.info.fullname = 'Syhunt Hybrid'..' - ['..symini.info.modename..']'
     browser.info.name = 'Hybrid'..' - ['..symini.info.modename..']'
     browser.info.exefilename = mainexe

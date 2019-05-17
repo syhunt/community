@@ -150,9 +150,10 @@ function SyhuntDynamic:IsScanInProgress(warn)
 end
 
 function SyhuntDynamic:Load()
-  local mainexe = app.dir..'SyHybrid.exe'
+    local mainexe = app.dir..'SyHybrid.dll'
+    local mainico = app.dir..'\\Packs\\Icons\\SyDynamic.ico'
 	self:NewTab()
-	app.seticonfromfile(mainexe)
+	app.seticonfromfile(mainico)
 	browser.info.fullname = 'Syhunt Dynamic'
 	browser.info.name = 'Dynamic'
 	browser.info.exefilename = mainexe

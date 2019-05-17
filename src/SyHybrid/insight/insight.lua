@@ -2,9 +2,10 @@ SyhuntInsight = {}
 SyhuntInsight.logfilter = 'Web Server Log files|*.log;access_log*|All files (*.*)|*.*'
 
 function SyhuntInsight:Load()
-  local mainexe = app.dir..'SyInsight.exe'
+    local mainexe = app.dir..'SyHybrid.dll'
+    local mainico = app.dir..'\\Packs\\Icons\\SyInsight.ico'
 	self:NewTab()
-	app.seticonfromfile(mainexe)
+	app.seticonfromfile(mainico)
 	browser.info.fullname = 'Syhunt Insight'
 	browser.info.name = 'Insight'
 	browser.info.exefilename = mainexe
