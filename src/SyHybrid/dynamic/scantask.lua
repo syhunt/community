@@ -5,8 +5,8 @@ function updateprogress(pos,max)
 end
 
 function sitemapupdate(t)
-  runtabcmd('settreeurls', t.urls)
-  runtabcmd('setaffecteditems',hs.vulnurls)
+  runtabcmd('treeseturls', t.urls)
+  runtabcmd('treesetaffecteditems',hs.vulnurls)
 end
 
 function statsupdate(t)
@@ -43,7 +43,7 @@ function addvuln(v)
   j:release()
   --hs:logcustomalert(ctk.base64.encode(jsonstr))
   runtabcmd('resaddcustomitem', jsonstr)
-  runtabcmd('setaffecteditems',hs.vulnurls)
+  runtabcmd('treesetaffecteditems',hs.vulnurls)
 end
 
 function log(s)

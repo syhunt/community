@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>New Code Scan</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#code\prefs_scan\prefs.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+       update_targetoptions();
+      }
+ }
+ 
+ function update_targetoptions() {
+       if ($(#targettype).value == "dir") {
+         $(#targetdirarea).style["display"] = "block";
+         $(#targeturlarea).style["display"] = "none";
+       } else {
+         $(#targetdirarea).style["display"] = "none";
+         $(#targeturlarea).style["display"] = "block";       
+       }
+ }
+ 
+ function set_targeturl() {
+    $(#targeturl).value = this.attributes["targeturl"];
+   Sandcat.Debug("Updating targeturl with new value: "+$(#targeturl).value);
+   Sandcat.PrefsSet("syhunt.code.options.target.url",$(#targeturl).value);    
+ }
+
+ $(#ok).onClick = function() { confirm_edit(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+ $(#targettypedir).onMouse = function() { update_targetoptions(); }
+ $(#targettypeurl).onMouse = function() { update_targetoptions(); }
+ $(#edit_targets).onClick = function() { Sandcat.RunLua("SyhuntCode:ViewTargetList()"); cancel_edit(); }
+ 
+for(var e in $$("li[class='urlsetter']")) e.onClick = set_targeturl;
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-scan" accesskey="S" selected><center><img #icon_scan><br>Scan</center></div>
+</div>
+
+<!-- scan tab begin-->
+<div name="panel-scan" class="tab" selected>
+<fieldset><legend>Target</legend>
+<div .optgroup>
+Type:<br>
+<select #targettype class="tag-list" type="select" cid="syhunt.code.options.target.type">
+<option #targettypedir value="dir" selected>Local Directory</option>
+<option #targettypeurl value="url">GIT URL</option>
+</select><br><br>
+<div #targetdirarea>
+Source Directory:<br>
+<input #targetdir type="folder-path" novalue="Select Folder..." cid="syhunt.code.options.target.dir">
+</div>
+<div #targeturlarea>
+<table style="padding:0;margin:0;">
+<tr><td valign="top" style="padding-right:10px;">
+GIT URL:<br>
+<input #targeturl type="text" style="width:350px;" cid="syhunt.code.options.target.url"> <button #btntargetlist type="selector" menu="#targetlist-items">..</button>
+    <menu id="targetlist-items" style="display:none;">
+      <li #edit_targets>Edit target list...</li> 
+      <hr/>
+      %code_targets% 
+      <hr/>
+      <li>Vulnerable Repositories (Demo)
+       <menu>
+       <li class="urlsetter" targeturl="https://github.com/syhunt/vulnphp.git">PHP</li>
+       <li class="urlsetter" targeturl="https://github.com/syhunt/vulnjava-wavsep.git">Java</li>
+       <li class="urlsetter" targeturl="https://github.com/syhunt/vulnlua.git">Lua</li>
+       </menu>
+      </li>
+    </menu>
+</td><td valign="top">
+Branch:<br>
+<input #targetbranch type="text" style="width:50px;" cid="syhunt.code.options.target.branch">
+</td>
+</tr></table>
+</div>
+</div>
+</fieldset>
+<fieldset><legend>Hunt Method</legend>
+<div .optgroup>
+<select type="select" size=4 style="width:300px;" cid="syhunt.code.options.huntmethod">
+<option value="normal" selected>Code Scan (Default)</option>
+<option value="faultinj">Fault Injection</option>
+<option value="top5">Top 5 (Based on OWASP PHP Top 5)</option>
+<option value="sqlinj">SQL Injection</option>
+<option value="xss">Cross-Site Scripting (XSS)</option>
+<option value="fileinc">File Inclusion</option>
+<option value="malscan">Malware Content</option>
+<option value="unvredir">Unvalited Redirects</option>
+</select>
+</div>
+</fieldset>
+</div>
+<!-- scan tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">Start Scan</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>

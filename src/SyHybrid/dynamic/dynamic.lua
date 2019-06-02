@@ -222,7 +222,7 @@ function SyhuntDynamic:GetTargetListHTML()
 end
 
 function SyhuntDynamic:NewScan(runinbg)
-  canscan = true
+  local canscan = true
   if runinbg == false then
     if self:IsScanInProgress(true) == true then
       canscan = false

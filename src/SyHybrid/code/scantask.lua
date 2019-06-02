@@ -6,7 +6,12 @@ task:setscript('onstop',"SessionManager:setsessionstatus([["..params.sessionname
 runtabcmd('seticon','@ICON_LOADING')
 runtabcmd('runtbtis','MarkAsScanning();')
 runtabcmd('syncwithtask','1')
-print('Scanning directory: '..params.codedir..'...')
+if params.targettype == 'dir' then
+  print('Scanning directory: '..params.codedir..'...')
+end
+if params.targettype == 'url' then
+  print('Scanning GIT URL: '..params.codeurl..'... Branch: '..params.codebranch)
+end
 
 function addvuln(v)
   print(string.format('Found: %s',v.checkname))
@@ -33,7 +38,7 @@ function addvuln(v)
   j:release()
   --hs:logcustomalert(ctk.base64.encode(jsonstr))
   runtabcmd('resaddcustomitem', jsonstr)
-  runtabcmd('setaffecteditems',cs.affectedscripts)
+  runtabcmd('treesetaffecteditems',cs.affectedscripts)
 end
 
 function statsupdate(t)
@@ -49,15 +54,31 @@ function updateprogress(pos,max)
 	task:setprogress(pos,max)
 end
 
+function dirscan(dir)
+  local j = ctk.json.object:new()
+  j.dir = dir
+  local jsonstr = tostring(j)
+  j:release()  
+  if params.targettype ~= 'dir' then
+    runtabcmd('treeloaddir', jsonstr)
+  end
+end
+
 cs = symini.code:new()
 cs.debug = true
+cs.ondirscan = dirscan
 cs.onlogmessage = log
 cs.onvulnfound = addvuln
 cs.onprogressupdate = updateprogress
 cs.onstatsupdate = statsupdate
 cs.sessionname = params.sessionname
 cs.huntmethod = params.huntmethod
-cs:scandir(params.codedir)
+if params.targettype == 'dir' then
+  cs:scandir(params.codedir)
+end
+if params.targettype == 'url' then
+  cs:scanurl({url=params.codeurl,dir=params.codedir,branch=params.codebranch})
+end
 task.status = 'Done.'
 
 if cs.vulnerable == true then
@@ -69,7 +90,7 @@ if cs.vulnerable == true then
 	end
 	printfailure(task.status)
 	runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_red.png)')
-	runtabcmd('setaffecteditems',cs.affectedscripts)
+	runtabcmd('treesetaffecteditems',cs.affectedscripts)
 	runtabcmd('runtbtis','MarkAsVulnerable();')
 else
 	print('Secure.')

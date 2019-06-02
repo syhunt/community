@@ -38,7 +38,24 @@ function SyhuntCode:LoadSession(sesname)
  end
 end
 
-function SyhuntCode:EditPreferences()
+function SyhuntCode:GetTargetListHTML()
+  local histfile = browser.info.configdir..'Target Repositories'..'.sclist'
+  local html = ''
+  if ctk.file.exists(histfile) == true then
+    local slp = ctk.string.loop:new()
+    slp:loadfromfile(histfile)
+     while slp:parsing() do
+       local url = ctk.string.after(slp.current, 'url="')
+       url = ctk.string.before(url,'"')
+       html = html..'<li class="urlsetter" targeturl="'..url..'">'..url..'</li>'
+     end
+    slp:release()
+  end
+  return html
+end
+
+function SyhuntCode:EditPreferences(html)
+	html = html or SyHybrid:getfile('code/prefs/prefs.html')
 	local slp = ctk.string.loop:new()
 	local t = {}
 	local cs = symini.code:new()
@@ -46,15 +63,16 @@ function SyhuntCode:EditPreferences()
 	while slp:parsing() do
 		prefs.regdefault(slp.current,cs:prefs_getdefault(slp.current))
 	end
-	t.html = SyHybrid:getfile('code/prefs/prefs.html')
+	t.html = html
 	t.html = ctk.string.replace(t.html,'%code_checks%',SyHybrid:GetOptionsHTML(cs.options_checks))
 	t.html = ctk.string.replace(t.html,'%code_mapping_checks%',SyHybrid:GetOptionsHTML(cs.options_checksmap))
 	t.id = 'syhuntcode'
 	t.options = cs.options
 	t.options_disabled = cs.options_locked
-	Sandcat.Preferences:EditCustom(t)
+	local res = Sandcat.Preferences:EditCustom(t)
 	cs:release()
 	slp:release()
+	return res
 end
 
 function SyhuntCode:IsScanInProgress(warn)
@@ -79,7 +97,7 @@ function SyhuntCode:LoadProgressPanel()
     tab:results_loadx(html)
 end
 
-function SyhuntCode:NewScan()
+function SyhuntCode:ClearResults()
   if self:IsScanInProgress(true) == false then
       local ui = self.ui
       ui.dir.value = ''
@@ -96,10 +114,40 @@ function SyhuntCode:NewScan()
 	end
 end
 
+function SyhuntCode:NewScan()
+  local canscan = true
+  if runinbg == false then
+    if self:IsScanInProgress(true) == true then
+      canscan = false
+    end
+  end
+  if canscan == true then
+    self:ClearResults()
+    local html = SyHybrid:getfile('code/prefs_scan/prefs.html')
+    html = ctk.string.replace(html,'%code_targets%',self:GetTargetListHTML())
+    local ok = self:EditPreferences(html)
+    if ok == true then
+      local target = {}
+      target.type = prefs.get('syhunt.code.options.target.type','dir')
+      if target.type == 'url' then
+        target.url = prefs.get('syhunt.code.options.target.url','')
+        target.branch = prefs.get('syhunt.code.options.target.branch','master')
+      end
+      if target.type == 'dir' then
+        target.dir = prefs.get('syhunt.code.options.target.dir','')
+      end
+      local huntmethod = prefs.get('syhunt.code.options.huntmethod','normal')
+        if ok == true then
+          self:ScanTarget(huntmethod, target)
+        end
+    end
+  end
+end
+
 function SyhuntCode:NewScanDialog()
   local tab = self:NewTab()
   if tab ~= '' then
-     self:ScanFolder('')
+     self:NewScan()
   end 
 end
 
@@ -203,7 +251,30 @@ function SyhuntCode:LoadTree(dir,affscripts)
 	tab.title = ctk.file.getname(dir)
 end
 
-function SyhuntCode:ScanFolder(huntmethod)
+function SyhuntCode:ScanFolder(huntmethod, dir)
+  dir = dir or app.selectdir('Select a source code directory to scan:')
+  if dir ~= '' then
+    local target = {}
+    target.type = 'dir'
+    target.dir = dir
+    self:ScanTarget(huntmethod, target)
+  end
+end
+
+function SyhuntCode:SetCodeDirectory(dir)
+  local ui = self.ui
+  if dir ~= '' then
+    tab:userdata_set('dir',dir)  	
+    ui.dir.value = dir
+    self:LoadTree(dir,'')
+  end
+end
+
+function SyhuntCode:ScanTarget(huntmethod, target)
+  huntmethod = huntmethod or 'normal'
+  target.dir = target.dir or symini.getsessioncodedir()
+  target.url = target.url or ''
+  target.branch = target.branch or 'master'
   local canscan = true
   if self:IsScanInProgress(true) == true then
     canscan = false
@@ -213,20 +284,18 @@ function SyhuntCode:ScanFolder(huntmethod)
     end
   end
   if canscan == true then
-	  local dir = app.selectdir('Select a source code directory to scan:')
-	  if dir ~= '' then
-	    local ui = self.ui
+	  if target ~= nil then
   		prefs.save()
-  		self:NewScan()
-  		tab:userdata_set('dir',dir)  	
-  		ui.dir.value = dir
-  		self:LoadTree(dir,'')
+  		self:SetCodeDirectory(target.dir)
   		local tid = 0
   		local script = SyHybrid:getfile('code/scantask.lua')
   		local j = ctk.json.object:new()
 	  	j.sessionname = symini.getsessionname()
   		tab:userdata_set('session',j.sessionname)
-  		j.codedir = dir..'\\'
+  		j.targettype = target.type
+  		j.codedir = target.dir..'\\'
+  		j.codeurl = target.url
+  		j.codebranch = target.branch
   		j.huntmethod = huntmethod
 		  local menu = [[
 		  <!--li onclick="browser.showbottombar('task messages')">View Messages</li-->
@@ -277,6 +346,50 @@ function SyhuntCode:StopScan()
     tab.toolbar:eval('MarkAsStopped()')
     SessionManager:setsessionstatus(sesname, 'Canceled')
   end
+end
+
+function SyhuntCode:AddToTargetList()
+  local d = {}
+  d.title = 'Add Code Target'
+  d.name_caption = 'Name (eg: MyProject)'
+  d.value_caption = 'GIT URL (eg: https://github.com/syhunt/vulnphp.git)'
+  local r = Sandcat.Preferences:EditNameValue(d)
+  if r.res == true then
+    local item  = {}
+    item.name = r.name
+    item.url = r.value
+    --item.url = SyhuntCode:NormalizeTargetURL(item.url)
+    HistView:AddURLLogItem(item, 'Target Repositories')
+  end
+  self:ViewTargetList(false)
+end
+
+function SyhuntCode:DoTargetListAction(action, itemid)
+  local item = HistView:GetURLLogItem(itemid, 'Target Repositories')
+  if item ~= nil then
+    if action == 'scan' then
+      prefs.set('syhunt.code.options.target.type', 'url')
+      prefs.set('syhunt.code.options.target.url', item.url)
+      self:NewScanDialog()
+    end
+  end
+end
+
+function SyhuntCode:ViewTargetList(newtab)
+ local t = {}
+ t.newtab = newtab
+ t.toolbar = 'SyHybrid.scx#code/histview_tbtargets.html'
+ t.histname = 'Target Repositories'
+ t.tabicon = 'url(SyHybrid.scx#images\\16\\code_bookmarks_url.png);'
+ t.style = [[
+  ]]
+ t.menu = [[
+  <li onclick="SyhuntCode:DoTargetListAction('scan','%i')">Scan Repository...</li>
+  <hr/>
+  <li onclick="HistView:DeleteURLLogItem('%i','Target Repositories')">Delete</li>
+  ]]  
+ HistView = HistView or Sandcat:require('histview')  
+ HistView:ViewURLLogFile(t)
 end
 
 function SyhuntCode:ViewVulnerabilities()
