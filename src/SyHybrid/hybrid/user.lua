@@ -24,12 +24,8 @@ function SyHybridUser:GenerateWebAPIKey()
 end
 
 function SyHybridUser:ContactSupport()
-  local ce = (symini.info.modename == 'Community Edition')
-  if ce == false then
-    browser.newtab('http://www.syhunt.com/en/?n=Syhunt.CustomerService')
-  else
-    browser.newtab('http://www.syhunt.com/en/?n=Syhunt.ContactUs')  
-  end
+  local d = symini.getptkdetails()
+  browser.newtab(d.supporturl)  
 end
 
 function SyHybridUser:ContactSupportOld()
