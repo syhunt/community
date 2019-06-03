@@ -122,6 +122,7 @@ hs.onmapupdate = sitemapupdate
 hs.onstatsupdate = statsupdate
 hs.onrequestdone = requestdone
 hs:start()
+hs.starturl_folre = false
 hs.starturl = params.starturl
 hs.urllist = params.urllist
 hs.huntmethod = params.huntmethod

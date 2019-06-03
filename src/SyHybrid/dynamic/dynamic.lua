@@ -237,8 +237,10 @@ function SyhuntDynamic:NewScan(runinbg)
       local targeturl = prefs.get('syhunt.dynamic.options.target.url','')
       local huntmethod = prefs.get('syhunt.dynamic.options.huntmethod','appscan')
       local editsiteprefs = prefs.get('syhunt.dynamic.options.target.editsiteprefs',false)
+      local autofollow = prefs.get('syhunt.dynamic.emulation.redirect.autofollowinstarturl', true)
       if targeturl ~= '' then
-        targeturl = self:NormalizeTargetURL(targeturl)
+        targeturl = self:NormalizeTargetURL(targeturl, {autofollow = autofollow})
+        prefs.set('syhunt.dynamic.options.target.url',targeturl)
         if editsiteprefs == true then
           ok = self:EditSitePreferences(targeturl)
         end
@@ -292,7 +294,9 @@ function SyhuntDynamic:LoadProgressPanel()
   tab:results_updatehtml(defstats)
 end
 
-function SyhuntDynamic:NormalizeTargetURL(url)
+function SyhuntDynamic:NormalizeTargetURL(url, options)
+  options.checkredir = options.checkredir or true
+  options.autofollow = options.autofollow or true
   local addproto = true
   if ctk.string.beginswith(string.lower(url),'http:') then
     addproto = false
@@ -301,6 +305,18 @@ function SyhuntDynamic:NormalizeTargetURL(url)
   end
   if addproto then
     url = 'http://'..url
+  end
+  if options.checkredir == true then
+    local redir = symini.checkurlredir(url)
+    if redir.result == true and redir.ondomain == false then
+      if options.autofollow == true then
+        url = redir.url
+      else
+        if app.ask_yn('Follow redirect (recommended) to ['..redir.url..']?') == true then
+          url = redir.url
+        end
+      end
+    end
   end
   return url
 end

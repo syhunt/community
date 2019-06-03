@@ -24,10 +24,19 @@ function SyHybridUser:GenerateWebAPIKey()
 end
 
 function SyHybridUser:ContactSupport()
-	local configfile=app.dir..'\\Config\\Smrtupd.xcfg'
-	local username=xmlinifile_readstring(configfile,'config','login','')
+  local ce = (symini.info.modename == 'Community Edition')
+  if ce == false then
+    browser.newtab('http://www.syhunt.com/en/?n=Syhunt.CustomerService')
+  else
+    browser.newtab('http://www.syhunt.com/en/?n=Syhunt.ContactUs')  
+  end
+end
+
+function SyHybridUser:ContactSupportOld()
+    local kdetails = symini.getptkdetails()
+	local username = kdetails.orgname
 	local r = ctk.string.list:new()
-	local ver = ctk.file.getver(app.dir..'\\SyHybrid.exe')
+	local ver = ctk.file.getver(app.dir..'\\SyHybrid.dll')
 	local redir = 'welcome'
 
 	r:add('<form method="POST" action="http://www.syhunt.com/index_forms.php" name="f">')
@@ -41,13 +50,14 @@ function SyHybridUser:ContactSupport()
 	r:add('<input type=hidden name=ptkey value="'..symini.getptk()..'">')
 	r:add('Syhunt Version: <b>'..ver..'</b><br><br>')
 	if self:IsValidUser(username) then
-		r:add('<input type=hidden name=name value=user:"'..username..'">')
-		r:add('<input type=hidden name=company value="-">')
-		r:add('<input type=hidden name=email value="not@needed">')
-		r:add('Username: <b>'..username..'</b><br><br>')
+		r:add('<input type=hidden name="name" value="licid:'..kdetails.licid..'">')
+		r:add('<input type=hidden name="company" value="'..kdetails.orgname..'">')
+		r:add('<input type=hidden name="email" value="not@needed">')
+		r:add('Organization: <b>'..username..'</b><br><br>')
+		r:add('License ID: <b>'..kdetails.licid..'</b><br><br>')
 	else
 		r:add('Name: <input type="text" name="name">&nbsp;<b>*</b><br>')
-		r:add('Company: <input type="text" name="company">&nbsp;<b>*</b><br>')
+		r:add('Organization: <input type="text" name="company">&nbsp;<b>*</b><br>')
 		r:add('Email: <input type="text" name="email">&nbsp;<b>*</b><br><br>')
 	end
 	r:add('Questions or Comments: <textarea name="comments" cols="50" rows="10" class="textbox"></textarea>&nbsp;<b>*</b><br><br>')
