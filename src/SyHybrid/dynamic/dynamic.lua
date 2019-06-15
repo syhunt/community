@@ -295,6 +295,7 @@ function SyhuntDynamic:LoadProgressPanel()
 end
 
 function SyhuntDynamic:NormalizeTargetURL(url, options)
+  options = options or {}
   options.checkredir = options.checkredir or true
   options.autofollow = options.autofollow or true
   local addproto = true
