@@ -59,6 +59,11 @@
 </p>
 </div>
 </fieldset>
+<fieldset><legend>Objects to ignore</legend>
+<div .optgroup>
+<button #btnignvulns onclick="prefs.editlist('syhunt.code.lists.ignore.vulnsbyrules','Vulnerabilities to ignore','Example: path=*/form.php,params=file')">Vulnerabilities...</button>
+</div>
+</fieldset>
 <include src="{$PluginsDir}SyHybrid.scx#code/prefs/tab_advanced.html"/>
 </div>
 <!-- advanced tab end-->
