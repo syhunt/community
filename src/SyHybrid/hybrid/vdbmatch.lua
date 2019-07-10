@@ -1,4 +1,4 @@
-require 'SyHybrid'
+--require 'SyHybrid'
 
 function vdbmatch(url,links)
 	local r = ctk.string.list:new()

@@ -1,5 +1,6 @@
 TrackerManager = {
- title = 'Issue Tracker Manager'
+ title = 'Issue Tracker Manager',
+ filename = 'Issue Trackers'
 }
 
 -- Returns the name of the app associated with tracker (Jira, GitHub, etc)
@@ -7,10 +8,42 @@ function TrackerManager:GetTrackerApp(name)
   local jsonfile = symini.info.configdir..'\\Tracker\\'..name..'.json'
   local j = ctk.json.object:new()
   local app = ''
-  j:loadfromfile(jsonfile)
-  app = j['tracker.defaultapp']
+  if ctk.file.exists(jsonfile) then
+    j:loadfromfile(jsonfile)
+  end
+  app = j['tracker.defaultapp'] or app
   j:release()
   return app
+end
+
+-- Returns a list of trackers by type (Jira, GitHub, Email, etc)
+function TrackerManager:gettrackeroptionlist(apptype)
+  local list = self:GetIssueTrackerList()
+  local menu = ctk.string.list:new()
+  local slp = ctk.string.loop:new()
+  slp:load(list)
+  while slp:parsing() do
+    local name = slp.current
+    local name_hex = ctk.convert.strtohex(name)
+    local app = self:GetTrackerApp(name)
+    local canadd = true
+    name = ctk.html.escape(name)
+    if apptype ~= nil then
+      if string.upper(app) ~= string.upper(apptype) then
+        canadd = false
+      end
+    end
+    if app == '' then
+      canadd = false
+    end
+    if canadd == true then
+      menu:add('<option value="'..name..'">'..name..'</option>')
+    end
+  end
+  local menuhtml = menu.text
+  menu:release()
+  slp:release()
+  return menuhtml
 end
 
 function TrackerManager:EditTrackerPreferences(name, app)
@@ -27,9 +60,9 @@ function TrackerManager:EditTrackerPreferences(name, app)
   t.id = 'syhunttrackerprefs'
   t.options = hs.options
   t.jsonfile = jsonfile
-  Sandcat.Preferences:EditCustomFile(t)
   hs:release()
   slp:release()
+  return Sandcat.Preferences:EditCustomFile(t)
 end
 
 function TrackerManager:SubmitIssue_FromVulnFileList(tracker, filenamelist)
@@ -85,28 +118,36 @@ function TrackerManager:AddIssueTracker(appname)
       local item  = {}
       item.name = name
       item.url = appname
-      HistView:AddURLLogItem(item, 'Issue Trackers')
+      HistView:AddURLLogItem(item, self.filename)
+      self:EditTrackerPreferences(item.name, item.url)
+      self:ViewIssueTrackers(false)
     end
-    self:ViewIssueTrackers(false)
   end
 end
 
 function TrackerManager:DoIssueTrackerAction(action, itemid)
-  local item = HistView:GetURLLogItem(itemid, 'Issue Trackers')
+  local item = HistView:GetURLLogItem(itemid, self.filename)
   if item ~= nil then
     if action == 'editprefs' then
-      self:EditTrackerPreferences(item.name, item.url)
-      self:ViewIssueTrackers(false)
+      local ok = self:EditTrackerPreferences(item.name, item.url)
+      if ok == true then
+        self:ViewIssueTrackers(false)
+      end
     end
     if action == 'test' then
       self:TestIssueTracker(item.name)
+    end
+    if action == 'delete' then
+      HistView:DeleteURLLogItem(itemid,self.filename)
+      local jsonfile = symini.info.configdir..'\\Tracker\\'..item.name..'.json'
+      ctk.file.delete(jsonfile)      
     end
   end
 end
 
 function TrackerManager:GetIssueTrackerList()
   HistView = HistView or Sandcat:require('histview')  
-  return HistView:GetURLLogItemNames('Issue Trackers')
+  return HistView:GetURLLogItemNames(self.filename)
 end
 
 function TrackerManager:ViewIssueTrackers(newtab)
@@ -123,7 +164,7 @@ function TrackerManager:ViewIssueTrackers(newtab)
   <hr/>
   <li onclick="TrackerManager:DoIssueTrackerAction('test','%i')">Submit Test Issue</li>
   <hr/>
-  <li onclick="HistView:DeleteURLLogItem('%i','Issue Trackers')">Delete</li>
+  <li onclick="TrackerManager:DoIssueTrackerAction('delete','%i')">Delete</li>
   ]]  
  HistView = HistView or Sandcat:require('histview')  
  HistView:ViewURLLogFile(t)

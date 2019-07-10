@@ -47,7 +47,7 @@ function SyhuntCode:GetTargetListHTML()
      while slp:parsing() do
        local url = ctk.string.after(slp.current, 'url="')
        url = ctk.string.before(url,'"')
-       html = html..'<li class="urlsetter" targeturl="'..url..'">'..url..'</li>'
+       html = html..'<li class="urlgitsetter" targeturl="'..url..'">'..url..'</li>'
      end
     slp:release()
   end
@@ -360,8 +360,8 @@ function SyhuntCode:AddToTargetList()
     item.url = r.value
     --item.url = SyhuntCode:NormalizeTargetURL(item.url)
     HistView:AddURLLogItem(item, 'Target Repositories')
+    self:ViewTargetList(false)
   end
-  self:ViewTargetList(false)
 end
 
 function SyhuntCode:DoTargetListAction(action, itemid)

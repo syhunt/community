@@ -403,8 +403,8 @@ function SyhuntDynamic:AddToTargetList()
     item.name = r.name
     item.url = self:NormalizeTargetURL(r.value)
     HistView:AddURLLogItem(item, 'Targets Dynamic')
+    self:ViewTargetList(false)
   end
-  self:ViewTargetList(false)
 end
 
 function SyhuntDynamic:DoTargetListAction(action, itemid)
@@ -415,8 +415,10 @@ function SyhuntDynamic:DoTargetListAction(action, itemid)
       self:NewScanDialog()
     end
     if action == 'editprefs' then
-      self:EditSitePreferences(item.url)
-      self:ViewTargetList(false)
+      local ok = self:EditSitePreferences(item.url)
+      if ok == true then
+        self:ViewTargetList(false)
+      end
     end
   end
 end

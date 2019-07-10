@@ -1,0 +1,57 @@
+<html>
+<head>
+<title>Issue Tracker Preferences</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#hybrid\prefs_tracker\prefs.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+       Sandcat.PrefsSet("tracker.defaultapp","email");
+      }
+ }
+
+ $(#ok).onClick = function() { confirm_edit(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-email" accesskey="E" selected><center><img #icon_email><br>Email</center></div>
+</div>
+
+<!-- email tab begin-->
+<div name="panel-email" class="tab" selected>
+<fieldset><legend>Sender/Recipient</legend>
+<div .optgroup>
+From (eg: robot@yourdomain.com):<br><input type="text" style="width:250px;" cid="tracker.message.from">
+<div .sep/>
+To (eg: security@yourdomain.com):<br><input type="text" style="width:250px;" cid="tracker.message.tolist">
+</div>
+</fieldset>
+<fieldset><legend>SMTP Authentication</legend>
+<div .optgroup>
+Host:<br><input type="text" style="width:250px;" cid="tracker.auth.targethost"> : <input cid="tracker.smtp.targetport" type="number" step=1 minvalue="1" maxvalue="65525" value="587" size="10">
+<div .sep/>
+Username:<br><input type="text" style="width:150px;" cid="tracker.auth.username">
+<div .sep/>
+Password:<br><input type="password" style="width:150px;" cid="tracker.auth.password">
+</div>
+</fieldset>
+</div>
+<!-- email tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>

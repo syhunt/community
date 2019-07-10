@@ -32,7 +32,6 @@ end
 
 function SyHybrid:AfterInit()
 	-- Loads the main Hybrid clibs
-	require "SyHybrid"
 	require "SyMini"
 
 	-- Loads the main Hybrid libraries that are included with this pack
@@ -40,6 +39,7 @@ function SyHybrid:AfterInit()
 	self:dofile('hybrid/repmaker/repmaker.lua')
 	self:dofile('hybrid/sesman/sesman.lua')
 	self:dofile('hybrid/trackman/trackman.lua')
+	self:dofile('hybrid/scheduler/scheduler.lua')
 	self:dofile('dynamic/dynamic.lua')
 	self:dofile('dynamic/links.lua')
 	self:dofile('code/code.lua')

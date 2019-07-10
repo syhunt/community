@@ -36,7 +36,7 @@
  $(#targettypeurl).onMouse = function() { update_targetoptions(); }
  $(#edit_targets).onClick = function() { Sandcat.RunLua("SyhuntCode:ViewTargetList()"); cancel_edit(); }
  
-for(var e in $$("li[class='urlsetter']")) e.onClick = set_targeturl;
+for(var e in $$("li[class='urlgitsetter']")) e.onClick = set_targeturl;
 </script>
 </head>
 <body marginwidth="0" marginheight="0">
@@ -70,9 +70,9 @@ GIT URL:<br>
       <hr/>
       <li>Vulnerable Repositories (Demo)
        <menu>
-       <li class="urlsetter" targeturl="https://github.com/syhunt/vulnphp.git">PHP</li>
-       <li class="urlsetter" targeturl="https://github.com/syhunt/vulnjava-wavsep.git">Java</li>
-       <li class="urlsetter" targeturl="https://github.com/syhunt/vulnlua.git">Lua</li>
+       <li class="urlgitsetter" targeturl="https://github.com/syhunt/vulnphp.git">PHP</li>
+       <li class="urlgitsetter" targeturl="https://github.com/syhunt/vulnjava-wavsep.git">Java</li>
+       <li class="urlgitsetter" targeturl="https://github.com/syhunt/vulnlua.git">Lua</li>
        </menu>
       </li>
     </menu>
@@ -87,7 +87,7 @@ Branch:<br>
 <fieldset><legend>Hunt Method</legend>
 <div .optgroup>
 <select type="select" size=4 style="width:300px;" cid="syhunt.code.options.huntmethod">
-<option value="normal" selected>Code Scan (Default)</option>
+<option value="normal" selected>Application Code Scan (Default)</option>
 <option value="faultinj">Fault Injection</option>
 <option value="top5">Top 5 (Based on OWASP PHP Top 5)</option>
 <option value="sqlinj">SQL Injection</option>

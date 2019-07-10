@@ -1,5 +1,3 @@
-require 'SyHybrid'
-
 VulnList = {
 	title = 'Vulnerability List',
 	icon = 'url(PenTools.scx#images\\icon_dast.png)'
@@ -36,7 +34,7 @@ function VulnList:gettd(s)
 end
 
 function VulnList:getcount(pak,file)
-	return pak_textfilecountln(pak,file)
+	return symini.pak_textfilecountln(pak,file)
 end
 
 function VulnList:additem(p,Name,Total,CWE,CVE,OSVDB,BID)

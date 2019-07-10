@@ -1,5 +1,3 @@
-require 'SyHybrid'
-
 SessionManager = {
  title = 'Session Manager'
 }
@@ -38,7 +36,9 @@ function SessionManager:gettrackermenuitems()
     local name = slp.current
     local name_hex = ctk.convert.strtohex(name)
     local app = TrackerManager:GetTrackerApp(name)
-    menu:add('<li onclick="SessionManager:submitselected_vulns(ctk.convert.hextostr([['..name_hex..']]))">Issue Tracker: '..ctk.html.escape(name)..' ('..app:upper()..')</li>')
+    if app ~= '' then
+      menu:add('<li onclick="SessionManager:submitselected_vulns(ctk.convert.hextostr([['..name_hex..']]))">Issue Tracker: '..ctk.html.escape(name)..' ('..app:upper()..')</li>')
+    end
   end
   local menuhtml = menu.text
   menu:release()
