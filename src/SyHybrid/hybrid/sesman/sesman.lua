@@ -49,10 +49,9 @@ end
 function SessionManager:add_sessiondetails(r, sesname, iscomparison)
   local details = symini.getsessiondetails(sesname)
   local stfontcolor = 'black'
-  if details.resultsdesc == 'Vulnerable' then
+  if details.vulncount ~= '0' then 
     stfontcolor = 'red'
-  end
-  if details.resultsdesc == 'Secure' then
+  else
     stfontcolor = 'green'
   end
   r:add('<fieldset><legend style="color:black">'..sesname..'</legend>')
@@ -126,9 +125,9 @@ function SessionManager:show_sessiondetails(sesname)
   local j = {}
   j.title = 'Session Details - '..sesname
   if hasvuln == false then
-    j.icon = 'url(SyHybrid.scx#images\\16\\shield_tick.png)'
+    j.icon = self:get_session_icon(details)
   else
-    j.icon = 'url(SyHybrid.scx#images\\16\\shield_exclamation.png)'
+    j.icon = 'url(Resources.pak#16/icon_engerror.png)'
   end
   j.html = r.text
   j.toolbar = 'SyHybrid.scx#hybrid\\sesman\\toolbar_vulns.html'
@@ -355,16 +354,24 @@ function SessionManager:getcounticon(i)
  return icon
 end
 
+function SessionManager:get_session_icon(details)
+ local icon = 'Resources.pak#16/icon_help.png'
+ if details.vulncount ~= '0' then 
+   icon = 'Resources.pak#16/icon_engerror.png'
+ else
+   icon = 'SyHybrid.scx#images/16/shield_tick.png'
+ end
+ if details.status == 'Canceled' then icon = 'Resources.pak#16/icon_stop.png' end
+ if details.status == 'Paused' then icon = 'Resources.pak#16/icon_pause.png' end
+ if details.status == 'Unknown' then icon = 'Resources.pak#16/icon_help.png' end
+ if details.status == 'Scanning' then icon = 'Resources.pak#16/icon_run.png' end  
+ return icon
+end
+
 function SessionManager:add_session(r, sesname)
  local details = symini.getsessiondetails(sesname)
  local sesnamehex = ctk.convert.strtohex(sesname)
- local icon = 'SyHybrid.scx#images/16/shield_tick.png'
- local vcount = details.vulncount
- -- Handle the count differently if this is a log scan
- if details.huntmethod == 'Web Server Log Scan' then
-   vcount = details.attackcount
- end
- if vcount ~= '0' then icon = 'SyHybrid.scx#images/16/shield_exclamation.png' end
+ local icon = self:get_session_icon(details)
  
  r:add('<tr role="option" style="context-menu: selector(#menu'..sesnamehex..');" ')
  r:add([[ondblclick="SessionManager:load_session(']]..sesname..[[')" ]])
@@ -378,7 +385,7 @@ function SessionManager:add_session(r, sesname)
   r:add('<td>'..ctk.html.escape(details.targets)..self:get_ports(details.ports)..'</td>')
  end
  r:add('<td>'..details.huntmethod..'</td>')
- r:add('<td>'..details.resultsdesc..'&nbsp;<img .lvfileicon src="'..self:getcounticon(vcount)..'"></td>')
+ r:add('<td>'..details.resultsdesc..'&nbsp;<img .lvfileicon src="'..self:getcounticon(details.vulncount)..'"></td>')
  r:add('<menu.context id="menu'..sesnamehex..'">')
  r:add([[<li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="ReportMaker:loadtab(']]..sesname..[[')">Generate Report</li>]])
  r:add([[<li onclick="SessionManager:show_sessiondetails(']]..sesname..[[')">View Vulnerabilities</li>]])
