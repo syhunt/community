@@ -190,7 +190,7 @@ Subject:<br>
 <fieldset><legend>Schedule Preferences</legend><br>
 <div .optgroup>
 Time (Hour/Minute/Second):<br>
-<input cid="scheduledscan.chron.hour" type="number" step=1 minvalue="0" maxvalue="23" value="0" size="5"> : <input cid="scheduledscan.chron.min" type="number" step=1 minvalue="0" maxvalue="59" value="0" size="5"> : <input cid="scheduledscan.chron.sec" type="number" step=1 minvalue="0" maxvalue="59" value="0" size="5"><br>
+<input cid="scheduledscan.chron.hour" type="number" step=1 minvalue="0" maxvalue="23" value="0" size="5"> : <input cid="scheduledscan.chron.min" type="number" step=1 minvalue="0" maxvalue="59" value="0" size="5"> : <input cid="scheduledscan.chron.sec" type="number" step=1 minvalue="0" maxvalue="59" value="0" size="5"> &nbsp;&nbsp;<button type="checkbox" cid="scheduledscan.chron.runonce">Run once</button><br>
 <br>
 Date:<br>
 <select cid="scheduledscan.chron.month">
@@ -278,16 +278,17 @@ Date:<br>
 </select> 
 <br><br>
 Day in Week:<br>
-<select cid="scheduledscan.chron.dayiw">
+<select cid="scheduledscan.chron.dayweek.frequency">
 <option value="*" selected>Any Day</option>
-<option value="1">Sunday</option>
-<option value="2">Monday</option>
-<option value="3">Tuesday</option>
-<option value="4">Wednesday</option>
-<option value="5">Thursday</option>
-<option value="6">Friday</option>
-<option value="7">Saturday</option>
-</select>
+<option value="specific">Specific Days:</option>
+</select>&nbsp;&nbsp;
+<button type="checkbox" cid="scheduledscan.chron.dayweek.mon">Mon</button>
+<button type="checkbox" cid="scheduledscan.chron.dayweek.tue">Tue</button>
+<button type="checkbox" cid="scheduledscan.chron.dayweek.wed">Wed</button>
+<button type="checkbox" cid="scheduledscan.chron.dayweek.thu">Thu</button>
+<button type="checkbox" cid="scheduledscan.chron.dayweek.fri">Fri</button>
+<button type="checkbox" cid="scheduledscan.chron.dayweek.sat">Sat</button>
+<button type="checkbox" cid="scheduledscan.chron.dayweek.sun">Sun</button>
 </div>
 </fieldset>
 </div>
