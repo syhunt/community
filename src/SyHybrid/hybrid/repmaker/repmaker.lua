@@ -332,6 +332,7 @@ function ReportMaker:show_options()
     require 'Repmaker'
 	local rm = SyRepmaker:new()
 	local options = rm.IncludeList
+	local templates = rm.TemplateList
 	rm:release()
 	
 	local tabs_begin = [[
@@ -343,10 +344,8 @@ function ReportMaker:show_options()
 	]]
 	local rep_options_html = [[
 	Choose a report template:<br>
-	<input type="radio" id="template" onclick="ReportMaker:set_template('Standard')" checked>Standard<br>
-	<input type="radio" id="template" onclick="ReportMaker:set_template('Comparison')">Comparison<br>
-	<input type="radio" id="template" onclick="ReportMaker:set_template('Compliance')">Compliance<br>
-	<input type="radio" id="template" onclick="ReportMaker:set_template('Complete')">Complete<br><br>
+	%reltemplates%
+	<br>
 	The following items will be included:<br>
 	<div style="width:100%%;height:220px;">
 	<widget type="select" style="padding:0;">
@@ -359,14 +358,28 @@ function ReportMaker:show_options()
 	]]
 	
 	local rep_options = ctk.string.list:new()
+	local rep_templates = ctk.string.list:new()
 	local ro = ctk.string.loop:new()
+	local checked = ''
 	ro:load(options)
 	while ro:parsing() do
 	  rep_options:add('<tr role="option"><td><input type="checkbox" tplname="'..ro.current..'">'..ro.current..'</td></tr>')
 	end
+	ro:load(templates)
+	while ro:parsing() do
+	  checked = ''
+      if ro:curgetvalue('d') == '1' then
+        checked = 'checked=checked'
+      end
+	  if ro:curgetvalue('t') ~= '' then
+	    rep_templates:add('<input type="radio" id="template" onclick="ReportMaker:set_template([['..ro:curgetvalue('n')..']])" '..checked..'>'..ro:curgetvalue('t')..'<br>')
+	  end
+	end	
 	rep_options_html = ctk.string.replace(rep_options_html, '%reloptions%', rep_options.text)
+	rep_options_html = ctk.string.replace(rep_options_html, '%reltemplates%', rep_templates.text)
 	ro:release()
 	rep_options:release()
+	rep_templates:release()
 	
 	self.xmllist = ctk.dir.getfilelist(self.session_dir..'*.xrm')
 	local report_title = 'Syhunt Scanner Report'

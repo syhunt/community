@@ -14,6 +14,18 @@ function SyHybridUser:CheckInst()
 	end
 end
 
+function SyHybridUser:GetEditionLogo()
+  local k = symini.getptkdetails()
+  local logo = ''
+   if k.editionid == 1 then
+     logo = '<img src="SyHybrid.scx#images\\misc\\syhunt-logo-community.png">'
+   end
+   if k.editionid == 3 then
+     logo = '<img src="SyHybrid.scx#images\\misc\\syhunt-logo-platinum.png">'
+   end   
+  return logo
+end
+
 function SyHybridUser:GenerateWebAPIKey()
     local k = symini.genwebapikey()
     if k.result == true then

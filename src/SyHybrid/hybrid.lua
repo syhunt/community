@@ -4,14 +4,18 @@ SyHybrid.ViewCatSense = function() tab:loadx(catsense_analyze(tab.source,tab.url
 
 function SyHybrid:Init()
 	-- Sets additional execution modes
-	browser.setinitmode('syhunthybrid','SyHybrid:LoadLauncher()')
+	browser.setinitmode('syhunthybrid','SyHybrid:Load()')
 	browser.setinitmode('syhuntcode','SyhuntCode:Load()')
 	browser.setinitmode('syhuntdynamic','SyhuntDynamic:Load()')
 	browser.setinitmode('syhuntinsight','SyhuntInsight:Load()')
 	browser.setinitmode('syhuntsesman','SyHybrid:SessionManager()')
 
 	-- Inserts new toolbar menu options for each mode
-	local ct_html = "<li id='tnewsyhuntcodetab' style='foreground-image: url(SyHybrid.scx#images\\16\\code.png)' onclick='SyhuntCode:NewTab()'>New Code Tab</li>"
+	local ct_html = [[
+	<li id='tnewsyhuntcodetab' style='foreground-image: url(SyHybrid.scx#images\16\code.png)' onclick='SyhuntCode:NewTab()'>New Code Tab</li>
+	<li id='tnewdynamictab' style='foreground-image: url(SyHybrid.scx#images\16\dynamic.png)' onclick='SyhuntDynamic:NewTab()'>New Dynamic Tab</li>
+	<li id='tlaunchertab' style='foreground-image: url(SyHybrid.scx#images\16\launcher.png)' onclick='SyHybrid:Launcher()'>Launcher</li>
+	]]
 	local bt_html = "<li id='tnewbrowsertab' style='foreground-image: @ICON_SANDCAT' onclick='browser.newtab()'>New Browser Tab</li>"
 	if browser.info.initmode == 'syhunthybrid' then
 		browser.navbar:inserthtmlfile('#pagemenu','#toolbar','SyHybrid.scx#dynamic/navbar.html')
@@ -49,10 +53,10 @@ function SyHybrid:AfterInit()
 	browser.addlibinfo('famfamfam flag icons','','Mark James')
 	browser.addlibinfo('mmdblua library','','Daurnimator')
 	browser.addlibinfo('GeoLite2 data','2','<a href="#" onclick="browser.newtab([[http://www.maxmind.com]])">MaxMind</a>')
-	browser.addlibinfo('PDF Creation library','2.0','K. Nishita')
-	browser.addlibinfo('RTF Creation library','1.0','K. Nishita')
+	--browser.addlibinfo('PDF Creation library','2.0','K. Nishita')
+	--browser.addlibinfo('RTF Creation library','1.0','K. Nishita')
 	browser.addlibinfo('TAR Components','2.1.1','Stefan Heymann')
-    browser.addlibinfo('XML Components','1.0.17','Stefan Heymann','Sandcat:ShowLicense(SyHybrid.filename,[[hybrid\\docs\\Licence_XMLComps.txt]])')
+    --browser.addlibinfo('XML Components','1.0.17','Stefan Heymann','Sandcat:ShowLicense(SyHybrid.filename,[[hybrid\\docs\\Licence_XMLComps.txt]])')
 
 	-- Adds new Sandcat Console commands
 	SyhuntDynamic:AddCommands()
@@ -104,13 +108,16 @@ function SyHybrid:SessionManager()
     SessionManager:loadtab(true)
 end
 
-function SyHybrid:LoadLauncher()
-    self:NewTab()
+function SyHybrid:Load()
+    self:Launcher()
     self:SetHybridMode()
 end
 
-function SyHybrid:NewTab()
+function SyHybrid:Launcher()
+    local logos = ''
 	local html = SyHybrid:getfile('hybrid/launcher/startpage.html')
+    logos = logos..SyHybridUser:GetEditionLogo()
+    html = ctk.string.replace(html, '<!--logoplus-->',logos)	
 	local j = {}
 	j.icon = 'url(SyHybrid.scx#images\\16\\launcher.png)'
 	j.title = 'Launcher'

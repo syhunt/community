@@ -93,7 +93,17 @@ function SyhuntCode:IsScanInProgress(warn)
 end
 
 function SyhuntCode:LoadProgressPanel()
+    local k = symini.getptkdetails()
+    local logos = ''
     local html = SyHybrid:getfile('code/progress.html')
+    if k.lang_web == true then
+      logos = logos..'<img src="SyHybrid.scx#images\\misc\\syhunt-logo-web.png">'
+    end
+    if k.lang_mobile == true then
+      logos = logos..'<img src="SyHybrid.scx#images\\misc\\syhunt-logo-mobile.png">'
+    end
+    logos = logos..SyHybridUser:GetEditionLogo()
+    html = ctk.string.replace(html, '<!--logoplus-->',logos)
     tab:results_loadx(html)
 end
 

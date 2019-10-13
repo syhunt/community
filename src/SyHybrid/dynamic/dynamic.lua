@@ -289,7 +289,10 @@ function SyhuntDynamic:LoadProgressPanel()
   local defstats = [[
     s=code.stats-links,v=1
   ]]
+  local logos = ''
   local html = SyHybrid:getfile('dynamic/progress.html')
+  logos = logos..SyHybridUser:GetEditionLogo()
+  html = ctk.string.replace(html, '<!--logoplus-->',logos)
   tab:results_loadx(html)
   tab:results_updatehtml(defstats)
 end
