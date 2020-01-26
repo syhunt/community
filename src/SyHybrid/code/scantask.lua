@@ -93,10 +93,21 @@ if cs.vulnerable == true then
 	runtabcmd('treesetaffecteditems',cs.affectedscripts)
 	runtabcmd('runtbtis','MarkAsVulnerable();')
 else
-	print('Secure.')
-	printsuccess(task.status)
-	runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_green.png)')
-	runtabcmd('runtbtis','MarkAsSecure();')
+    if cs.aborted == false then
+	  print('Secure.')
+	  printsuccess(task.status)
+	  runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_green.png)')
+	  runtabcmd('runtbtis','MarkAsSecure();')
+	end
+end
+
+if cs.aborted == true then
+  print('Fatal Error.')
+  runtabcmd('seticon','@ICON_STOP')
+  if cs.vulnerable == false then
+     runtabcmd('runtbtis','MarkAsUndetermined();')
+  end
+  printfatalerror(cs.errorreason)
 end
 
 if cs.warnings ~= '' then

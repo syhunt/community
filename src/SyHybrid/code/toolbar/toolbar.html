@@ -1,4 +1,10 @@
 <script type="text/tiscript">
+function MarkAsUndetermined() {
+ $(#scanstat).style["background-color"]="#3d80e2";
+ $(#scanstat).value="Undetermined";
+ $(#scanstat).style["foreground-image"]="@ICON_UNDETERMINED";
+ $(#scanstat).enabled = true;
+}
 function MarkAsSecure() {
  $(#scanstat).style["background-color"]="#62e973";
  $(#scanstat).value="Secure";

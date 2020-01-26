@@ -74,12 +74,15 @@ function printscanresult()
           runtabcmd('runtbtis','MarkAsSecure();')
 	      printsuccess(task.status)
         end
-	  else
-        print('Undetermined (scan aborted).')
+       end
+	end
+	if hs.aborted == true then
+        print('Fatal Error.')
 	    runtabcmd('seticon','@ICON_STOP')
-        runtabcmd('runtbtis','MarkAsUndetermined();')
-	    printfailure(task.status)
-	  end
+	    if hs.vulnerable == false then
+          runtabcmd('runtbtis','MarkAsUndetermined();')
+        end
+	    printfatalerror(hs.errorreason)
 	end
 end
 

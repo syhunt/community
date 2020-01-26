@@ -114,10 +114,16 @@ function SyHybrid:Load()
 end
 
 function SyHybrid:Launcher()
+    local warningmsg = ''
+    local stat = symini.checkrenew()
+    if stat.expnear == true then
+      warningmsg = [[<include src="Professional.pak#hybrid/launcher/warningrenew.html" />]]
+    end
     local logos = ''
 	local html = SyHybrid:getfile('hybrid/launcher/startpage.html')
     logos = logos..SyHybridUser:GetEditionLogo()
     html = ctk.string.replace(html, '<!--logoplus-->',logos)	
+    html = ctk.string.replace(html, '<!--warningmsg-->',warningmsg)
 	local j = {}
 	j.icon = 'url(SyHybrid.scx#images\\16\\launcher.png)'
 	j.title = 'Launcher'
