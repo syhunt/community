@@ -2,8 +2,9 @@ body { height:470px; }
 #icon_info { foreground-image:url(SyHybrid.scx#images\32\exclamation.png);}
 #icon_headers { foreground-image:url(SyHybrid.scx#images\32\request.png);}
 #icon_log { foreground-image:url(SyHybrid.scx#images\32\error_log.png);}
-#icon_guidance { foreground-image:url(SyHybrid.scx#images\32\doc_edit.png);}
+#icon_guidance { foreground-image:url(SyHybrid.scx#images\32\patch.png);}
 #icon_references { foreground-image:url(SyHybrid.scx#images\32\bug_link.png);}
 #icon_notes { foreground-image:url(SyHybrid.scx#images\32\note.png);}
 #icon_source { foreground-image:url(SyHybrid.scx#images\32\codescan.png);}
 #icon_response { foreground-image:url(SyHybrid.scx#images\32\response.png);}
+#icon_exfil { foreground-image:url(SyHybrid.scx#images\32\satellite.png);}

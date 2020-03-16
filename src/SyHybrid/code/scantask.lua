@@ -9,6 +9,9 @@ runtabcmd('syncwithtask','1')
 if params.targettype == 'dir' then
   print('Scanning directory: '..params.codedir..'...')
 end
+if params.targettype == 'file' then
+  print('Scanning filename: '..params.codefile..'...')
+end
 if params.targettype == 'url' then
   print('Scanning GIT URL: '..params.codeurl..'... Branch: '..params.codebranch)
 end
@@ -60,6 +63,7 @@ function dirscan(dir)
   local jsonstr = tostring(j)
   j:release()  
   if params.targettype ~= 'dir' then
+    print('Switching to target directory:'..dir)
     runtabcmd('treeloaddir', jsonstr)
   end
 end
@@ -76,12 +80,15 @@ cs.huntmethod = params.huntmethod
 if params.targettype == 'dir' then
   cs:scandir(params.codedir)
 end
+if params.targettype == 'file' then
+  cs:scanfile(params.codefile)
+end
 if params.targettype == 'url' then
   cs:scanurl({url=params.codeurl,dir=params.codedir,branch=params.codebranch})
 end
 task.status = 'Done.'
 
-if cs.vulnerable == true then
+if cs.vulnstatus == 'Vulnerable' then
 	print('Vulnerable.')
 	if cs.vulncount == 1 then
 		print('Found 1 vulnerability')
@@ -92,13 +99,12 @@ if cs.vulnerable == true then
 	runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_red.png)')
 	runtabcmd('treesetaffecteditems',cs.affectedscripts)
 	runtabcmd('runtbtis','MarkAsVulnerable();')
-else
-    if cs.aborted == false then
-	  print('Secure.')
-	  printsuccess(task.status)
-	  runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_green.png)')
-	  runtabcmd('runtbtis','MarkAsSecure();')
-	end
+end
+if cs.vulnstatus == 'Secure' then
+	print('Secure.')
+	printsuccess(task.status)
+	runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_green.png)')
+	runtabcmd('runtbtis','MarkAsSecure();')
 end
 
 if cs.aborted == true then

@@ -18,9 +18,15 @@
        if ($(#targettype).value == "dir") {
          $(#targetdirarea).style["display"] = "block";
          $(#targeturlarea).style["display"] = "none";
+         $(#targetfilearea).style["display"] = "none";
+       } else if ($(#targettype).value == "file") {
+         $(#targetdirarea).style["display"] = "none";
+         $(#targeturlarea).style["display"] = "none";    
+         $(#targetfilearea).style["display"] = "block";
        } else {
          $(#targetdirarea).style["display"] = "none";
-         $(#targeturlarea).style["display"] = "block";       
+         $(#targeturlarea).style["display"] = "block";    
+         $(#targetfilearea).style["display"] = "none";   
        }
  }
  
@@ -34,6 +40,7 @@
  $(#cancel).onClick = function() { cancel_edit(); }
  $(#targettypedir).onMouse = function() { update_targetoptions(); }
  $(#targettypeurl).onMouse = function() { update_targetoptions(); }
+ $(#targettypefile).onMouse = function() { update_targetoptions(); } 
  $(#edit_targets).onClick = function() { Sandcat.RunLua("SyhuntCode:ViewTargetList()"); cancel_edit(); }
  
 for(var e in $$("li[class='urlgitsetter']")) e.onClick = set_targeturl;
@@ -53,10 +60,15 @@ Type:<br>
 <select #targettype class="tag-list" type="select" cid="syhunt.code.options.target.type">
 <option #targettypedir value="dir" selected>Local Directory</option>
 <option #targettypeurl value="url">GIT URL</option>
+<option #targettypefile value="file">Local File</option>
 </select><br><br>
 <div #targetdirarea>
 Source Directory:<br>
 <input #targetdir type="folder-path" novalue="Select Folder..." cid="syhunt.code.options.target.dir">
+</div>
+<div #targetfilearea>
+Source or APK File:<br>
+<input #targetfile type="file-path" novalue="Select File..." cid="syhunt.code.options.target.file">
 </div>
 <div #targeturlarea>
 <table style="padding:0;margin:0;">

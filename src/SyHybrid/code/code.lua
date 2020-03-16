@@ -146,6 +146,9 @@ function SyhuntCode:NewScan()
       if target.type == 'dir' then
         target.dir = prefs.get('syhunt.code.options.target.dir','')
       end
+      if target.type == 'file' then
+        target.file = prefs.get('syhunt.code.options.target.file','')
+      end      
       local huntmethod = prefs.get('syhunt.code.options.huntmethod','normal')
         if ok == true then
           self:ScanTarget(huntmethod, target)
@@ -284,6 +287,10 @@ function SyhuntCode:ScanTarget(huntmethod, target)
   huntmethod = huntmethod or 'normal'
   target.dir = target.dir or symini.getsessioncodedir()
   target.url = target.url or ''
+  target.file = target.file or ''
+  if target.file ~= '' then
+    target.dir = ctk.file.getdir(target.file)
+  end
   target.branch = target.branch or 'master'
   local canscan = true
   if self:IsScanInProgress(true) == true then
@@ -305,6 +312,7 @@ function SyhuntCode:ScanTarget(huntmethod, target)
   		j.targettype = target.type
   		j.codedir = target.dir..'\\'
   		j.codeurl = target.url
+  		j.codefile = target.file
   		j.codebranch = target.branch
   		j.huntmethod = huntmethod
 		  local menu = [[

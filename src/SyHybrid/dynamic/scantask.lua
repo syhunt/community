@@ -52,7 +52,7 @@ function log(s)
 end
 
 function printscanresult()
-	if hs.vulnerable == true then
+	if hs.vulnstatus == 'Vulnerable' then
 		print('Vulnerable.')
 		if hs.vulncount == 1 then
 			print('Found 1 vulnerability')
@@ -62,19 +62,17 @@ function printscanresult()
 	  runtabcmd('seticon','@ICON_CHECKED_RED')
       runtabcmd('runtbtis','MarkAsVulnerable();')
 	  printfailure(task.status)
-	else
-	  if hs.aborted == false then
-        if params.huntmethod == 'spider' then
-	      runtabcmd('seticon','@ICON_CHECKED')
-          runtabcmd('runtbtis','MarkAsDone();')
-	      printsuccess(task.status)
-        else
-          print('Secure.')
-	      runtabcmd('seticon','@ICON_CHECKED')
-          runtabcmd('runtbtis','MarkAsSecure();')
-	      printsuccess(task.status)
-        end
-       end
+	end
+	if hs.vulnstatus == 'Undetermined' then	
+	  runtabcmd('seticon','@ICON_CHECKED')
+      runtabcmd('runtbtis','MarkAsDone();')
+	  printsuccess(task.status)	
+	end
+	if hs.vulnstatus == 'Secure' then
+      print('Secure.')
+	  runtabcmd('seticon','@ICON_CHECKED')
+      runtabcmd('runtbtis','MarkAsSecure();')
+	  printsuccess(task.status)
 	end
 	if hs.aborted == true then
         print('Fatal Error.')

@@ -40,6 +40,7 @@
 <div panel="panel-references" accesskey="R"><center><img #icon_references><br>References</center></div>
 <div panel="panel-headers" accesskey="Q"><center><img #icon_headers><br>Request</center></div>
 <div panel="panel-response" accesskey="E"><center><img #icon_response><br>Response</center></div>
+<div panel="panel-exfil" accesskey="X"><center><img #icon_exfil><br>Exfiltration</center></div>
 <div panel="panel-source" accesskey="S"><center><img #icon_source><br>Source</center></div>
 <div panel="panel-log" accesskey="L"><center><img #icon_log><br>Log</center></div>
 <div panel="panel-notes" accesskey="N"><center><img #icon_notes><br>Notes</center></div>
@@ -112,6 +113,19 @@ Response Header:
 </div>
 </fieldset>
 </div>
+
+<!-- exfil tab begin-->
+<div name="panel-exfil" class="tab">
+<fieldset><legend>Exfiltrated Data</legend>
+<div .optgroup>
+Filename: <input type="text" cid="data.exfil_filename" style="width:*;" readonly="true">
+<div .sep/>
+File Contents:
+<plaintext style="width:*;height:260px;" readonly="true" value="%exfil_data%"></plaintext>
+</div>
+</fieldset>
+</div>
+<!-- exfil tab end-->
 
 <!-- response tab begin-->
 <div name="panel-response" class="tab">
