@@ -119,10 +119,12 @@ Branch:<br>
 </fieldset>
 <fieldset><legend>Hunt Method</legend>
 <div .optgroup>
-<select type="select" size=4 style="width:300px;" cid="scheduledscan.options.huntmethod">
+<select xtype="select" xsize=4 style="width:300px;" cid="scheduledscan.options.huntmethod">
 <option value="appscan" selected>Application Scan (Default)</option>
 <option value="faultinj">Fault Injection</option>
-<option value="top5">Top 5 (Based on OWASP PHP Top 5)</option>
+<option value="top25cwe">Top 25 (CWE Top 25)</option>
+<option value="top10">Top 10 (OWASP Top 10)</option>
+<option value="top5php">Top 5 (OWASP PHP Top 5)</option>
 <option value="sqlinj">SQL Injection</option>
 <option value="xss">Cross-Site Scripting (XSS)</option>
 <option value="fileinc">File Inclusion</option>
