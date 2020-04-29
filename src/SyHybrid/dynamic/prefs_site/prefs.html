@@ -15,6 +15,7 @@
 
  $(#ok).onClick = function() { confirm_edit(); }
  $(#cancel).onClick = function() { cancel_edit(); }
+ $(#btnadvguess).onClick = function() { this.popup( $(popup#advguess)); }
 </script>
 </head>
 <body marginwidth="0" marginheight="0">
@@ -56,7 +57,7 @@ Note: Be sure to specify a directory where the index files of your web content a
 <div .optgroup>
 Server-Side Scripting Language:<br>
 <select class="tag-list" type="select" cid="site.syhunt.dynamic.webtech.slang">
-<option value="auto" selected>Auto Detect</option>
+<option value="auto" selected>Detect</option>
 <option value="lang.asp">ASP (Classic)</option>
 <option value="lang.aspx">ASP.NET</option>
 <option value="lang.java">Java</option>
@@ -69,7 +70,7 @@ Server-Side Scripting Language:<br>
 </select><br><br>
 Web Server:<br>
 <select class="tag-list" type="select" cid="site.syhunt.dynamic.webtech.server">
-<option value="auto" selected>Auto Detect</option>
+<option value="auto" selected>Detect</option>
 <option value="server.apache">Apache</option>
 <option value="server.tomcat">Apache Tomcat</option>
 <option value="server.iis">IIS</option>
@@ -77,7 +78,7 @@ Web Server:<br>
 </select><br><br>
 Server OS:<br>
 <select class="tag-list" type="select" cid="site.syhunt.dynamic.webtech.os">
-<option value="auto" selected>Auto Detect</option>
+<option value="auto" selected>Detect</option>
 <option value="os.bsd">BSD</option>
 <option value="os.linux">Linux</option>
 <option value="os.solaris">Solaris</option>
@@ -86,18 +87,27 @@ Server OS:<br>
 </select><br><br>
 Database:<br>
 <select class="tag-list" type="select" cid="site.syhunt.dynamic.webtech.datsql">
-<option value="auto" selected>Auto Detect</option>
+<option value="auto" selected>Detect</option>
 <option value="db.sql.access">Access</option>
 <option value="db.sql.db2">DB2</option>
 <option value="db.sql.informix">Informix</option>
 <option value="db.nosql.mongodb">MongoDB</option>
 <option value="db.sql.mysql">MySQL</option>
 <option value="db.sql.oracle">Oracle</option>
-<option value="db.sql.postgresql">PostgreSQL</option>
+<option value="db.sql.postgresql">Postgre</option>
 <option value="db.sql.sqlserver">SQL Server</option>
 <option value="db.sql.sqlite">SQLite</option>
 <!-- option value="db.sql.sybase">Sybase</option -->
-</select>
+</select><br><br>
+<button .adv type="checkbox" cid="site.syhunt.dynamic.webtech.guess.enabled">Attempt to guess web server software version (Recommended)</button><button #btnadvguess>Products...</button>
+<popup #advguess>
+<button type="checkbox" cid="site.syhunt.dynamic.webtech.guess.apache">Apache</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.webtech.guess.nginx">Nginx</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.webtech.guess.php">PHP</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.webtech.guess.phusion">Phusion Passenger</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.webtech.guess.modssl">ModSSL</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.webtech.guess.openssl">OpenSSL</button>
+</popup>
 </div>
 </fieldset>
 </div>
