@@ -38,6 +38,26 @@ function ReportMaker:do_template(action)
 	ro:release()
 end
 
+function ReportMaker:get_template()
+	local ro = ctk.string.loop:new()
+	local out = ctk.string.list:new()
+	local outlist = ''
+	ro:load(rm.IncludeList)
+	while ro:parsing() do
+	  local e = self.ui.element
+	  e:select('input[tplname="'..ro.current..'"]')
+	  if e.value == true then
+	    out:add(ro.current..'=1')
+	  else
+	    out:add(ro.current..'=0')
+	  end
+    end
+    outlist = out.text
+    out:release()
+	ro:release()
+	return outlist
+end
+
 function ReportMaker:set_template(name)
   require 'Repmaker'
 	self.template_name = name
@@ -60,24 +80,19 @@ function ReportMaker:gen_report()
 	local reptitle = ui.report_title.value
 	debug.print('file:'..filename)
 	if filename ~= '' then
-		rm.Filename = filename
-		rm.SessionName = self.session_name
-		rm.SessionDir = self.session_dir
-		rm.Template = self.template_name
-		rm.VulnSortMethod = self.template_sort
-		self:do_template('set_user')
-		if reptitle ~= '' then rm.ReportTitle = reptitle end
-		tab.status = 'Generating report...'
-		rm:savereport()
-		debug.print('report saved')
-		if self:can_open_report() then
-		    if rm.CanOpenInBrowser == true then
-			  browser.newtab(filename)
-			else
-			  ctk.file.exec(filename)
-			end
-		end
-		tab.status = ''
+	    local script = SyHybrid:getfile('hybrid/repmaker/repgentask.lua')
+  		local j = ctk.json.object:new()
+		j.filename = filename
+		j.session_name = self.session_name
+		j.session_dir = self.session_dir
+		j.template_name = self.template_name
+		j.template_sort = self.template_sort
+		j.template_selection = self:get_template()
+		--self:do_template('set_user')
+		j.reptitle = reptitle
+		j.canopenreport = self:can_open_report()
+		tid = tab:runtask(script,tostring(j))
+		j:release()
 	end
 	rm:release()
 	debug.print('report maker released')
