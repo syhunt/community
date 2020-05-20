@@ -60,6 +60,7 @@ function SyHybrid:AfterInit()
 
 	-- Adds new Sandcat Console commands
 	SyhuntDynamic:AddCommands()
+	SyhuntDynamic:AddClipmon()
 
 	-- Checks the current installation for user details and a valid configuration
 	SyHybridUser:CheckInst()

@@ -25,7 +25,7 @@
 <div panel="panel-tech" accesskey="T"><center><img #icon_tech><br>Technologies</center></div>
 <div panel="panel-auth" accesskey="U"><center><img #icon_auth><br>Authentication</center></div>
 <div panel="panel-certs" accesskey="C"><center><img #icon_certs><br>Certificates</center></div>
-<div panel="panel-ignore" accesskey="N"><center><img #icon_ignore><br>Exclusions</center></div>
+<div panel="panel-spider" accesskey="S"><center><img #icon_crawling><br>Crawling</center></div>
 <div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
 </div>
 
@@ -33,20 +33,20 @@
 <div name="panel-general" class="tab" selected>
 Name: <input type="text" cid="site.name"><br><br>
 <button type="checkbox" cid="site.enabled"><b>Enable Site Preferences</b></button>
-<fieldset><legend>Source</legend>
+<fieldset><legend>Hybrid-Augmented Analysis</legend>
 <div .optgroup>
-Directory: <input type="folder-path" novalue="Select Folder..." cid="site.syhunt.code.srcdir"><br><br>
+<button type="checkbox" cid="site.syhunt.dynamic.augmented.detectoob">Perform OAST with Syhunt Signal (Recommended)</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.augmented.scanclisource">Perform SAST in client-side JavaScript with Syhunt Code</button><br>
+</div>
+</fieldset>
+<fieldset><legend>Extended Hybrid Analysis (Optional)</legend>
+<div .optgroup>
+<button type="checkbox" cid="site.syhunt.code.hast.scanserversource">Perform SAST in server-side source code with Syhunt Code</button><br><br>
+Source Directory: <input type="folder-path" novalue="Select Folder..." cid="site.syhunt.code.hast.srcdir"><br><br>
 Note: Be sure to specify a directory where the index files of your web content are located.
 <p align=right style="margin:0;padding:0;">
 <button #btnsrcexts onclick="prefs.editlist('site.syhunt.code.lists.srcexts','Source Extensions','Example: .myext=.php')">Extensions...</button>
 </p>
-</div>
-</fieldset>
-<fieldset><br>
-<div .optgroup>
-<button #btnstarturls onclick="prefs.editlist('site.syhunt.dynamic.lists.starturls','Start URLs','Example: /url.php')">Start URLs...</button> 
-<!--button #btnalerts onclick="prefs.editlist('site.syhunt.dynamic.lists.emailalerts','Email Alerts','Example: admin@domain.com')">Email Alerts...</button--> 
-<button #btncookies onclick="prefs.editlist('site.syhunt.dynamic.lists.cookies','Cookies','')">Cookies...</button>
 </div>
 </fieldset>
 </div>
@@ -99,7 +99,7 @@ Database:<br>
 <option value="db.sql.sqlite">SQLite</option>
 <!-- option value="db.sql.sybase">Sybase</option -->
 </select><br><br>
-<button .adv type="checkbox" cid="site.syhunt.dynamic.webtech.guess.enabled">Attempt to guess web server software version (Recommended)</button><button #btnadvguess>Products...</button>
+<button .adv type="checkbox" cid="site.syhunt.dynamic.webtech.guess.enabled">Attempt to sense web server software versions (Recommended)</button><button #btnadvguess>Products...</button>
 <popup #advguess>
 <button type="checkbox" cid="site.syhunt.dynamic.webtech.guess.apache">Apache</button><br>
 <button type="checkbox" cid="site.syhunt.dynamic.webtech.guess.nginx">Nginx</button><br>
@@ -112,9 +112,22 @@ Database:<br>
 </fieldset>
 </div>
 
-<!-- ignore tab begin-->
-<div name="panel-ignore" class="tab">
-<fieldset><legend>Objects to ignore</legend>
+<!-- spider tab begin-->
+<div name="panel-spider" class="tab">
+<fieldset><legend>Crawling Reach</legend>
+<div .optgroup>
+<button type="checkbox" cid="site.syhunt.dynamic.advanced.forcewebrootstruct">Always target web root during structure brute forcing</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.crawling.limitdepth">Use depth limit</button><br>
+&nbsp;&nbsp;&nbsp;Maximum depth: <input cid="site.syhunt.dynamic.crawling.maxdepth" type="number" step=10 minvalue="0" value="1" size="10"><br>
+<button .adv type="checkbox" cid="site.syhunt.dynamic.crawling.limittobase">Limit crawling to start URL path and specific allowed URLs</button> <button #btncrlexp onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.allowedpaths','Paths to crawl','Example: /store/login.php')">Allowed URLs...</button> 
+</div>
+</fieldset>
+<fieldset><legend>Additional Start URLs</legend>
+<div .optgroup>
+<button #btnstarturls onclick="prefs.editlist('site.syhunt.dynamic.lists.starturls','Start URLs','Example: /url.php')">Start URLs...</button> 
+</div>
+</fieldset>
+<fieldset><legend>Exclusions (Objects to ignore)</legend>
 <div .optgroup>
 <button #btnignurls onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.urls','Paths to ignore','Example: /about.php')">URLs...</button> 
 <button #btnlouturls onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.logoutpaths','Logout paths to ignore','Example: /logout.php')">Logout URLs...</button> 
@@ -122,19 +135,14 @@ Database:<br>
 <button #btnignvulns onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.vulnsbyrules','Vulnerabilities to ignore','Example: path=/*,name=XSS')">Vulnerabilities...</button>
 </div>
 </fieldset>
-<fieldset><legend>Crawling Reach</legend>
-<div .optgroup>
-<button type="checkbox" cid="site.syhunt.dynamic.advanced.forcewebrootstruct">Always target web root during structure brute forcing</button><br>
-<button .adv type="checkbox" cid="site.syhunt.dynamic.crawling.limittobase">Limit crawling to start URL path and specific allowed URLs</button> <button #btncrlexp onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.allowedpaths','Paths to crawl','Example: /store/login.php')">Allowed URLs...</button> 
 </div>
-</fieldset>
-</div>
-<!-- ignore tab end-->
+<!-- spider tab end-->
 
 <!-- auth tab begin-->
 <div name="panel-auth" class="tab">
 <fieldset><legend>Form Authentication</legend>
 <div .optgroup>
+<button type="checkbox" cid="site.syhunt.dynamic.formauth.enabled">Enable form authentication</button><br><br>
 Username:<br><input type="text" style="width:150px;" cid="site.syhunt.dynamic.formauth.username">
 <div .sep/>
 Password:<br><input type="password" style="width:150px;" cid="site.syhunt.dynamic.formauth.password">
@@ -183,10 +191,16 @@ CA Directory:<br><input type="folder-path" novalue="Select Folder..." style="wid
 
 <!-- advanced tab begin-->
 <div name="panel-advanced" class="tab">
-<fieldset><legend>Detection Signatures</legend>
+<fieldset><legend>Custom Detection Signatures</legend>
 <div .optgroup>
 <button #btnerrorsigs onclick="prefs.editlist('site.syhunt.dynamic.lists.errorpagesigs','Error Page Detection Signatures','Example: 404 Not Found')">Error Page...</button> 
 <button #btnloutsigs onclick="prefs.editlist('site.syhunt.dynamic.lists.signatures.logout','Logout Detection Signatures','Example: Your Session Has Expired!')">Logout...</button>
+</div>
+</fieldset>
+<fieldset><legend>Cookies</legend>
+<div .optgroup>
+<!--button #btnalerts onclick="prefs.editlist('site.syhunt.dynamic.lists.emailalerts','Email Alerts','Example: admin@domain.com')">Email Alerts...</button--> 
+<button #btncookies onclick="prefs.editlist('site.syhunt.dynamic.lists.cookies','Cookies','')">Cookies...</button>
 </div>
 </fieldset>
 <fieldset><legend>Custom Virtual Host</legend>

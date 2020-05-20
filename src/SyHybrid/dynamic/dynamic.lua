@@ -1,28 +1,61 @@
 SyhuntDynamic = {}
+SyhuntDynamic.waitlogin = false
+
+function dynamictargetchanged(t)
+    --if app.ask_yn('Do you wish to scan logged URL: '..t.url..'?') == true then
+    if SyhuntDynamic.waitlogin == true then
+      SyhuntDynamic.waitlogin = false
+      browser.options.showbottombar = false
+      SyhuntDynamic:SetURLCookie(t)
+      app.bringtofront()
+      SyhuntDynamic:NewScanDialog()
+    end
+end
 
 function SyhuntDynamic:AddCommands()
 	console.addcmd('appscan',"SyhuntDynamic:ScanThisSite('appscan')",'Scans the current site')
 	console.addcmd('spider',"SyhuntDynamic:ScanThisSite('spider')",'Spiders the current site')
 end
 
+function SyhuntDynamic:AddClipmon()
+  clipmon = symini.clipmon:new()
+  clipmon.ontargetchanged = dynamictargetchanged
+end
+
+function SyhuntDynamic:ManualLogin()
+  if SyHybridUser:IsOptionAvailable(true) == true then
+    self.waitlogin = true
+    local html = clipmon:getloginhelp()
+    browser.loadpagex({name='manual login help',html=html})
+  end
+end
+
 function SyhuntDynamic:CaptureCookie(onlogscript)
  if tab:hasloadedurl(true) then
   local onlogscript = onlogscript or ''
-  tab:runluaonlog('done','SyhuntDynamic:CaptureCookieEnd() '..onlogscript)
-  tab:runjs("console.log(document.cookie);console.log('done');",tab.url,0)
+  tab:runluaonlog('done','SyhuntDynamic:SetURLCookieFromSandcat() '..onlogscript)
+  tab:runjs([[console.log('ck='+btoa(document.cookie)+',ua='+btoa(navigator.userAgent));console.log('done');]],tab.url,0)
  end
 end
 
-function SyhuntDynamic:CaptureCookieEnd()
-  local cookie = tab.lastjslogmsg
-  local jsonfile = prefs.getsiteprefsfilename(tab.url)
-  local j = ctk.json.object:new()
-  if ctk.file.exists(jsonfile) == true then
-    j:loadfromfile(jsonfile)
+function SyhuntDynamic:SetURLCookieFromSandcat()
+  local sl = ctk.string.list:new()
+  sl.commatext = tab.lastjslogmsg
+  local t = {}
+  t.url = tab.url
+  t.cookie = ctk.base64.decode(sl:getvalue('ck'))
+  t.useragent = ctk.base64.decode(sl:getvalue('ua'))
+  self:SetURLCookie(t)
+  sl:release()  
+end
+
+function SyhuntDynamic:SetURLCookie(t)
+  prefs.set('syhunt.dynamic.options.target.url', t.url)
+  if t.useragent ~= '' then
+    prefs.set('syhunt.dynamic.emulation.useragent', t.useragent)
+    prefs.set('syhunt.dynamic.emulation.forceuseragent', true)
   end
-  j['site.syhunt.dynamic.lists.cookies'] = cookie
-  j:savetofile(jsonfile)
-  j:release()
+  symini.siteprefs_set(t.url, 'site.syhunt.dynamic.lists.cookies', t.cookie)
   tab.status = 'Page session details saved.'
 end
 
@@ -417,6 +450,9 @@ function SyhuntDynamic:DoTargetListAction(action, itemid)
       prefs.set('syhunt.dynamic.options.target.url', item.url)
       self:NewScanDialog()
     end
+    if action == 'manuallogin' then
+      SyhuntDynamic:ManualLogin(item.url)
+    end    
     if action == 'editprefs' then
       local ok = self:EditSitePreferences(item.url)
       if ok == true then
@@ -438,6 +474,7 @@ function SyhuntDynamic:ViewTargetList(newtab)
  t.menu = [[
   <li onclick="SyhuntDynamic:DoTargetListAction('scan','%i')">Scan Site...</li>
   <li onclick="SyhuntDynamic:DoTargetListAction('editprefs','%i')">Edit Site Preferences...</li>
+  <li onclick="SyhuntDynamic:DoTargetListAction('manuallogin','%i')">Manual Login (External)...</li>
   <hr/>
   <li onclick="HistView:DeleteURLLogItem('%i','Targets Dynamic')">Delete</li>
   ]]  
