@@ -119,15 +119,21 @@ end
 
 function SyHybrid:Launcher()
     local warningmsg = ''
-    local stat = symini.checkrenew()
+    local updatemsg = ''
+    local stat = SyHybridUser.inststat --symini.checkrenew()
     if stat.expnear == true then
       warningmsg = [[<include src="Professional.pak#hybrid/launcher/warningrenew.html" />]]
     end
+    if stat.veruptodate == false then
+      updatemsg = SyHybrid:getfile('hybrid/launcher/updatenote.html')
+      updatemsg = ctk.string.replace(updatemsg, '<!--msg-->', stat.verstatus)
+    end    
     local logos = ''
 	local html = SyHybrid:getfile('hybrid/launcher/startpage.html')
     logos = logos..SyHybridUser:GetEditionLogo()
     html = ctk.string.replace(html, '<!--logoplus-->',logos)	
     html = ctk.string.replace(html, '<!--warningmsg-->',warningmsg)
+    html = ctk.string.replace(html, '<!--updatemsg-->',updatemsg)
 	local j = {}
 	j.icon = 'url(SyHybrid.scx#images\\16\\launcher.png)'
 	j.title = 'Launcher'

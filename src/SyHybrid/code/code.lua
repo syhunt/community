@@ -93,7 +93,7 @@ function SyhuntCode:IsScanInProgress(warn)
 end
 
 function SyhuntCode:LoadProgressPanel()
-    local k = symini.getptkdetails()
+    local k = SyHybridUser.ptkdetails
     local logos = ''
     local html = SyHybrid:getfile('code/progress.html')
     if k.lang_web == true then

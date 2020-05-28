@@ -1,11 +1,24 @@
 SyHybridUser = {}
+SyHybridUser.ptkdetails = {}
+SyHybridUser.inststat = {}
 
 function SyHybridUser:BuyNow()
     browser.newtab('http://www.syhunt.com/en/?n=Pricing.AppScanner')
 end
 
-function SyHybridUser:CheckInst()
+function SyHybridUser:CheckForUpdates()
     local stat = symini.checkinst()
+    if stat.veruptodate == true then
+      app.showmessagex(stat.verstatus)
+    else
+      app.showdialogx('<html><head><style>body { width:200px; }</style></head><body><h1>'..stat.verstatus..'</h1></body></html>')
+    end
+end
+
+function SyHybridUser:CheckInst()
+    self.inststat = symini.checkinst()
+    self.ptkdetails = symini.getptkdetails()
+    local stat = self.inststat
 	if stat.result == false then
 	    app.showalert(stat.resultstr)
 	    if stat.offline == false then
@@ -15,7 +28,7 @@ function SyHybridUser:CheckInst()
 end
 
 function SyHybridUser:GetEditionLogo()
-  local k = symini.getptkdetails()
+  local k = self.ptkdetails
   local logo = ''
    if k.editionid == 1 then
      logo = '<img src="SyHybrid.scx#images\\misc\\syhunt-logo-community.png">'
@@ -36,12 +49,11 @@ function SyHybridUser:GenerateWebAPIKey()
 end
 
 function SyHybridUser:ContactSupport()
-  local d = symini.getptkdetails()
-  browser.newtab(d.supporturl)  
+  browser.newtab(self.ptkdetails.supporturl)  
 end
 
 function SyHybridUser:ContactSupportOld()
-    local kdetails = symini.getptkdetails()
+    local kdetails = self.ptkdetails
 	local username = kdetails.orgname
 	local r = ctk.string.list:new()
 	local ver = ctk.file.getver(app.dir..'\\SyHybrid.dll')
@@ -120,6 +132,8 @@ function SyHybridUser:Register(warnlimit)
 	if k ~= '' then
 	    local res = symini.setptk(k)
 		app.showmessagex(res.resulthtml)
+		-- Updates PTK Details
+		self.ptkdetails = symini.getptkdetails()
 		if res.result == false then
 		  browser.exit()
 		end
