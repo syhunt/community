@@ -22,6 +22,7 @@
 <div class="icontabs">
 <div #mainstrip class="strip">
 <div panel="panel-jira" accesskey="J" selected><center><img #icon_jira><br>Jira</center></div>
+<div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
 </div>
 
 <!-- jira tab begin-->
@@ -33,6 +34,9 @@ Project Name:<br><input type="text" style="width:250px;" cid="tracker.project.na
 Jira Server URL:<br><input type="text" cid="tracker.api.url">
 <div .sep/>
 Default Issue Type Name:<br><input type="text" style="width:150px;" cid="tracker.jira.defitname">
+<p align=right style="margin:0;padding:0;">
+<button #btncustlabels onclick="prefs.editlist('tracker.custom.labels','Custom Labels','Example: Vulnerability')">Edit Labels...</button>
+</p>
 </div>
 </fieldset>
 <fieldset><legend>Tracker Authentication</legend>
@@ -43,6 +47,20 @@ Password:<br><input type="password" style="width:150px;" cid="tracker.auth.passw
 </div>
 </fieldset>
 </div>
+<!-- jira tab end-->
+
+<!-- advanced tab begin-->
+<div name="panel-advanced" class="tab">
+<fieldset><legend>Custom Fields</legend>
+<div .optgroup>
+<button #btncustfields onclick="prefs.editlist('tracker.custom.fields','Custom Fields','Example: customfield_10100=Value')">Edit Fields...</button><br><br>
+You can reference custom fields by name rather than ID.<br><br>
+If the custom field is a <b>SelectList</b>, declare the field as:<br>
+&nbsp;&nbsp;customfield_10100.value=ACustomValue
+</div>
+</fieldset>
+</div>
+<!-- advanced tab end-->
 
 <p style="text-align:right">
 <button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>

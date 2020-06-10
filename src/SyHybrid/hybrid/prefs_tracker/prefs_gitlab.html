@@ -10,7 +10,7 @@
       if( evt.type == Event.DOCUMENT_COMPLETE ) {
        importsettings();
        sethandlers();
-       Sandcat.PrefsSet("tracker.defaultapp","github");
+       Sandcat.PrefsSet("tracker.defaultapp","gitlab");
       }
  }
 
@@ -21,14 +21,16 @@
 <body marginwidth="0" marginheight="0">
 <div class="icontabs">
 <div #mainstrip class="strip">
-<div panel="panel-github" accesskey="G" selected><center><img #icon_github><br>GitHub</center></div>
+<div panel="panel-gitlab" accesskey="G" selected><center><img #icon_gitlab><br>GitLab</center></div>
 </div>
 
-<!-- github tab begin-->
-<div name="panel-github" class="tab" selected>
-<fieldset><legend>GitHub Preferences</legend>
+<!-- gitlab tab begin-->
+<div name="panel-gitlab" class="tab" selected>
+<fieldset><legend>GitLab Preferences</legend>
 <div .optgroup>
-Project Name (owner/repo):<br><input type="text" style="width:250px;" cid="tracker.project.name"><br>
+Project Name (owner/repo):<br><input type="text" style="width:250px;" cid="tracker.project.name">
+<div .sep/>
+GitLab Server URL:<br><input type="text" cid="tracker.api.url"><br><br>
 <p align=right style="margin:0;padding:0;">
 <button #btncustlabels onclick="prefs.editlist('tracker.custom.labels','Custom Labels','Example: Vulnerability')">Edit Labels...</button>
 </p>
@@ -36,9 +38,7 @@ Project Name (owner/repo):<br><input type="text" style="width:250px;" cid="track
 </fieldset>
 <fieldset><legend>Tracker Authentication</legend>
 <div .optgroup>
-Username:<br><input type="text" style="width:150px;" cid="tracker.auth.username">
-<div .sep/>
-Password:<br><input type="password" style="width:150px;" cid="tracker.auth.password">
+Personal Access Token:<br><input type="password" style="width:150px;" cid="tracker.auth.token.encrypted">
 </div>
 </fieldset>
 </div>
