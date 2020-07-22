@@ -96,6 +96,7 @@ function requestdone(r)
 end
 
 task.caption = 'Syhunt Hybrid Task'
+task.tag = params.sessionname
 task:setscript('ondblclick',"browser.showbottombar('task messages')")
 task:setscript('onstop',"SessionManager:setsessionstatus([["..params.sessionname.."]], 'Canceled')")
 

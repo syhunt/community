@@ -2,11 +2,28 @@ SessionManager = {
  title = 'Session Manager'
 }
 
+function SessionManager:refresh()
+  self:loadtab(false)
+end
+
 function SessionManager:setsessionstatus(sesname,status)
   local ses = symini.session:new()
   ses.name = sesname
   ses:setvalue('Status', status)
   ses:release()
+end
+
+function SessionManager:stopsession(sesname,status)
+  local tid = browser.gettaskidbytag(sesname)
+  if tid ~= '' then
+    browser.stoptask(tid)
+  else
+    local ses = symini.session:new()
+    ses.name = sesname
+    ses:stop()
+    ses:release()
+  end
+  self:refresh()
 end
 
 function SessionManager:submitselected_vulns(trackername)
@@ -394,10 +411,13 @@ function SessionManager:add_session(r, sesname)
  r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[')">Export Session As...</li>]]) 
  r:add('<li>Debug')
  r:add('<menu>')
- r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[','dbgmain')">Export Main Data</li>]])
- r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[','dbglog')">Export Log</li>]])
+ r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[','dbgfull')">Export Full Data</li>]])
+ r:add('<hr/>')
+ r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[','dbglog')">Export Log Only</li>]])
  r:add('</menu>')
  r:add('</li>')
+ r:add('<hr/>')
+  r:add([[<li onclick="SessionManager:stopsession(']]..sesname..[[')">Stop Scan</li>]])
  r:add('<hr/>')
  r:add([[<li style="foreground-image: url(Resources.pak#16\icon_remove.png);" onclick="SessionManager:delsession(']]..sesname..[[')">Delete</li>]])
  r:add('</menu>')
@@ -430,17 +450,18 @@ function SessionManager:loadtab(newtab)
  end
  --r:add('</widget>')
  html = ctk.string.replace(html,'%sessions%',r.text)
- if newtab == true then
   local j = {}
   j.title = 'Past Sessions'
   j.icon = 'url(PenTools.scx#images\\icon_clock.png)'
   j.table = 'SessionManager.ui'
   j.toolbar = 'SyHybrid.scx#hybrid\\sesman\\toolbar.html'
+  j.tag = 'sessionmanager'
   j.html = html
-  browser.newtabx(j)
- else
-  tab:loadx(html)
- end
+  if newtab == true then
+    browser.newtabx(j)
+  else
+    tab:loadx(html)
+  end
  r:release()
  p:release()
 end
@@ -461,7 +482,7 @@ function SessionManager:deleteallchecked()
    end
   end
   p:release()
-  self:loadtab(false)
+  self:refresh()
  end
 end
 
@@ -479,7 +500,7 @@ function SessionManager:import_session()
    local sesname = ctk.file.getname(srcfile)
    sesname = ctk.string.before(sesname, '.sse')
    ctk.dir.unpackfromtar(srcfile, repdir..'\\'..sesname)
-   self:loadtab(false)
+   self:refresh()
  end
 end
 
@@ -488,9 +509,9 @@ function SessionManager:export_session(sesname,mode)
  local sugfn = 'syhunt_'..sesname
  local mode = mode or ''
  local mask = '*.*'
- if mode == 'dbgmain' then
-   mask = '*.json'
-   sugfn = sugfn..'_dbgmain'
+ if mode == 'dbgfull' then
+   mask = '*.log|*.jrm|*_*.json'
+   sugfn = sugfn..'_dbgfull'
  end
  if mode == 'dbglog' then
    mask = '*.log'
@@ -509,6 +530,6 @@ function SessionManager:delsession(sesname)
   if repdir ~= '' then
    ctk.dir.delete(repdir..'\\'..sesname)
   end
-  self:loadtab(false)
+  self:refresh()
  end
 end

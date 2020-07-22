@@ -76,9 +76,10 @@ function ScanScheduler:AddScheduledScan()
     local name = app.showinputdialog('Enter name:','')
     name = ctk.file.cleanname(name)
     if name ~= '' then
+      local unixtime = os.time(os.date("!*t"))
       local item  = {}
       item.name = name
-      item.url = 'empty'
+      item.url = tostring(unixtime)
       HistView:AddURLLogItem(item, self.filename)
       self:EditSchedulePreferences(item.name, item.url)
       self:ViewScheduledScans(false)
