@@ -59,9 +59,8 @@ function ReportMaker:get_template()
 end
 
 function ReportMaker:set_template(name)
-  require 'Repmaker'
 	self.template_name = name
-	rm = SyRepmaker:new()
+	rm = symini.repmaker:new()
 	rm.Template = name
 	self:do_template('get_default')
 	rm:release()
@@ -72,9 +71,7 @@ function ReportMaker:set_templatesort(name)
 end
 
 function ReportMaker:gen_report()
-    require 'SyMini'
-    require 'Repmaker'
-	rm = SyRepmaker:new()
+	rm = symini.repmaker:new()
 	local ui = self.ui
 	local filename = app.savefile(rm.Filter,'html',symini.info.sessionsdir..'Report_'..self.session_name)
 	local reptitle = ui.report_title.value
@@ -344,8 +341,7 @@ function ReportMaker:save_jsonfield(field,inputname)
 end
 
 function ReportMaker:show_options()
-    require 'Repmaker'
-	local rm = SyRepmaker:new()
+	local rm = symini.repmaker:new()
 	local options = rm.IncludeList
 	local templates = rm.TemplateList
 	rm:release()

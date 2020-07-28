@@ -1,8 +1,7 @@
 require 'SyMini'
-require 'Repmaker'
 task.caption = 'Syhunt Report Maker Task'
 
-rm = SyRepmaker:new()
+rm = symini.repmaker:new()
 rm.Filename = params.filename
 rm.SessionName = params.session_name
 rm.SessionDir = params.session_dir

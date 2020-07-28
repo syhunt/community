@@ -8,6 +8,22 @@
 <div .button onclick="SessionManager:deleteallchecked()" style="foreground-image: url(Resources.pak#16\icon_remove.png);" titleid="for-deletechk"/>
 <div .sepv />
 <div .button onclick="SessionManager:import_session()" style="foreground-image: url(SyHybrid.scx#images\16\import.png);" titleid="for-importses"/>
+<div .sepv />
+<div #listspecific .button style="foreground-image: url(SyHybrid.scx#images\16\date_task.png); behavior: ~ popup-menu;" titleid="for-listspecific" >6
+  <menu.popup id="listspecific-list">
+  <li onclick="SessionManager:listbyperiod(0)">Today</li>    
+  <li onclick="SessionManager:listbyperiod(1)">Today and Yesterday</li>      
+  <hr/>  
+  <li onclick="SessionManager:listbyperiod(7)">Last 7 Days</li>  
+  <li onclick="SessionManager:listbyperiod(30)">Last 15 Days</li>  
+  <li onclick="SessionManager:listbyperiod(30)">Last 30 Days</li>
+  <li onclick="SessionManager:listbyperiod(45)">Last 45 Days</li>  
+  <li onclick="SessionManager:listbyperiod(60)">Last 60 Days</li>
+  <li onclick="SessionManager:listbyperiod(90)">Last 90 Days</li>
+  <hr/>  
+  <li onclick="SessionManager:listbyperiod(-1)">All Sessions</li>
+  </menu>
+</div>
 </div>
 
 <popup id="for-comparechk">Compare Checked</popup>
@@ -16,3 +32,4 @@
 <popup id="for-uncheckall">Uncheck All</popup>
 <popup id="for-reload">Reload</popup>
 <popup id="for-importses">Import Session...</popup>
+<popup id="for-listspecific">List Sessions By Period</popup>

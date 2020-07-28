@@ -1,9 +1,15 @@
 SessionManager = {
- title = 'Session Manager'
+ title = 'Session Manager',
+ lastdays = 7
 }
 
 function SessionManager:refresh()
   self:loadtab(false)
+end
+
+function SessionManager:listbyperiod(p)
+  self.lastdays = p
+  self:refresh()
 end
 
 function SessionManager:setsessionstatus(sesname,status)
@@ -292,11 +298,10 @@ end
 
 function SessionManager:comparechecked()
  local e = self.ui.element
- local repdir=symini.info.sessionsdir
  local state = false
  local p = ctk.string.loop:new()
  local sl = ctk.string.list:new()
- p:load(ctk.dir.getdirlist(repdir))
+ p:load(symini.getsessionlist(self.lastdays))
  while p:parsing() do
    e:select('input[session="'..p.current..'"]')
    state=e.value
@@ -330,11 +335,10 @@ end
 
 function SessionManager:checkuncheckall(state)
  local e = self.ui.element
- local repdir=symini.info.sessionsdir
  local boolstate = false
  if state==1 then boolstate=true end
  local p = ctk.string.loop:new()
- p:load(ctk.dir.getdirlist(repdir))
+ p:load(symini.getsessionlist(self.lastdays))
  while p:parsing() do
   e:select('input[session="'..p.current..'"]')
   e.value = boolstate
@@ -426,17 +430,13 @@ end
 
 function SessionManager:loadtab(newtab)
  local html = SyHybrid:getfile('hybrid/sesman/list.html')
- local repdir=symini.info.sessionsdir
  local r = ctk.string.list:new()
  local p = ctk.string.loop:new()
- p:load(ctk.dir.getdirlist(repdir))
+ p:load(symini.getsessionlist(self.lastdays))
  p:reverse()
 
  while p:parsing() do
-  local sesfile=repdir..'\\'..p.current..'\\_Main.jrm'
-  if ctk.file.exists(sesfile) then
    self:add_session(r, p.current)
-  end
  end
 
  html = ctk.string.replace(html,'%sessions%',r.text)
@@ -463,7 +463,7 @@ function SessionManager:deleteallchecked()
  local resp=app.ask_yn('Are you sure you want to delete the selected sessions?',self.title)
  if resp==true then 
   local p = ctk.string.loop:new()
-  p:load(ctk.dir.getdirlist(repdir))
+  p:load(symini.getsessionlist(self.lastdays))
   while p:parsing() do
    e:select('input[session="'..p.current..'"]')
    state=e.value
