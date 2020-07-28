@@ -130,6 +130,7 @@ Branch:<br>
 <option value="fileinc">File Inclusion</option>
 <option value="malscan">Malware Content</option>
 <option value="unvredir">Unvalited Redirects</option>
+<option value="passive">Passive Scan (No Attacks)</option>
 <option value="complete">Complete Pen-Test/Review (Time-Consuming)</option>
 </select><br><br>
 <button type="checkbox" cid="scheduledscan.dynamic.checks.dos">Perform DoS tests</button>
@@ -142,17 +143,24 @@ Branch:<br>
 <div name="panel-report" class="tab">
 <fieldset><legend>Report Generation</legend><br>
 <div .optgroup>
-<button type="checkbox" cid="scheduledscan.report.autogen"><b>Automatically generate report after scanning</b></button><br>
-Reports can be generated at any time after a scan.<br><br>
-Template:<br>
+Report Template:<br>
 <select class="tag-list" type="select" cid="scheduledscan.report.template">
 <option value="Standard" selected>Standard</option>
 <option value="Comparison">Comparison</option>
 <option value="Compliance">Compliance</option>
 <option value="Complete">Complete</option>
 </select><br><br>
-Report Filename (Optional, eg: C:\Reports\Demo.pdf):<br>
-<input type="text" style="width:350px;" cid="scheduledscan.report.outfilename">
+<button type="checkbox" cid="scheduledscan.report.autogen"><b>Automatically generate report after scanning</b></button><br>
+Report Filename (Optional, eg: C:\Reports\Report_{$SN}.pdf):<br>
+<input type="text" style="width:350px;" cid="scheduledscan.report.outfilename"><br><br>
+
+<button type="checkbox" cid="scheduledscan.export.autogen"><b>Automatically generate exports after scanning</b></button><br>
+Export Filename 1 (Optional, eg: C:\Reports\Export_{$SN}.xml):<br>
+<input type="text" style="width:350px;" cid="scheduledscan.export.outfilename"><br>
+Export Filename 2 (Optional, eg: C:\Reports\Export_{$SN}.json):<br>
+<input type="text" style="width:350px;" cid="scheduledscan.export.outfilename2"><br><br>
+
+Note: {$SN} will be replaced by the scan session name
 </div>
 </fieldset>
 </div>
@@ -181,7 +189,10 @@ Subject:<br>
 <fieldset><br>
 <div .optgroup>
 <button type="checkbox" cid="scheduledscan.options.runinbg">Run scan in background (no window)</button><br>
-<button type="checkbox" cid="scheduledscan.dynamic.emulator.js">Enable JavaScript emulation</button>
+<button type="checkbox" cid="scheduledscan.dynamic.emulator.js">Enable JavaScript emulation</button><br><br>
+
+Pass/Fail Condition (Optional, requires report or export generation enabled):<br>
+<input type="text" style="width:350px;" cid="scheduledscan.options.pfcond">
 </div>
 </fieldset>
 </div>

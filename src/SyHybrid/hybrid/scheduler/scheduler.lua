@@ -36,6 +36,22 @@ function ScanScheduler:EditSchedulePreferences(name)
   return Sandcat.Preferences:EditCustomFile(t)
 end
 
+function ScanScheduler:EditScheduleTargetPreferences(name)
+  local hs = symini.hybrid:new()
+  hs:start()
+  local res = hs:scheduler_getscheduledscandetails(name)
+  if res.success == true then  
+    if res.target_type == 'url' then
+      SyhuntDynamic:EditSitePreferences(res.target_url)
+    else
+      app.showmessage('Target preferences not supported for this type of target.')
+    end
+  else
+    app.showmessage('Failed! '..res.errormsg)
+  end    
+  hs:release()  
+end
+
 function ScanScheduler:ShowScheduledScanCommandLine(name, action)
   action = action or "show"
   local hs = symini.hybrid:new()
@@ -76,13 +92,15 @@ function ScanScheduler:AddScheduledScan()
     local name = app.showinputdialog('Enter name:','')
     name = ctk.file.cleanname(name)
     if name ~= '' then
-      local unixtime = os.time(os.date("!*t"))
       local item  = {}
       item.name = name
-      item.url = tostring(unixtime)
-      HistView:AddURLLogItem(item, self.filename)
-      self:EditSchedulePreferences(item.name, item.url)
-      self:ViewScheduledScans(false)
+      item.url = ctk.convert.strtohex(name)
+      item.repeatnameallow = false
+      item.repeatnamewarn = true    
+      if HistView:AddURLLogItem(item, self.filename) == true then
+        self:EditSchedulePreferences(item.name, item.url)
+        self:ViewScheduledScans(false)
+      end
     end
   end
 end
@@ -96,6 +114,9 @@ function ScanScheduler:DoSchedulerAction(action, itemid)
         self:ViewScheduledScans(false)
       end
     end
+    if action == 'editsiteprefs' then
+      self:EditScheduleTargetPreferences(item.name)
+    end    
     if action == 'showcmdln' then
       self:ShowScheduledScanCommandLine(item.name)
     end
@@ -142,6 +163,8 @@ function ScanScheduler:ViewScheduledScans(newtab)
   ]]
  t.menu = [[
   <li onclick="ScanScheduler:DoSchedulerAction('editprefs','%i')">Edit Schedule Preferences...</li>
+  <hr/>
+  <li onclick="ScanScheduler:DoSchedulerAction('editsiteprefs','%i')">Edit Assigned Target Preferences...</li>
   <hr/>
   <li>CLI Parameters
    <menu>

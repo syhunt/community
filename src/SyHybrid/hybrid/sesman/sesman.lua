@@ -244,7 +244,7 @@ function SessionManager:comparesessions(basesesname,secondsesname)
   r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
   r:add('<tr><th width="20%">Description</th><th width="30%">Location</th><th width="20%">Affected Param(s)</th><th width="10%">Line(s)</th><th width="10%">Risk</th><th width="10%">Comparison Status</th></tr>')
   v = ctk.string.loop:new()
-  v:load(symini.comparesessions(basesesname,secondsesname))
+  v:load(symini.getsessioncomparison(basesesname,secondsesname))
    while v:parsing() do
     local vname=ctk.html.escape(v:curgetvalue('vname'))
     local vpath=ctk.html.escape(v:curgetvalue('vpath'))
@@ -431,24 +431,14 @@ function SessionManager:loadtab(newtab)
  local p = ctk.string.loop:new()
  p:load(ctk.dir.getdirlist(repdir))
  p:reverse()
- --[[
- r:add('<meta id="element">')
- r:add('<style>'..SyHybrid:getfile('hybrid/sesman/sesman.css')..'</style>')
- r:add('<link rel="stylesheet" type="text/css" href="Common.pak#listview.css">')
- r:add('<select id="action" size="1" onchange="SessionManager:actionmenuchanged()">')
- r:add('<option value="none" SELECTED>Action</OPTION>')
- r:add('<option value="delchecked">Delete All Checked</OPTION>')
- r:add('</select>&nbsp;&nbsp;<a href="#" onclick="SessionManager:checkuncheckall(1)">Check All</a>&nbsp;&nbsp;<a href="#" onclick="SessionManager:checkuncheckall(0)">Uncheck All</a>')
- r:add('<br><br>')
- r:add('<widget type="select" style="width:100%; height:90%">')
- ]]
+
  while p:parsing() do
-  sesfile=repdir..'\\'..p.current..'\\_Main.jrm'
+  local sesfile=repdir..'\\'..p.current..'\\_Main.jrm'
   if ctk.file.exists(sesfile) then
    self:add_session(r, p.current)
   end
  end
- --r:add('</widget>')
+
  html = ctk.string.replace(html,'%sessions%',r.text)
   local j = {}
   j.title = 'Past Sessions'
