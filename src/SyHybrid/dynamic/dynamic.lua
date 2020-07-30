@@ -183,7 +183,7 @@ function SyhuntDynamic:IsScanInProgress(warn)
 end
 
 function SyhuntDynamic:Load()
-    local mainexe = app.dir..'SyHybrid.dll'
+    local mainexe = app.dir..'SyMini.dll'
     local mainico = app.dir..'\\Packs\\Icons\\SyDynamic.ico'
 	self:NewTab()
 	app.seticonfromfile(mainico)

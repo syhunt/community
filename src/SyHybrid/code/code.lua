@@ -1,7 +1,7 @@
 SyhuntCode = {}
 
 function SyhuntCode:Load()
-    local mainexe = app.dir..'SyHybrid.dll'
+    local mainexe = app.dir..'SyMini.dll'
     local mainico = app.dir..'\\Packs\\Icons\\SyCode.ico'
 	self:NewTab()
     app.seticonfromfile(mainico)

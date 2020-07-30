@@ -11,10 +11,9 @@ function VulnInfo:getvulndetails(jsonfile)
 end
 
 function VulnInfo:editvulnfile(jsonfile)
-  require "SyCVSS"
   local vuln = self:getvulndetails(jsonfile)
-  local cvss3score = cvssutils.cvss3_vectortoscore(vuln.ref_cvss3_vector).basescoreseverity
-  local cvss2score = cvssutils.cvss2_vectortoscore(vuln.ref_cvss2_vector).basescoreseverity  
+  local cvss3score = syutils.cvss3_vectortoscore(vuln.ref_cvss3_vector).basescoreseverity
+  local cvss2score = syutils.cvss2_vectortoscore(vuln.ref_cvss2_vector).basescoreseverity  
   local slp = ctk.string.loop:new()
   local hs = symini.hybrid:new()
   hs:start()
@@ -85,7 +84,6 @@ function VulnInfo:gettrackerbuttons()
 end
 
 function VulnInfo:load(t)
-  require "SyCVSS"
   debug.print('Loading vuln info...')
   self.vuln = t
   self.page = SyHybrid:getfile('hybrid/vulninfo.html')
@@ -109,6 +107,6 @@ function VulnInfo:load(t)
   ui.rt_solution.value = t.recommendations
   ui.rt_vulncode.value = t.vulncode
   ui.checklog.value = t.checklog
-  ui.cvss3score.value = cvssutils.cvss3_vectortoscore(t.ref_cvss3_vector).basescoreseverity
+  ui.cvss3score.value = syutils.cvss3_vectortoscore(t.ref_cvss3_vector).basescoreseverity
   ui.cvss3vector.value = ' ('..t.ref_cvss3_vector..')'
 end

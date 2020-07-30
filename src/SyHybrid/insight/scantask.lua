@@ -1,13 +1,18 @@
 require "SyMini"
-geodb = require "mmdb".open(getappdir().."Packs\\GeoLite2\\GeoLite2-Country.mmdb")
+local hasbit, bit = pcall(require, "bit")
+if hasbit then
+  geodb = require "mmdb".open(getappdir().."Packs\\GeoLite2\\GeoLite2-Country.mmdb")
+end
 
 function addattack(t)
   local ipcountry = {}
   local j = ctk.json.object:new()
-  if string.match(t.ip,'[:]') then
-    ipcountry = geodb:search_ipv6(t.ip)
-  else
-    ipcountry = geodb:search_ipv4(t.ip)
+  if hasbit then
+    if string.match(t.ip,'[:]') then
+      ipcountry = geodb:search_ipv6(t.ip)
+    else
+      ipcountry = geodb:search_ipv4(t.ip)
+    end
   end
   j.caption = tostring(t.line)
   j.subitemcount = 8

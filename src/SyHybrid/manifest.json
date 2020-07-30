@@ -1,6 +1,6 @@
 {
  "name": "Syhunt Hybrid Pack",
- "version": "file:SyHybrid.dll",
+ "version": "file:SyMini.dll",
  "author": "Syhunt",
  "compat": "v2",
  "script": {

@@ -19,12 +19,15 @@ function AttackerProfile:load(ip)
   tipak.filename = 'ToolInfo.pak'
   debug.print('Loading attacker profile: '..ip)
   self.page = SyHybrid:getfile('insight/profile.html')
-  local geodb = require "mmdb".open(app.dir.."Packs\\GeoLite2\\GeoLite2-Country.mmdb")
   local ipcountry = {}
-  if string.match(ip,'[:]') then
-    ipcountry = geodb:search_ipv6(ip)
-  else
-    ipcountry = geodb:search_ipv4(ip)
+  local hasbit, bit = pcall(require, "bit")
+  local geodb = require "mmdb".open(app.dir.."Packs\\GeoLite2\\GeoLite2-Country.mmdb")  
+  if hasbit then
+    if string.match(ip,'[:]') then
+      ipcountry = geodb:search_ipv6(ip)
+    else
+      ipcountry = geodb:search_ipv4(ip)
+    end
   end
   
   local i = symini.insight:new()

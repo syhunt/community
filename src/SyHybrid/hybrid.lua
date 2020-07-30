@@ -92,7 +92,7 @@ function SyHybrid:GetOptionsHTML(options)
 end
 
 function SyHybrid:SetHybridMode()
-    local mainexe = app.dir..'SyHybrid.dll'
+    local mainexe = app.dir..'SyMini.dll'
     local mainico = app.dir..'\\Packs\\Icons\\SyHybrid.ico'
     if symini.info.modename == 'Community Edition' then
       mainico = app.dir..'\\Packs\\Icons\\SyCommunity.ico'

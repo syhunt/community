@@ -56,7 +56,7 @@ function SyHybridUser:ContactSupportOld()
     local kdetails = self.ptkdetails
 	local username = kdetails.orgname
 	local r = ctk.string.list:new()
-	local ver = ctk.file.getver(app.dir..'\\SyHybrid.dll')
+	local ver = ctk.file.getver(app.dir..'\\SyMini.dll')
 	local redir = 'welcome'
 
 	r:add('<form method="POST" action="http://www.syhunt.com/index_forms.php" name="f">')
