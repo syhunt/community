@@ -1,6 +1,5 @@
 ScanScheduler = {
- title = 'Scan Scheduler',
- filename = 'Scheduled Scans'
+ title = 'Scan Scheduler'
 }
 
 -- Returns the name of the app associated with tracker (Jira, GitHub, etc)
@@ -97,8 +96,9 @@ function ScanScheduler:AddScheduledScan()
       item.url = ctk.convert.strtohex(name)
       item.repeatnameallow = false
       item.repeatnamewarn = true    
-      if HistView:AddURLLogItem(item, self.filename) == true then
+      if HistView:AddURLLogItem(item, symini.info.schedlistname) == true then
         self:EditSchedulePreferences(item.name, item.url)
+        symini.scheduler_sendsignal('update')
         self:ViewScheduledScans(false)
       end
     end
@@ -106,11 +106,12 @@ function ScanScheduler:AddScheduledScan()
 end
 
 function ScanScheduler:DoSchedulerAction(action, itemid)
-  local item = HistView:GetURLLogItem(itemid, self.filename)
+  local item = HistView:GetURLLogItem(itemid, symini.info.schedlistname)
   if item ~= nil then
     if action == 'editprefs' then
       local ok = self:EditSchedulePreferences(item.name, item.url)
       if ok == true then
+        symini.scheduler_sendsignal('update')
         self:ViewScheduledScans(false)
       end
     end
@@ -133,7 +134,7 @@ function ScanScheduler:DoSchedulerAction(action, itemid)
       self:TestScheduledScan(item.name)
     end
     if action == 'delete' then
-      HistView:DeleteURLLogItem(itemid,self.filename)
+      HistView:DeleteURLLogItem(itemid,symini.info.schedlistname)
       local jsonfile = symini.info.configdir..'\\Scheduler\\'..item.name..'.json'
       ctk.file.delete(jsonfile)
     end
@@ -142,7 +143,7 @@ end
 
 function ScanScheduler:GetScheduledScansList()
   HistView = HistView or Sandcat:require('histview')  
-  return HistView:GetURLLogItemNames(self.filename)
+  return HistView:GetURLLogItemNames(symini.info.schedlistname)
 end
 
 function ScanScheduler.GenSchedDescription(t)
@@ -155,7 +156,7 @@ function ScanScheduler:ViewScheduledScans(newtab)
  local t = {}
  t.newtab = newtab
  t.toolbar = 'SyHybrid.scx#hybrid/scheduler/toolbar.html'
- t.histname = self.filename
+ t.histname = symini.info.schedlistname
  t.tabicon = 'url(SyHybrid.scx#images\\16\\date_task.png);'
  t.html = Sandcat:getfile('histview_list.html')
  t.genurlfunc = self.GenSchedDescription
@@ -183,6 +184,6 @@ function ScanScheduler:ViewScheduledScans(newtab)
  HistView = HistView or Sandcat:require('histview')  
  HistView:ViewURLLogFile(t)
  if newtab == false then
-   symini.scheduler_start(true)
+   symini.scheduler_sendsignal('start')
  end
 end
