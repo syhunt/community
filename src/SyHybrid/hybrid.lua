@@ -3,6 +3,8 @@ SyHybrid.filename = 'SyHybrid.scx'
 SyHybrid.ViewCatSense = function() tab:loadx(catsense_analyze(tab.source,tab.url)) end
 
 function SyHybrid:Init()
+	-- Loads the main Hybrid clibs
+	require "SyMini"
 	-- Sets additional execution modes
 	browser.setinitmode('syhunthybrid','SyHybrid:Load()')
 	browser.setinitmode('syhuntcode','SyhuntCode:Load()')
@@ -35,9 +37,6 @@ function SyHybrid:Init()
 end
 
 function SyHybrid:AfterInit()
-	-- Loads the main Hybrid clibs
-	require "SyMini"
-
 	-- Loads the main Hybrid libraries that are included with this pack
 	self:dofile('hybrid/user.lua')
 	self:dofile('hybrid/repmaker/repmaker.lua')

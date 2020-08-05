@@ -1,7 +1,6 @@
 require "SyMini"
 
 task.caption = 'Issues Submission Task'
-local ses = symini.session:new()
 local hs = symini.hybrid:new()
 local itemfailed = false
 local failed_count = 0
@@ -9,7 +8,7 @@ hs:start()
   
 function sendissuefromfile(tracker, filename)
   local issue = {}
-  issue = ses:gettrackerissue(filename, params.app)
+  issue = hs:tracker_getissuebyfilename(filename, params.app)
   issue.tracker = tracker
   print('Sending issue: '..issue.summary..'...')
   local res = hs:tracker_sendissue(issue)
@@ -41,5 +40,4 @@ else
 end
 
 list:release()
-ses:release()
 hs:release()

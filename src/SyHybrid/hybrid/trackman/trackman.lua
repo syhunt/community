@@ -79,10 +79,10 @@ end
 function TrackerManager:SubmitIssue_FromVulnFile(tracker, filename)
   local trackerapp = self:GetTrackerApp(tracker)
   local issue = {}
-  local ses = symini.session:new()
-  issue = ses:gettrackerissue(filename, trackerapp)
+  local hs = symini.hybrid:new()
+  issue = hs:tracker_getissuebyfilename(filename, trackerapp)
   issue.tracker = tracker
-  ses:release()
+  hs:release()
   self:SubmitIssue(issue)
 end
 
