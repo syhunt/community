@@ -71,9 +71,10 @@ function ReportMaker:set_templatesort(name)
 end
 
 function ReportMaker:gen_report()
+    ctk.dir.create(symini.info.outputdir)
 	rm = symini.repmaker:new()
 	local ui = self.ui
-	local filename = app.savefile(rm.Filter,'html',symini.info.sessionsdir..'Report_'..self.session_name)
+	local filename = app.savefile(rm.Filter,'html',symini.info.outputdir..'Report_'..self.session_name)
 	local reptitle = ui.report_title.value
 	debug.print('file:'..filename)
 	if filename ~= '' then
