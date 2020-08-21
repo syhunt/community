@@ -12,6 +12,27 @@ ReportMaker = {
 	template_sort = ''
 }
 
+function ReportMaker:editpreferences(html)
+	html = html or SyHybrid:getfile('hybrid/prefs_report/prefs.html')
+	local slp = ctk.string.loop:new()
+	local t = {}
+	local rm = symini.repmaker:new()
+	slp:load(rm.options)
+	while slp:parsing() do
+		prefs.regdefault(slp.current,rm:prefs_getdefault(slp.current))
+	end
+	t.html = html
+	--t.html = ctk.string.replace(t.html,'%code_checks%',SyHybrid:GetOptionsHTML(rm.options_checks))
+	--t.html = ctk.string.replace(t.html,'%code_mapping_checks%',SyHybrid:GetOptionsHTML(rm.options_checksmap))
+	t.id = 'syhuntrepmaker'
+	t.options = rm.options
+	t.options_disabled = rm.options_locked
+	local res = Sandcat.Preferences:EditCustom(t)
+	rm:release()
+	slp:release()
+	return res
+end
+
 function ReportMaker:can_open_report()
 	local ui = self.ui
 	return ui.openrep.value

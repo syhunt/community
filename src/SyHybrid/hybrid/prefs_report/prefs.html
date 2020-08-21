@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>Syhunt Report Preferences</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#hybrid\prefs_report\prefs.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+      }
+ }
+
+ $(#ok).onClick = function() { confirm_edit(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-general" accesskey="G" selected><center><img #icon_general><br>General</center></div>
+</div>
+
+<div name="panel-general" class="tab" selected>
+<fieldset><legend>Report Customization</legend>
+<div .optgroup>
+Organization Logo URL (eg. http://www.mycompany.com/logo.png):<br><input type="text" style="width:*;" cid="syhunt.hybrid.report.company.logo.url">
+</div>
+</fieldset>
+</div>
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>
