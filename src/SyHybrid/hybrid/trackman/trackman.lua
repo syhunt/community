@@ -154,7 +154,7 @@ end
 
 function TrackerManager:GetIssueTrackerList()
   HistView = HistView or Sandcat:require('histview')  
-  return HistView:GetURLLogItemNames(self.filename)
+  return HistView:GetURLLogLists(self.filename).namelist
 end
 
 function TrackerManager:ViewIssueTrackers(newtab)

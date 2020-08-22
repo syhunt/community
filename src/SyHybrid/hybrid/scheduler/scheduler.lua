@@ -36,9 +36,7 @@ function ScanScheduler:EditSchedulePreferences(name)
 end
 
 function ScanScheduler:EditScheduleTargetPreferences(name)
-  local hs = symini.hybrid:new()
-  hs:start()
-  local res = hs:scheduler_getscheduledscandetails(name)
+  local res = symini.scheduler_getscheduledscandetails(name)
   if res.success == true then  
     if res.target_type == 'url' then
       SyhuntDynamic:EditSitePreferences(res.target_url)
@@ -47,8 +45,7 @@ function ScanScheduler:EditScheduleTargetPreferences(name)
     end
   else
     app.showmessage('Failed! '..res.errormsg)
-  end    
-  hs:release()  
+  end
 end
 
 function ScanScheduler:ShowScheduledScanCommandLine(name, action)
@@ -88,20 +85,15 @@ end
 
 function ScanScheduler:AddScheduledScan()
   if SyHybridUser:IsOptionAvailable(true) == true then
-    local name = app.showinputdialog('Enter name:','')
-    name = ctk.file.cleanname(name)
-    if name ~= '' then
       local item  = {}
-      item.name = name
+      item.name = symini.getsessionname()
       item.url = ctk.convert.strtohex(name)
-      item.repeatnameallow = false
-      item.repeatnamewarn = true    
-      if HistView:AddURLLogItem(item, symini.info.schedlistname) == true then
-        self:EditSchedulePreferences(item.name, item.url)
+      local ok = self:EditSchedulePreferences(item.name)
+      if ok == true then
+        HistView:AddURLLogItem(item, symini.info.schedlistname)
         symini.scheduler_sendsignal('update')
         self:ViewScheduledScans(false)
       end
-    end
   end
 end
 
@@ -109,7 +101,7 @@ function ScanScheduler:DoSchedulerAction(action, itemid)
   local item = HistView:GetURLLogItem(itemid, symini.info.schedlistname)
   if item ~= nil then
     if action == 'editprefs' then
-      local ok = self:EditSchedulePreferences(item.name, item.url)
+      local ok = self:EditSchedulePreferences(item.name)
       if ok == true then
         symini.scheduler_sendsignal('update')
         self:ViewScheduledScans(false)
@@ -137,13 +129,14 @@ function ScanScheduler:DoSchedulerAction(action, itemid)
       HistView:DeleteURLLogItem(itemid,symini.info.schedlistname)
       local jsonfile = symini.info.configdir..'\\Scheduler\\'..item.name..'.json'
       ctk.file.delete(jsonfile)
+      self:ViewScheduledScans(false)
     end
   end
 end
 
 function ScanScheduler:GetScheduledScansList()
   HistView = HistView or Sandcat:require('histview')  
-  return HistView:GetURLLogItemNames(symini.info.schedlistname)
+  return HistView:GetURLLogLists(symini.info.schedlistname).idlist
 end
 
 function ScanScheduler.GenSchedDescription(t)
@@ -152,7 +145,92 @@ function ScanScheduler.GenSchedDescription(t)
   return desc
 end
 
+function ScanScheduler:GetScheduledScanIcons(d)
+  local icons = {}
+  icons.target = 'Resources.pak#16/icon_blank.png'
+  icons.box = 'Resources.pak#16/icon_blank.png'  
+  if d.target_type == 'urlgit' then icons.target = 'SyHybrid.scx#images/16/code_bookmarks_url.png' end
+  if d.target_type == 'url' then icons.target = 'SyHybrid.scx#images/16/browser.png' end
+  if d.target_type == 'dir' then icons.target = 'SyHybrid.scx#images/16/folder.png' end
+  if d.huntmethod_box == 'white' then icons.box = 'SyHybrid.scx#images/16/box_white.png' end
+  if d.huntmethod_box == 'black' then icons.box = 'SyHybrid.scx#images/16/box_black.png' end
+  if d.huntmethod_box == 'gray' then icons.box = 'SyHybrid.scx#images/16/box_gray.png' end  
+  return icons
+end
+
+function ScanScheduler:IncludeScheduledScanItem(tb, schedid)
+  local schedname = HistView:GetURLLogItem(schedid, symini.info.schedlistname).name
+  local d = symini.scheduler_getscheduledscandetails(schedname)
+  local icons = self:GetScheduledScanIcons(d)
+  local title = d.name
+  if d.name == '' then
+    if ctk.string.matchx(schedname, '#*-*#') == true then
+    title = 'Untitled: '..schedname
+    else
+    title = schedname
+    end
+  end
+  local menu =  [[
+  <menu.context id="menu%i">
+  <li onclick="ScanScheduler:DoSchedulerAction('editprefs','%i')">Edit Schedule Preferences...</li>
+  <hr/>
+  <li onclick="ScanScheduler:DoSchedulerAction('editsiteprefs','%i')">Edit Assigned Target Preferences...</li>
+  <hr/>
+  <li>CLI Parameters
+   <menu>
+   <li onclick="ScanScheduler:DoSchedulerAction('copycmdln_filenamenparams','%i')">Copy Filename & Parameters</li>  
+   <li onclick="ScanScheduler:DoSchedulerAction('copycmdln_filename','%i')">Copy Filename</li>  
+   <li onclick="ScanScheduler:DoSchedulerAction('copycmdln_params','%i')">Copy Parameters</li>
+   <hr/>
+   <li onclick="ScanScheduler:DoSchedulerAction('showcmdln','%i')">Show Command Line</li>
+   </menu>
+  </li>
+  <hr/>
+  <li onclick="ScanScheduler:DoSchedulerAction('test','%i')">Run Test Scan Now</li>  
+  <hr/>
+  <li onclick="ScanScheduler:DoSchedulerAction('delete','%i')">Delete</li>
+  </menu>
+  ]]  
+  local troption = '<tr role="option" style="context-menu: selector(#menu%i);" ondblclick="ScanScheduler:DoSchedulerAction([[editprefs]],[[%i]])">'
+  troption = ctk.string.replace(troption, '%i', schedid)
+  tb:add(troption)
+  tb:add('<td>'..ctk.html.escape(title)..'</td>')
+  tb:add('<td>'..ctk.html.escape(d.description)..'</td>')  
+  tb:add('<td><img .lvfileicon src="'..icons.target..'"> '..ctk.html.escape(d.target_description)..'</td>')  
+  tb:add('<td><img .lvfileicon src="'..icons.box..'"> '..d.target_type_short..' ('..d.huntmethod..')</td>')    
+  tb:add('</tr>')
+  menu = ctk.string.replace(menu, '%i', schedid)
+  tb:add(menu)
+end
+
 function ScanScheduler:ViewScheduledScans(newtab)
+ local html = SyHybrid:getfile('hybrid/scheduler/list.html')
+ local tb = ctk.string.list:new()
+ local lp = ctk.string.loop:new()
+ lp:load(self:GetScheduledScansList())
+ while lp:parsing() do
+   self:IncludeScheduledScanItem(tb, lp.current)
+ end 
+ html = ctk.string.replace(html, '%scheduledscans%', tb.text)
+ 
+ local t = {}
+ t.title = 'Scheduled Scans'
+ t.toolbar = 'SyHybrid.scx#hybrid/scheduler/toolbar.html'
+ --t.histname = symini.info.schedlistname
+ t.icon = 'url(SyHybrid.scx#images\\16\\date_task.png);'
+ t.html = html
+ t.tag = 'scheduler'
+ if newtab == false then
+   symini.scheduler_sendsignal('start')
+   tab:loadx(html)
+ else
+   browser.newtabx(t)
+ end
+ tb:release()
+ lp:release() 
+end
+
+function ScanScheduler:ViewScheduledScansOld(newtab)
  local t = {}
  t.newtab = newtab
  t.toolbar = 'SyHybrid.scx#hybrid/scheduler/toolbar.html'
