@@ -79,7 +79,8 @@ function SessionManager:add_sessiondetails(r, sesname, iscomparison)
   end
   r:add('<fieldset><legend style="color:black">'..sesname..'</legend>')
   r:add('Date: '..details.datetime..'<br>')
-  r:add('Target(s): '..details.targetdesc..'<br>')
+  r:add('Duration: '..details.duration..'<br>')
+  r:add('Target(s): '..ctk.html.escape(details.targetdesc)..'<br>')
   r:add('Hunt Method: '..details.huntmethod..'<br>')
   r:add('Vulnerability Count: '..details.vulncount..'<br>')
   r:add('Status: <font color='..stfontcolor..'><b>'..details.resultsdesc..'</b></font>')
@@ -346,14 +347,6 @@ function SessionManager:checkuncheckall(state)
  p:release()
 end
 
-function SessionManager:get_ports(s)
- if s ~= '' then
-  return ' ('..s..')'
- else
-  return ''
- end
-end
-
 function SessionManager:getcounticon(i)
  function getnumberext(n)
   if n < 10 then
@@ -398,13 +391,7 @@ function SessionManager:add_session(r, sesname)
  r:add([[ondblclick="SessionManager:load_session(']]..sesname..[[')" ]])
  r:add('>')
  r:add('<td><input type="checkbox" session="'..sesname..'"><img .lvfileicon src="'..icon..'">&nbsp;'..details.datetime..' ('..sesname..')</td>')
- if details.sourcedir ~= '' then
-  r:add('<td>'..details.sourcedir..'</td>')
- elseif details.targetfile ~= '' then
-  r:add('<td>'..details.targetfile..'</td>')
- else
-  r:add('<td>'..ctk.html.escape(details.targets)..self:get_ports(details.ports)..'</td>')
- end
+ r:add('<td>'..ctk.html.escape(details.targetdesc)..'</td>')
  r:add('<td>'..details.huntmethod..'</td>')
  r:add('<td>'..details.resultsdesc..'&nbsp;<img .lvfileicon src="'..self:getcounticon(details.vulncount)..'"></td>')
  r:add('<menu.context id="menu'..sesnamehex..'">')

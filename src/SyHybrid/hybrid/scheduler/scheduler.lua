@@ -87,7 +87,7 @@ function ScanScheduler:AddScheduledScan()
   if SyHybridUser:IsOptionAvailable(true) == true then
       local item  = {}
       item.name = symini.getsessionname()
-      item.url = ctk.convert.strtohex(name)
+      item.url = ctk.convert.strtohex(item.name)
       local ok = self:EditSchedulePreferences(item.name)
       if ok == true then
         HistView:AddURLLogItem(item, symini.info.schedlistname)
@@ -97,9 +97,24 @@ function ScanScheduler:AddScheduledScan()
   end
 end
 
+function ScanScheduler:ClearIncrementalData(name)
+  local hs = symini.hybrid:new()
+  hs:start()
+  local res = hs:scheduler_getscheduledscancmdln(name)
+  if res.success == true then
+    SyhuntDynamic:ClearIncrementalData(res.inctag)
+  else
+    app.showmessage('Failed! '..res.errormsg)
+  end
+  hs:release()   
+end
+
 function ScanScheduler:DoSchedulerAction(action, itemid)
   local item = HistView:GetURLLogItem(itemid, symini.info.schedlistname)
   if item ~= nil then
+    if action == 'clearinc' then
+      self:ClearIncrementalData(item.name)
+    end
     if action == 'editprefs' then
       local ok = self:EditSchedulePreferences(item.name)
       if ok == true then
@@ -150,8 +165,8 @@ function ScanScheduler:GetScheduledScanIcons(d)
   icons.target = 'Resources.pak#16/icon_blank.png'
   icons.box = 'Resources.pak#16/icon_blank.png'  
   if d.target_type == 'urlgit' then icons.target = 'SyHybrid.scx#images/16/code_bookmarks_url.png' end
-  if d.target_type == 'url' then icons.target = 'SyHybrid.scx#images/16/browser.png' end
-  if d.target_type == 'dir' then icons.target = 'SyHybrid.scx#images/16/folder.png' end
+  if d.target_type == 'url' then icons.target = 'SyHybrid.scx#images/16/dynamic_bookmark.png' end
+  if d.target_type == 'dir' then icons.target = 'SyHybrid.scx#images/16/folder_blue2.png' end
   if d.huntmethod_box == 'white' then icons.box = 'SyHybrid.scx#images/16/box_white.png' end
   if d.huntmethod_box == 'black' then icons.box = 'SyHybrid.scx#images/16/box_black.png' end
   if d.huntmethod_box == 'gray' then icons.box = 'SyHybrid.scx#images/16/box_gray.png' end  
@@ -176,6 +191,7 @@ function ScanScheduler:IncludeScheduledScanItem(tb, schedid)
   <hr/>
   <li onclick="ScanScheduler:DoSchedulerAction('editsiteprefs','%i')">Edit Assigned Target Preferences...</li>
   <hr/>
+  <li onclick="ScanScheduler:DoSchedulerAction('test','%i')">Run Test Scan Now</li>  
   <li>CLI Parameters
    <menu>
    <li onclick="ScanScheduler:DoSchedulerAction('copycmdln_filenamenparams','%i')">Copy Filename & Parameters</li>  
@@ -186,7 +202,7 @@ function ScanScheduler:IncludeScheduledScanItem(tb, schedid)
    </menu>
   </li>
   <hr/>
-  <li onclick="ScanScheduler:DoSchedulerAction('test','%i')">Run Test Scan Now</li>  
+  <li onclick="ScanScheduler:DoSchedulerAction('clearinc','%i')">Clear Incremental Cache</li>    
   <hr/>
   <li onclick="ScanScheduler:DoSchedulerAction('delete','%i')">Delete</li>
   </menu>
@@ -230,38 +246,7 @@ function ScanScheduler:ViewScheduledScans(newtab)
  lp:release() 
 end
 
-function ScanScheduler:ViewScheduledScansOld(newtab)
- local t = {}
- t.newtab = newtab
- t.toolbar = 'SyHybrid.scx#hybrid/scheduler/toolbar.html'
- t.histname = symini.info.schedlistname
- t.tabicon = 'url(SyHybrid.scx#images\\16\\date_task.png);'
- t.html = Sandcat:getfile('histview_list.html')
- t.genurlfunc = self.GenSchedDescription
- t.style = [[
-  ]]
- t.menu = [[
-  <li onclick="ScanScheduler:DoSchedulerAction('editprefs','%i')">Edit Schedule Preferences...</li>
-  <hr/>
-  <li onclick="ScanScheduler:DoSchedulerAction('editsiteprefs','%i')">Edit Assigned Target Preferences...</li>
-  <hr/>
-  <li>CLI Parameters
-   <menu>
-   <li onclick="ScanScheduler:DoSchedulerAction('copycmdln_filenamenparams','%i')">Copy Filename & Parameters</li>  
-   <li onclick="ScanScheduler:DoSchedulerAction('copycmdln_filename','%i')">Copy Filename</li>  
-   <li onclick="ScanScheduler:DoSchedulerAction('copycmdln_params','%i')">Copy Parameters</li>
-   <hr/>
-   <li onclick="ScanScheduler:DoSchedulerAction('showcmdln','%i')">Show Command Line</li>
-   <hr/>
-   <li onclick="ScanScheduler:DoSchedulerAction('test','%i')">Run Test Scan Now</li>
-   </menu>
-  </li>
-  <hr/>
-  <li onclick="ScanScheduler:DoSchedulerAction('delete','%i')">Delete</li>
-  ]]  
- HistView = HistView or Sandcat:require('histview')  
- HistView:ViewURLLogFile(t)
- if newtab == false then
-   symini.scheduler_sendsignal('start')
- end
+function ScanScheduler:NewScanDialog()
+ self:ViewScheduledScans()
+ self:AddScheduledScan()
 end

@@ -443,6 +443,16 @@ function SyhuntDynamic:AddToTargetList()
   end
 end
 
+function SyhuntDynamic:ClearIncrementalData(tag)
+  local d = symini.getincdetails(tag)
+  if ctk.file.exists(d.filename) == true then
+    ctk.file.delete(d.filename)
+    app.showmessage('Incremental cache cleared for this item.')
+  else
+    app.showalert('No incremental cache found for this item!')  
+  end
+end
+
 function SyhuntDynamic:DoTargetListAction(action, itemid)
   local item = HistView:GetURLLogItem(itemid, 'Targets Dynamic')
   if item ~= nil then
@@ -453,6 +463,9 @@ function SyhuntDynamic:DoTargetListAction(action, itemid)
     if action == 'manuallogin' then
       SyhuntDynamic:ManualLogin(item.url)
     end    
+    if action == 'clearinc' then
+      SyhuntDynamic:ClearIncrementalData(item.url)
+    end        
     if action == 'editprefs' then
       local ok = self:EditSitePreferences(item.url)
       if ok == true then
@@ -475,6 +488,8 @@ function SyhuntDynamic:ViewTargetList(newtab)
   <li onclick="SyhuntDynamic:DoTargetListAction('scan','%i')">Scan Site...</li>
   <li onclick="SyhuntDynamic:DoTargetListAction('editprefs','%i')">Edit Site Preferences...</li>
   <li onclick="SyhuntDynamic:DoTargetListAction('manuallogin','%i')">Manual Login (External)...</li>
+  <hr/>  
+  <li onclick="SyhuntDynamic:DoTargetListAction('clearinc','%i')">Clear Incremental Cache</li>  
   <hr/>
   <li onclick="HistView:DeleteURLLogItem('%i','Targets Dynamic')">Delete</li>
   ]]  

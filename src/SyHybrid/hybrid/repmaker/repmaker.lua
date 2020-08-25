@@ -415,7 +415,7 @@ function ReportMaker:show_options()
 	rep_templates:release()
 	
 	self.xmllist = ctk.dir.getfilelist(self.session_dir..'*.xrm')
-	local report_title = 'Syhunt Scanner Report'
+	local report_title = 'Syhunt Scan Report'
 
 	r = ctk.string.list:new()
 	r:add('<meta id="element">')

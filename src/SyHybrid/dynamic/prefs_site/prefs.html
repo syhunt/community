@@ -191,6 +191,14 @@ CA Directory:<br><input type="folder-path" novalue="Select Folder..." style="wid
 
 <!-- advanced tab begin-->
 <div name="panel-advanced" class="tab">
+<fieldset><legend>Incremental Scan</legend>
+<div .optgroup>
+<select class="tag-list" type="select" cid="site.syhunt.dynamic.advanced.incrementalscan">
+<option value="auto" selected>Auto (Recommended)</option>
+<option value="disabled">Disabled</option>
+</select>
+</div>
+</fieldset>
 <fieldset><legend>Custom Detection Signatures</legend>
 <div .optgroup>
 <button #btnerrorsigs onclick="prefs.editlist('site.syhunt.dynamic.lists.errorpagesigs','Error Page Detection Signatures','Example: 404 Not Found')">Error Page...</button> 
@@ -201,11 +209,6 @@ CA Directory:<br><input type="folder-path" novalue="Select Folder..." style="wid
 <div .optgroup>
 <!--button #btnalerts onclick="prefs.editlist('site.syhunt.dynamic.lists.emailalerts','Email Alerts','Example: admin@domain.com')">Email Alerts...</button--> 
 <button #btncookies onclick="prefs.editlist('site.syhunt.dynamic.lists.cookies','Cookies','')">Cookies...</button>
-</div>
-</fieldset>
-<fieldset><legend>Custom Virtual Host</legend>
-<div .optgroup>
-Host: <input type="text" cid="site.syhunt.dynamic.advanced.virtualhost">
 </div>
 </fieldset>
 </div>
