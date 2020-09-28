@@ -14,28 +14,28 @@ end
 
 function NirSoft:LaunchCacheView()
  local ccvdir = app.dir..'Extensions\\ChromeCacheView\\'
- local cfgfile = ccvdir..'ChromeCacheView.cfg'
+ local cfgfile = browser.info.cachedir..'ChromeCacheView.cfg'
  if ctk.file.exists(cfgfile) == false then
   local c = ctk.string.list:new()
   c:add('[General]')
   c:add('RememberFolder=1')
-  c:add('CacheFolder='..browser.info.cachedir) -- ..\\..\\Config\\Cache
+  c:add('CacheFolder='..browser.info.cachedir..'Cache') 
   c:savetofile(cfgfile)
   c:release()
  end
- ctk.file.exec(ccvdir..'ChromeCacheView.exe')
+ ctk.file.exec(ccvdir..'ChromeCacheView.exe','',browser.info.cachedir)
 end
 
 function NirSoft:LaunchCookiesView()
  local ccvdir = app.dir..'Extensions\\ChromeCookiesView\\'
- local cfgfile = ccvdir..'ChromeCookiesView.cfg'
+ local cfgfile = browser.info.cachedir..'ChromeCookiesView.cfg'
  if ctk.file.exists(cfgfile) == false then
   local c = ctk.string.list:new()
   c:add('[General]')
   c:add('LoadCookiesFileOnStart=1')
-  c:add('CookiesFile='..browser.info.cachedir..'Cookies') -- ..\\..\\Config\\Cache\\Cookies
+  c:add('CookiesFile='..browser.info.cachedir..'Cookies') 
   c:savetofile(cfgfile)
   c:release()
  end
- ctk.file.exec(ccvdir..'ChromeCookiesView.exe')
+ ctk.file.exec(ccvdir..'ChromeCookiesView.exe','',browser.info.cachedir)
 end

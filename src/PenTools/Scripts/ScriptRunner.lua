@@ -1,20 +1,16 @@
 ScriptRunner = {}
 ScriptRunner.default_scriptdir = app.dir..'Scripts\\'
 
-function ScriptRunner:reset()
- debug.print('Reseting Script Runner...')
- local us = require "Underscript.Runner"
- us.options.modulename = "Sandcat"
- us.options.redirectio = true
- us.options.useglobals = false
-end
-
 function ScriptRunner:start()
+ undscript = require "Underscript.Runner"
+ undscript.options.modulename = "Sandcat"
+ undscript.options.redirectio = true
+ undscript.options.useglobals = false
  local initscript = [[
  local us = require "Underscript.Runner"
  us.options.modulename = "Sandcat"
  us.options.redirectio = true
- us.options.useglobals = true
+ us.options.useglobals = false
  ]]
  browser.addlua('task.init',initscript)
 end
@@ -49,7 +45,6 @@ function ScriptRunner:runscript(ext,script)
  if self:canrunext(ext) then
   local us = require "Underscript.Runner"
   local run = us.run
-  self:reset()
   local tabURL = tab.url
   local tabSource = tab.source
   local tabRcvdHeaders = tab.rcvdheaders

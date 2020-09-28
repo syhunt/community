@@ -1,4 +1,5 @@
  local us = require 'Underscript.Runner'
+ us.options.useglobals = true
  task.caption = 'MD5 Brute Force'
  task.status = 'Checking...'
  print('MD5 Brute Force (By Braindisorder)')

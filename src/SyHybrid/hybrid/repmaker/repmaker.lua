@@ -343,7 +343,7 @@ function ReportMaker:get_jsonfield(field)
 	if ctk.file.exists(fn) then
 	  j:loadfromfile(fn)
 	end
-	local notes = j['data.'..field]
+	local notes = j:getvalue('data.'..field,'')
 	j:release()
 	return notes
 end
