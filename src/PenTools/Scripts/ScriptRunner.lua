@@ -52,15 +52,15 @@ function ScriptRunner:runscript(ext,script)
   debug.print('Executing...')
   tab.status = 'Executing script...'
   if ext == 'js' then self:javascript_browser(script) end
-  if ext == 'jsc' then run.jscript(script) end
+  if ext == 'jsc' then _script.jscript(script) end
   if ext == 'lua' then assert(loadstring(script))() end
-  if ext == 'pas' then run.pascalscript(script) end
-  if ext == 'pasrem' then run.pascalprog(script) end
-  if ext == 'pl' then run.perl(script) end
-  if ext == 'php' then run.php(script) end
-  if ext == 'py' then run.python(script) end
-  if ext == 'rb' then run.ruby(script) end
-  if ext == 'vbs' then run.vbscript(script) end
+  if ext == 'pas' then _script.pascalscript(script) end
+  if ext == 'pasrem' then _script.pascal.prog(script) end
+  if ext == 'pl' then _script.perl(script) end
+  if ext == 'php' then _script.php(script) end
+  if ext == 'py' then _script.python(script) end
+  if ext == 'rb' then _script.ruby(script) end
+  if ext == 'vbs' then _script.vbscript(script) end
   if ext == 'tis' then browser.navbar:eval(script) end
   tab.status = 'Done.'
  end
