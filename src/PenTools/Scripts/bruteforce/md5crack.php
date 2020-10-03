@@ -31,18 +31,19 @@ $str_length = strlen($charset);
  
 // Get MD5 checksum from command line
 $hash_password = $s_md5;// $_SERVER["argv"][1];
+$password_match = "";
  
 function check($password)
 {
-        global $hash_password, $time_start;     
+        global $hash_password, $time_start, $password_match;     
  
         if (hash(HASH_ALGO, $password) == $hash_password) {
  
-                sandcat_writeln("FOUND MATCH, password: " . $password);
-                sandcat_setg('found',$password);
+                echo("FOUND MATCH, password: " . $password);
+                $password_match = $password;
                 $time_end = getmicrotime();
                 $time = $time_end - $time_start; 
-                sandcat_writeln("Found in " . $time . " seconds");
+                echo("Found in " . $time . " seconds");
                 exit;
         }
 }
@@ -60,14 +61,14 @@ function recurse($width, $position, $base_string)
         }
 }
  
-sandcat_writeln("Target hash: " . $hash_password);
+echo("Target hash: " . $hash_password);
 for ($i = 1; $i < PASSWORD_MAX_LENGTH + 1; ++$i) {
-        sandcat_writeln("Checking passwords with length:" .$i);
+        echo("Checking passwords with length:" .$i);
         $time_check = getmicrotime();
         $time = $time_check - $time_start;
-        sandcat_writeln("Runtime: " . $time . " seconds");
+        echo("Runtime: " . $time . " seconds");
         recurse($i, 0, '');
 }
  
-sandcat_writeln("Execution complete, no password found");
+echo("Execution complete, no password found");
 ?>

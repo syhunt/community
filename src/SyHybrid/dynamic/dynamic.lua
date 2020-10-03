@@ -438,6 +438,8 @@ function SyhuntDynamic:AddToTargetList()
     local item  = {}
     item.name = r.name
     item.url = self:NormalizeTargetURL(r.value)
+    item.repeaturlallow = false
+    item.repeaturlwarn = true
     HistView:AddURLLogItem(item, 'Targets Dynamic')
     self:ViewTargetList(false)
   end

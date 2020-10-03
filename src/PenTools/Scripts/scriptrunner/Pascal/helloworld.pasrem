@@ -1,7 +1,7 @@
 // Hello World example
 var URL:string;
 begin
-URL := Sandcat.GetL('tabURL');
+URL := Sandcat.GetLString('tabURL');
 Sandcat.WriteLn('Hello World from '+Uppercase('PascalScript')+'!');
 if URL <> '' then Sandcat.WriteLn(URL);
 Sandcat.WriteLn('Bye!');

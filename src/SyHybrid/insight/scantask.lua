@@ -4,16 +4,24 @@ if hasbit then
   geodb = require "mmdb".open(getappdir().."Packs\\GeoLite2\\GeoLite2-Country.mmdb")
 end
 
-function addattack(t)
-  local ipcountry = {}
-  local j = ctk.json.object:new()
+function getipcountry(ip)
+  local ipcountry = 'N/A'
+  local geo = {}
   if hasbit then
-    if string.match(t.ip,'[:]') then
-      ipcountry = geodb:search_ipv6(t.ip)
+    if string.match(ip,'[:]') then
+      geo = geodb:search_ipv6(ip)
     else
-      ipcountry = geodb:search_ipv4(t.ip)
+      geo = geodb:search_ipv4(ip)
+    end
+    if geo ~= nil then    
+      ipcountry = geo.country.names.en
     end
   end
+  return ipcountry
+end
+
+function addattack(t)
+  local j = ctk.json.object:new()
   j.caption = tostring(t.line)
   j.subitemcount = 8
   j.subitem1 = t.date
@@ -21,11 +29,7 @@ function addattack(t)
   j.subitem3 = t.request
   j.subitem4 = tostring(t.statuscode)
   j.subitem5 = t.description
-  if ipcountry ~= nil then
-    j.subitem6 = ipcountry.country.names.en
-  else
-    j.subitem6 = 'N/A'
-  end  
+  j.subitem6 = getipcountry(t.ip)
   j.subitem7 = t.tooltitle
   j.subitem8 = t.ip
   j.imageindex = 0

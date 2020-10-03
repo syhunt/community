@@ -22,12 +22,12 @@ end
 
 function ScriptRunner:canrunext(ext)
  local r = true
- if ext == 'py' then
-  if ctk.utils.hassoftware('Python') == false then
-   r = false
-   app.showmessage('Python not installed!')
-  end
- end
+ -- if ext == 'py' then
+ -- if ctk.utils.hassoftware('Python') == false then
+ --  r = false
+ --  app.showmessage('Python not installed!')
+ -- end
+ -- end
  return r
 end
 

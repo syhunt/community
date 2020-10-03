@@ -19,10 +19,10 @@ function AttackerProfile:load(ip)
   tipak.filename = 'ToolInfo.pak'
   debug.print('Loading attacker profile: '..ip)
   self.page = SyHybrid:getfile('insight/profile.html')
-  local ipcountry = {}
+  local ipcountry = nil
   local hasbit, bit = pcall(require, "bit")
-  local geodb = require "mmdb".open(app.dir.."Packs\\GeoLite2\\GeoLite2-Country.mmdb")  
   if hasbit then
+    local geodb = require "mmdb".open(app.dir.."Packs\\GeoLite2\\GeoLite2-Country.mmdb")  
     if string.match(ip,'[:]') then
       ipcountry = geodb:search_ipv6(ip)
     else
@@ -32,8 +32,6 @@ function AttackerProfile:load(ip)
   
   local i = symini.insight:new()
   local prof = i:getprofile(ip)
-  local j = ctk.json.object:new()
-  j:load(prof)
   local html = self.page
   local slp = ctk.string.loop:new()
   browser.loadpagex({
@@ -46,9 +44,9 @@ function AttackerProfile:load(ip)
   browser.pagex:eval('ClearProfile();')
   local ui = self.ui
   ui.iptext.value = ip
-  ui.atkcount.value = tostring(j.attackcount)
-  ui.teccount.value = tostring(j.techniques_count)
-  ui.toolcount.value = tostring(j.tools_count)
+  ui.atkcount.value = tostring(prof.totalattacks)
+  ui.teccount.value = tostring(prof.totaltechniques)
+  ui.toolcount.value = tostring(prof.totaltools)
   if ipcountry ~= nil then
     ui.country.value = ipcountry.country.names.en
     icon = 'flags.pak#16\\'..string.lower(ipcountry.country.iso_code)..'.png'
@@ -58,7 +56,7 @@ function AttackerProfile:load(ip)
   end
   ui.countryflag:setattrib('src', icon)
   
-  slp:load(j.tools)
+  slp:load(prof.tools)
   while slp:parsing() do
     if slp.current ~= '' then
       toolinfo = i:gettoolinfo(slp.current)
@@ -74,7 +72,7 @@ function AttackerProfile:load(ip)
     end
   end
   
-  slp:load(j.techniques)
+  slp:load(prof.techniques)
   while slp:parsing() do
     if slp.current ~= '' then
       browser.pagex:eval('AddTechnique("'..ctk.html.escape(slp.current)..'");')
@@ -83,7 +81,7 @@ function AttackerProfile:load(ip)
   
   local foundplat = false
   ui.platdesc.value = ''
-  slp:load(j.platforms)
+  slp:load(prof.platforms)
   while slp:parsing() do
     if slp.current ~= '' then
       toolinfo = i:gettoolinfo(slp.current)
@@ -103,7 +101,6 @@ function AttackerProfile:load(ip)
     ui.platdesc.value = 'Unknown'
   end
   
-  j:release()
   slp:release()
   i:release()
   tipak:release()

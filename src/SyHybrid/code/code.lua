@@ -376,6 +376,8 @@ function SyhuntCode:AddToTargetList()
     local item  = {}
     item.name = r.name
     item.url = r.value
+    item.repeaturlallow = false
+    item.repeaturlwarn = true    
     --item.url = SyhuntCode:NormalizeTargetURL(item.url)
     HistView:AddURLLogItem(item, 'Target Repositories')
     self:ViewTargetList(false)

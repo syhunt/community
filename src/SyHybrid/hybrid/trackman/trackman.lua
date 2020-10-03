@@ -122,6 +122,7 @@ function TrackerManager:AddIssueTracker(appname)
       local item  = {}
       item.name = name
       item.url = appname
+      item.repeatnameallow = false
       HistView:AddURLLogItem(item, self.filename)
       self:EditTrackerPreferences(item.name, item.url)
       self:ViewIssueTrackers(false)

@@ -25,7 +25,7 @@ function PenTools:init()
  browser.navbar:addhtml('#csmenu-list',csmenu)
  browser.navbar:inserthtml(5,'#pagemenu-list',pagemenu)
  browser.navbar:inserthtml(2,'#navbarmenu-list',"<li id='tnewcodeedit' style='foreground-image: url(PenTools.scx#images\\icon_codeedit.png);' onclick='CodeEditor:newtab()'>New Editor Tab</li>")
- browser.navbar:inserthtml(0,'#ext-list',extmenu)
+ --browser.navbar:inserthtml(0,'#ext-list',extmenu)
  browser.navbar:inserthtmlfile(0,'#toolbar','PenTools.scx#Navbar.html')
  browser.navbar:inserthtmlfile(1,'#searcheng-list','PenTools.scx#Searcheng.html')
  if browser.info.initmode == 'sandcat' then
