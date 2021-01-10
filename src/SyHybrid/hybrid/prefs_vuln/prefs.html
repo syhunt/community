@@ -85,6 +85,8 @@ Vulnerable Code:
  <richtext cid="data.vulnerable_code" readonly="true" style="width:*;height:120px;"></richtext>
 </widget>
 <!--plaintext cid="data.vulnerable_code" style="width:*;height:120px;"></plaintext-->
+<div .sep/>
+Affected Variable(s): <input type="text" cid="data.variables">
 </select>
 </div>
 </fieldset>
@@ -182,6 +184,16 @@ CVSS2 Vector: <input type="text" cid="data.references_cvss2_vector">
 <tr><td>CWE: </td><td><input #refcwe type="text" cid="data.references_cwe" style="width:50px;"> <button #btnrefcwe>Details...</button></td></tr>
 <tr><td>CVE: </td><td><input #refcve type="text" cid="data.references_cve" style="width:50px;"> <button #btnrefcve>Details...</button></td></tr>
 <tr><td>OSVDB: </td><td><input #refosvdb type="text" cid="data.references_osvdb" style="width:50px;"></td></tr>
+</table>
+</div>
+</fieldset>
+<fieldset><legend>Syhunt References</legend>
+<div .optgroup>
+<table>
+<tr><td>Check Category: </td><td><input type="text" cid="data.check_category" style="width:50px;" readonly="true"></td></tr>
+<tr><td>Check Module: </td><td><input type="text" cid="data.check_module" style="width:50px;" readonly="true"></td></tr>
+<tr><td>Unique Check ID: </td><td><input type="text" cid="data.check_id" style="width:50px;" readonly="true"></td></tr>
+<tr><td>Track ID: </td><td><input type="text" cid="data.tid" style="width:50px;" readonly="true"></td></tr>
 </table>
 </div>
 </fieldset>

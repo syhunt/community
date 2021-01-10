@@ -54,7 +54,7 @@ function ScriptRunner:runscript(ext,script)
   if ext == 'js' then self:javascript_browser(script) end
   if ext == 'jsc' then _script.jscript(script) end
   if ext == 'lua' then assert(loadstring(script))() end
-  if ext == 'pas' then _script.pascalscript(script) end
+  if ext == 'pas' then _script.pascal.script(script) end
   if ext == 'pasrem' then _script.pascal.prog(script) end
   if ext == 'pl' then _script.perl(script) end
   if ext == 'php' then _script.php(script) end

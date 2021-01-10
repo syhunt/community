@@ -19,6 +19,7 @@ function AttackerProfile:load(ip)
   tipak.filename = 'ToolInfo.pak'
   debug.print('Loading attacker profile: '..ip)
   self.page = SyHybrid:getfile('insight/profile.html')
+  --[[
   local ipcountry = nil
   local hasbit, bit = pcall(require, "bit")
   if hasbit then
@@ -28,7 +29,7 @@ function AttackerProfile:load(ip)
     else
       ipcountry = geodb:search_ipv4(ip)
     end
-  end
+  end]]
   
   local i = symini.insight:new()
   local prof = i:getprofile(ip)
@@ -47,9 +48,12 @@ function AttackerProfile:load(ip)
   ui.atkcount.value = tostring(prof.totalattacks)
   ui.teccount.value = tostring(prof.totaltechniques)
   ui.toolcount.value = tostring(prof.totaltools)
-  if ipcountry ~= nil then
-    ui.country.value = ipcountry.country.names.en
-    icon = 'flags.pak#16\\'..string.lower(ipcountry.country.iso_code)..'.png'
+  --if prof.ipcountry ~= nil then
+  if prof.ipcountry ~= '' then
+    ui.country.value = prof.ipcountry 
+    icon = 'flags.pak#16\\'..string.lower(prof.ipcountrycode)..'.png'    
+    --ui.country.value = ipcountry.country.names.en
+    --icon = 'flags.pak#16\\'..string.lower(ipcountry.country.iso_code)..'.png'
   else
     ui.country.value = 'N/A'
     icon = 'resources.pak#16\\icon_blank.png'

@@ -133,6 +133,7 @@ function SyHybridUser:Register(warnlimit)
 	    local res = symini.setptk(k)
 		app.showmessagex(res.resulthtml)
 		-- Updates PTK Details
+		self.inststat = symini.checkinst()
 		self.ptkdetails = symini.getptkdetails()
 		if res.result == false then
 		  browser.exit()

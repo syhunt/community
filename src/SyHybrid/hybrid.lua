@@ -34,6 +34,7 @@ function SyHybrid:Init()
 
 	-- Adds CatSense tab
 	--browser.bottombar:addtiscript('Tabs.Add("catsense","SyHybrid:ViewCatSense()")')
+	-- Checks the current installation for user details and a valid configuration
 end
 
 function SyHybrid:AfterInit()
@@ -50,8 +51,9 @@ function SyHybrid:AfterInit()
 
 	-- Adds some additional credits to the about screen
 	browser.addlibinfo('famfamfam flag icons','','Mark James')
-	browser.addlibinfo('mmdblua library','','Daurnimator')
-	browser.addlibinfo('GeoLite2 data','2','<a href="#" onclick="browser.newtab([[http://www.maxmind.com]])">MaxMind</a>')
+	--browser.addlibinfo('mmdblua library','','Daurnimator')
+	browser.addlibinfo('IP2Location LITE data','','<a href="#" onclick="browser.newtab([[http://www.ip2location.com]])">IP2Location</a>')
+	--browser.addlibinfo('GeoLite2 data','2','<a href="#" onclick="browser.newtab([[http://www.maxmind.com]])">MaxMind</a>')
 	--browser.addlibinfo('PDF Creation library','2.0','K. Nishita')
 	--browser.addlibinfo('RTF Creation library','1.0','K. Nishita')
 	browser.addlibinfo('TAR Components','2.1.1','Stefan Heymann')
@@ -61,8 +63,7 @@ function SyHybrid:AfterInit()
 	SyhuntDynamic:AddCommands()
 	SyhuntDynamic:AddClipmon()
 
-	-- Checks the current installation for user details and a valid configuration
-	SyHybridUser:CheckInst()
+	SyHybridUser:CheckInst()	
 end
 
 function SyHybrid:GetOptionsHTML(options)
@@ -119,7 +120,7 @@ end
 function SyHybrid:Launcher()
     local warningmsg = ''
     local updatemsg = ''
-    local stat = SyHybridUser.inststat --symini.checkrenew()
+    local stat = SyHybridUser.inststat
     if stat.expnear == true then
       warningmsg = [[<include src="Professional.pak#hybrid/launcher/warningrenew.html" />]]
     end

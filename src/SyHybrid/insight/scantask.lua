@@ -1,10 +1,10 @@
 require "SyMini"
-local hasbit, bit = pcall(require, "bit")
-if hasbit then
-  geodb = require "mmdb".open(getappdir().."Packs\\GeoLite2\\GeoLite2-Country.mmdb")
-end
+--local hasbit, bit = pcall(require, "bit")
+--if hasbit then
+--  geodb = require "mmdb".open(getappdir().."Packs\\GeoLite2\\GeoLite2-Country.mmdb")
+--end
 
-function getipcountry(ip)
+--[[function getipcountry(ip)
   local ipcountry = 'N/A'
   local geo = {}
   if hasbit then
@@ -18,7 +18,7 @@ function getipcountry(ip)
     end
   end
   return ipcountry
-end
+end]]
 
 function addattack(t)
   local j = ctk.json.object:new()
@@ -29,7 +29,8 @@ function addattack(t)
   j.subitem3 = t.request
   j.subitem4 = tostring(t.statuscode)
   j.subitem5 = t.description
-  j.subitem6 = getipcountry(t.ip)
+  j.subitem6 = t.ipcountry
+  --j.subitem6 = getipcountry(t.ip)
   j.subitem7 = t.tooltitle
   j.subitem8 = t.ip
   j.imageindex = 0

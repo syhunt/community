@@ -133,7 +133,7 @@ function SessionManager:show_sessiondetails(sesname)
     local vpath_desc = vpath
     local vpath_hex = ctk.convert.strtohex(v:curgetvalue('vpath'))
     vfilename_list:add(vfilename)
-    if details.huntmethod == 'Source Code Scan' then
+    if details.launcher == 'Syhunt Code' then
       vpath_desc = ctk.string.after(vpath_desc,'http://127.0.0.1')
     end
     r:add('<tr role="option" ondblclick="SyhuntDynamic:EditVulnDetails(ctk.convert.hextostr([['..vfilename_full_hex..']]))"><td><input type="checkbox" vrisk="'..vrisk..'" vfilename="'..vfilename..'"><img .lvfileicon src="'..ricon..'">&nbsp;'..vname..'</td><td><a href="#" onclick="browser.showurl(ctk.convert.hextostr([['..vpath_hex..']]))">'..vpath_desc..'</a></td><td>'..vpars..'</td><td>'..v:curgetvalue('vlns')..'</td><td>'..vrisk..'</td></tr>')
