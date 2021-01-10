@@ -294,7 +294,7 @@ function ReportMaker:add_repdata()
 	<button onclick="ReportMaker:do_searchclear()">Clear</button>
 	<br><br>]])
 	r:add('<widget type="select" style="padding:0;">')
-	r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
+	r:add('<table name="reportview" width="100%" cellspacing=0px fixedrows=1>')
 	r:add('<tr><th width="10%">Entry Type</th><th width="90%">Short Description</th></tr>')
 	local xml = GXMLIniList:new()
 	local xmlfiles = ctk.string.loop:new()
@@ -322,7 +322,7 @@ function ReportMaker:add_repdata()
 	-- vuln editor
 	r:add('<div id="vulneditor" class="container" style="display:none">')
 	r:add('<widget type="select" style="padding:0;">')
-	r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
+	r:add('<table name="reportview" width="100%" cellspacing=0px fixedrows=1>')
 	r:add('<tr><th width="10%"></th><th width="90%"></th></tr>')
 	self:add_field('input','Check Name','vuln_checkname')
 	self:add_field('input','Risk','vuln_risk')
@@ -382,7 +382,7 @@ function ReportMaker:show_options()
 	The following items will be included:<br>
 	<div style="width:100%%;height:220px;">
 	<widget type="select" style="padding:0;">
-	<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>
+	<table name="reportview" width="100%" cellspacing=0px fixedrows=1>
 	<tr><td></td></tr>
 	%reloptions%
 	</table>

@@ -54,7 +54,7 @@ function SpiderLinks:showhostlinks(sessionname,host,port)
 	r:add('</div>')
 	r:add('<div name="panel-id1" class="tab">') -- panel 1
 	r:add('<div class="container">')
-	r:add('<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>')
+	r:add('<table name="reportview" width="100%" cellspacing=0px fixedrows=1>')
 	r:add('<tr><th width="80%">Link</th><th width="20%">Status</th></tr>')
 
 	while links:parsing() do

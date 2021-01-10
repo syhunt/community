@@ -17,7 +17,7 @@ function VulnList:addinterface(p)
 	<br><br>
 	</div>
 	<widget type="select" style="padding:0;">
-	<table name="reportview" width="100%" cellspacing=-1px fixedrows=1>
+	<table name="reportview" width="100%" cellspacing=0px fixedrows=1>
 	<tr><th width="50%">Vulnerability Name/Category</th><th width="10%">Total</th><th width="10%">CWE</th><th width="10%">CVE</th><th width="10%">OSVDB</th><th width="10%">BID</th><th></th></tr>
 	]])
 end
