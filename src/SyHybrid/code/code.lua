@@ -166,7 +166,7 @@ end
 
 function SyhuntCode:NewTab()
     local cr = {}
-    cr.clickfunc = 'SyhuntDynamic:EditVulnDetails'
+    cr.dblclickfunc = 'SyhuntDynamic:EditVulnDetails'
     cr.columns = SyHybrid:getfile('dynamic/vulncols.lst')
 	local aliases = SyHybrid:getfile('code/aliases.lst')
 	local j = {}

@@ -103,7 +103,7 @@ end
 
 function SyhuntInsight:NewTab()
   local cr = {}
-  cr.clickfunc = 'SyhuntInsight:LoadAttackerProfile'
+  cr.dblclickfunc = 'SyhuntInsight:LoadAttackerProfile'
   cr.columns = SyHybrid:getfile('insight/atkcols.lst')
 	local j = {}
 	if browser.info.initmode == 'syhuntinsight' then

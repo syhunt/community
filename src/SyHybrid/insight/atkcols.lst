@@ -1,7 +1,7 @@
 "c=Line",w=80
 "c=Date / Time",w=180
 "c=Attacker IP",w=100
-"c=Request",a=1,w=200
+"c=Request (Double-click for details)",a=1,w=300
 "c=Status",w=80
 "c=Attack Description",w=140
 "c=Attack Origin",w=100
