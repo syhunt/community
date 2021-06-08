@@ -1,6 +1,15 @@
 <div id="toolbar" class="toolbar">
 <div .button onclick="SyhuntCode:ViewTargetList(false)" style="foreground-image: @ICON_RELOAD" titleid="for-reload"/>
-<div .button onclick="SyhuntCode:AddToTargetList()" style="foreground-image: url(SyHybrid.scx#images\16\dynamic_bookmarks_add.png);" titleid="for-add"/>
+<div #addmenu .button style="foreground-image: url(SyHybrid.scx#images\16\code_bookmarks_addazure.png); behavior: ~ popup-menu;" titleid="for-addmenu" >6
+  <menu.popup id="addmenu-list">
+  <li onclick="SyhuntCode:AddToTargetList('git')">Add GIT project...</li>
+  <li onclick="SyhuntCode:AddToTargetList('gita')">Add GIT project [Azure DevOps Services]...</li>
+  <hr/>  
+  <li onclick="SyhuntCode:AddToTargetList('ados')">Add TFS project [Azure DevOps Services]...</li>
+  <li onclick="SyhuntCode:AddToTargetList('tfs')">Add TFS project [Azure DevOps Server]...</li>
+  <li onclick="SyhuntCode:AddToTargetList('tfs')">Add TFS project [TFS 2018 - 2010]...</li>
+  </menu>
+</div>
 <div .sepv />
 <div #setmanmenu .button style="foreground-image: url(Resources.pak#16\icon_settings_man.png); behavior: ~ popup-menu;" titleid="for-setmanmenu" >6
   <menu.popup id="setmanmenu-list">
@@ -14,5 +23,5 @@
 </div>
 
 <popup id="for-reload">Reload</popup>
-<popup id="for-add">Add URL...</popup>
+<popup id="for-addmenu">Add Project URL...</popup>
 <popup id="for-setmanmenu">Import/Export Targets...</popup>

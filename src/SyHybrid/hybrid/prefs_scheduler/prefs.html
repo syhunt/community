@@ -75,7 +75,7 @@ Name: <input type="text" cid="scheduledscan.name"><br><br>
 Type:<br>
 <select #targettype class="tag-list" type="select" cid="scheduledscan.target.type">
 <option #targettypeurl value="url" selected>URL (Dynamic)</option>
-<option #targettypegit value="urlgit">GIT URL (Code)</option>
+<option #targettypegit value="urlgit">Project URL (Code)</option>
 <option #targettypedir value="dir">Local Directory (Code)</option>
 </select><br><br>
 <div #targetdirarea>
@@ -95,7 +95,7 @@ Start URL:<br>
 <div #targetgitarea>
 <table style="padding:0;margin:0;">
 <tr><td valign="top" style="padding-right:10px;">
-GIT URL:<br>
+Project URL (Azure DevOps / GIT / TFS):<br>
 <input #targeturlgit type="text" style="width:350px;" cid="scheduledscan.target.urlgit"> <button #btncodetargetlist type="selector" menu="#codetargetlist-items">..</button>
     <menu id="codetargetlist-items" style="display:none;">
       <li #edit_codetargets>Edit target list...</li> 
@@ -111,7 +111,7 @@ GIT URL:<br>
       </li>
     </menu>
 </td><td valign="top">
-Branch:<br>
+GIT Branch:<br>
 <input #targetbranch type="text" style="width:50px;" cid="scheduledscan.target.branch">
 </td>
 </tr></table>

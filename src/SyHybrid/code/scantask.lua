@@ -14,7 +14,13 @@ if params.targettype == 'file' then
   print('Scanning filename: '..params.codefile..'...')
 end
 if params.targettype == 'url' then
-  print('Scanning GIT URL: '..params.codeurl..'... Branch: '..params.codebranch)
+  print('Scanning repository URL: '..params.codeurl)
+  if params.codebranch ~= 'master' then
+    print('Branch: '..params.codebranch)
+  end
+  if params.codetfsver ~= 'latest' then
+    print('TFS Version: '..params.codetfsver)
+  end  
 end
 
 function addvuln(v)
@@ -85,7 +91,12 @@ if params.targettype == 'file' then
   cs:scanfile(params.codefile)
 end
 if params.targettype == 'url' then
-  cs:scanurl({url=params.codeurl,dir=params.codedir,branch=params.codebranch})
+  cs:scanurl({
+    url=params.codeurl,
+    dir=params.codedir,
+    branch=params.codebranch,
+    tfsver=params.codetfsver
+    })
 end
 task.status = 'Done.'
 

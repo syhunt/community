@@ -57,6 +57,7 @@ function SyHybrid:AfterInit()
 	--browser.addlibinfo('PDF Creation library','2.0','K. Nishita')
 	--browser.addlibinfo('RTF Creation library','1.0','K. Nishita')
 	browser.addlibinfo('TAR Components','2.1.1','Stefan Heymann')
+	browser.addlibinfo('TFS Tools','15.18.1215.60','<a href="#" onclick="browser.newtab([[https://blogs.msmvps.com/vstsblog/tfs2018-tools/]])">Neno Loje</a>')
     --browser.addlibinfo('XML Components','1.0.17','Stefan Heymann','Sandcat:ShowLicense(SyHybrid.filename,[[hybrid\\docs\\Licence_XMLComps.txt]])')
 
 	-- Adds new Sandcat Console commands

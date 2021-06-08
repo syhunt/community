@@ -167,6 +167,7 @@ function ScanScheduler:GetScheduledScanIcons(d)
   if d.target_type == 'urlgit' then icons.target = 'SyHybrid.scx#images/16/code_bookmarks_url.png' end
   if d.target_type == 'url' then icons.target = 'SyHybrid.scx#images/16/dynamic_bookmark.png' end
   if d.target_type == 'dir' then icons.target = 'SyHybrid.scx#images/16/folder_blue2.png' end
+  if ctk.string.endswith(d.target_urlgit,'.git') == true then icons.target = 'SyHybrid.scx#images/16/code_bookmarks_git.png' end
   if d.huntmethod_box == 'white' then icons.box = 'SyHybrid.scx#images/16/box_white.png' end
   if d.huntmethod_box == 'black' then icons.box = 'SyHybrid.scx#images/16/box_black.png' end
   if d.huntmethod_box == 'gray' then icons.box = 'SyHybrid.scx#images/16/box_gray.png' end  

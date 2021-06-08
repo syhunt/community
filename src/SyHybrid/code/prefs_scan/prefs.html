@@ -50,6 +50,7 @@ for(var e in $$("li[class='urlgitsetter']")) e.onClick = set_targeturl;
 <div class="icontabs">
 <div #mainstrip class="strip">
 <div panel="panel-scan" accesskey="S" selected><center><img #icon_scan><br>Scan</center></div>
+<div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
 </div>
 
 <!-- scan tab begin-->
@@ -59,7 +60,7 @@ for(var e in $$("li[class='urlgitsetter']")) e.onClick = set_targeturl;
 Type:<br>
 <select #targettype class="tag-list" type="select" cid="syhunt.code.options.target.type">
 <option #targettypedir value="dir" selected>Local Directory</option>
-<option #targettypeurl value="url">GIT URL</option>
+<option #targettypeurl value="url">Project URL</option>
 <option #targettypefile value="file">Local File</option>
 </select><br><br>
 <div #targetdirarea>
@@ -73,7 +74,7 @@ Source or APK File:<br>
 <div #targeturlarea>
 <table style="padding:0;margin:0;">
 <tr><td valign="top" style="padding-right:10px;">
-GIT URL:<br>
+Project URL (Azure DevOps / GIT / TFS):<br>
 <input #targeturl type="text" style="width:350px;" cid="syhunt.code.options.target.url"> <button #btntargetlist type="selector" menu="#targetlist-items">..</button>
     <menu id="targetlist-items" style="display:none;">
       <li #edit_targets>Edit target list...</li> 
@@ -89,7 +90,7 @@ GIT URL:<br>
       </li>
     </menu>
 </td><td valign="top">
-Branch:<br>
+GIT Branch:<br>
 <input #targetbranch type="text" style="width:50px;" cid="syhunt.code.options.target.branch">
 </td>
 </tr></table>
@@ -117,6 +118,24 @@ Branch:<br>
 </fieldset>
 </div>
 <!-- scan tab end-->
+
+<!-- advanced tab begin-->
+<div name="panel-advanced" class="tab">
+<fieldset><br>
+<div .optgroup>
+TFS Version:<br>
+<select class="tag-list" type="select" cid="syhunt.code.options.target.tfsver">
+<option value="latest" selected>2018 or higher (recommended)</option>
+<option value="2017">2017</option>
+<option value="2015">2015</option>
+<option value="2013">2013</option>
+<option value="2012">2012</option>
+<option value="2010">2010</option>
+</select>
+</div>
+</fieldset>
+</div>
+<!-- advanced tab end-->
 
 <!--tabs end-->
 </div>

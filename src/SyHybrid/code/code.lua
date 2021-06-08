@@ -142,6 +142,7 @@ function SyhuntCode:NewScan()
       if target.type == 'url' then
         target.url = prefs.get('syhunt.code.options.target.url','')
         target.branch = prefs.get('syhunt.code.options.target.branch','master')
+        target.tfsver = prefs.get('syhunt.code.options.target.tfsver','latest')
       end
       if target.type == 'dir' then
         target.dir = prefs.get('syhunt.code.options.target.dir','')
@@ -292,6 +293,7 @@ function SyhuntCode:ScanTarget(huntmethod, target)
     target.dir = ctk.file.getdir(target.file)
   end
   target.branch = target.branch or 'master'
+  target.tfsver = target.tfsver or 'latest'
   local canscan = true
   if self:IsScanInProgress(true) == true then
     canscan = false
@@ -314,6 +316,7 @@ function SyhuntCode:ScanTarget(huntmethod, target)
   		j.codeurl = target.url
   		j.codefile = target.file
   		j.codebranch = target.branch
+  		j.codetfsver = target.tfsver
   		j.huntmethod = huntmethod
 		  local menu = [[
 		  <!--li onclick="browser.showbottombar('task messages')">View Messages</li-->
@@ -366,11 +369,23 @@ function SyhuntCode:StopScan()
   end
 end
 
-function SyhuntCode:AddToTargetList()
+function SyhuntCode:AddToTargetList(reptype)
+  reptype = reptype or 'git'
   local d = {}
   d.title = 'Add Code Target'
   d.name_caption = 'Name (eg: MyProject)'
-  d.value_caption = 'GIT URL (eg: https://github.com/syhunt/vulnphp.git)'
+  if reptype == 'git' then
+    d.value_caption = 'GIT URL (eg: https://github.com/syhunt/vulnphp.git)'
+  end
+  if reptype == 'gita' then
+    d.value_caption = 'Azure DevOps Services GIT URL (eg: https://dev.azure.com/user/myproject/_git/myproject)'
+  end
+  if reptype == 'ados' then
+    d.value_caption = 'Azure DevOps Services TFS URL (eg: https://dev.azure.com/user/myproject)'
+  end
+  if reptype == 'tfs' then
+    d.value_caption = 'TFS URL (eg: https://myserver/tfs/myproject or collection:https://myserver/collection$/serverpath)'
+  end  
   local r = Sandcat.Preferences:EditNameValue(d)
   if r.res == true then
     local item  = {}
