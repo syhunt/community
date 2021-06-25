@@ -415,7 +415,7 @@ function SyhuntCode:ViewTargetList(newtab)
  t.newtab = newtab
  t.toolbar = 'SyHybrid.scx#code/histview_tbtargets.html'
  t.histname = 'Target Repositories'
- t.tabicon = 'url(SyHybrid.scx#images\\16\\code_bookmarks_url.png);'
+ t.tabicon = 'url(SyHybrid.scx#images\\16\\code_bookmarks.png);'
  t.style = [[
   ]]
  t.menu = [[

@@ -11,7 +11,7 @@
 		  <hr/>
       <li>Import & Export
         <menu id="tsetiemenu">
-         <li onclick="Sandcat.Preferences:LoadFromFile()">Import Preferences...</li>
+         <li onclick="SyHybrid:ImportPreferences()">Import Preferences...</li>
          <hr id="tsetiesep"/>
          <li onclick="Sandcat.Preferences:SaveToFile()">Export Preferences...</li>
         </menu>
@@ -21,9 +21,10 @@
 		    <menu id="tprefsmenu">
 		     <li onclick="SyhuntCode:EditPreferences()">Code Preferences...</li>
 		     <li onclick="SyhuntDynamic:EditPreferences()">Dynamic Preferences...</li>
-		     <li onclick="SyhuntInsight:EditPreferences()">Insight Preferences...</li>
+		     <li onclick="SyhuntInsight:EditPreferences()">Insight Preferences...</li>	     
 		     <hr/>
 	         <li onclick="Sandcat.Preferences:Edit()">Browser Preferences...</li>
+	         <li onclick="SyHybrid:EditPreferences()">Other Hybrid Preferences...</li>		         
 		     <hr/>
 		     <li onclick="TrackerManager:ViewIssueTrackers()">Issue Trackers...</li>
 		    </menu>

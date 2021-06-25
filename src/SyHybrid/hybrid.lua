@@ -47,6 +47,7 @@ function SyHybrid:AfterInit()
 	self:dofile('dynamic/dynamic.lua')
 	self:dofile('dynamic/links.lua')
 	self:dofile('code/code.lua')
+	self:dofile('icy/icy.lua')	
 	self:dofile('insight/insight.lua')
 
 	-- Adds some additional credits to the about screen
@@ -111,6 +112,35 @@ function SyHybrid:SessionManager()
       self:SetHybridMode()
     end
     SessionManager:loadtab(true)
+end
+
+function SyHybrid:ImportPreferences()
+  if Sandcat.Preferences:LoadFromFile() == true then
+    symini.scheduler_sendsignal('stop')
+    symini.scheduler_sendsignal('start')
+  end
+end
+
+function SyHybrid:EditPreferences(html)
+	html = html or SyHybrid:getfile('hybrid/prefs/prefs.html')
+	local slp = ctk.string.loop:new()
+	local t = {}
+	local hs = symini.hybrid:new()
+	hs:start()
+	slp:load(hs.options)
+	while slp:parsing() do
+		prefs.regdefault(slp.current,hs:prefs_getdefault(slp.current))
+	end
+	t.html = html
+	--t.html = ctk.string.replace(t.html,'%code_checks%',SyHybrid:GetOptionsHTML(rm.options_checks))
+	--t.html = ctk.string.replace(t.html,'%code_mapping_checks%',SyHybrid:GetOptionsHTML(rm.options_checksmap))
+	t.id = 'syhuntrepmaker'
+	t.options = hs.options
+	t.options_disabled = hs.options_locked
+	local res = Sandcat.Preferences:EditCustom(t)
+	hs:release()
+	slp:release()
+	return res
 end
 
 function SyHybrid:Load()

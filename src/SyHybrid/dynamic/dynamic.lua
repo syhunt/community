@@ -55,7 +55,8 @@ function SyhuntDynamic:SetURLCookie(t)
     prefs.set('syhunt.dynamic.emulation.useragent', t.useragent)
     prefs.set('syhunt.dynamic.emulation.forceuseragent', true)
   end
-  symini.siteprefs_set(t.url, 'site.syhunt.dynamic.lists.cookies', t.cookie)
+  -- Saves to site preferences
+  symini.prefs_set('site.syhunt.dynamic.lists.cookies', t.cookie, t.url)
   tab.status = 'Page session details saved.'
 end
 

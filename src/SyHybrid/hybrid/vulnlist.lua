@@ -98,7 +98,6 @@ end
 function VulnList:loadtab()
 	h = ctk.string.list:new()
 	self:addinterface(h)
-
 	-- Name/Total/CWE/CVE/OSVDB/BID
 	local ds = symini.dynamic:new()
 	ds:start()
@@ -129,9 +128,7 @@ function VulnList:loadtab()
 	self:additem(h,'Python',symini.getrescount('CODE_CHK_PY'),NA,NA,NA,NA)
     self:additem(h,'Ruby',symini.getrescount('CODE_CHK_RUBY'),NA,NA,NA,NA)
 	self:additem(h,'Swift',symini.getrescount('CODE_CHK_SWIFT'),NA,NA,NA,NA)	
-	self:additem(h,'TypeScript',symini.getrescount('CODE_CHK_TS'),NA,NA,NA,NA)
 	cs:release()
-	
 	self:closeinterface(h)
 	local j = {}
 	j.title = self.title

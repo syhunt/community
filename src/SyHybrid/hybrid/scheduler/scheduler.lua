@@ -73,10 +73,10 @@ function ScanScheduler:ShowScheduledScanCommandLine(name, action)
   hs:release()
 end
 
-function ScanScheduler:TestScheduledScan(name)
+function ScanScheduler:TestScheduledScan(name, visible)
   local hs = symini.hybrid:new()
   hs:start()
-  local res = hs:scheduler_runscheduledscan(name)
+  local res = hs:scheduler_runscheduledscan(name, visible)
   if res.success == false then
     app.showmessage('Failed! '..res.errormsg)
   end
@@ -138,8 +138,11 @@ function ScanScheduler:DoSchedulerAction(action, itemid)
       self:ShowScheduledScanCommandLine(item.name, 'copyparams')
     end    
     if action == 'test' then
-      self:TestScheduledScan(item.name)
+      self:TestScheduledScan(item.name, true)
     end
+    if action == 'testhidden' then
+      self:TestScheduledScan(item.name, false)
+    end    
     if action == 'delete' then
       HistView:DeleteURLLogItem(itemid,symini.info.schedlistname)
       local jsonfile = symini.info.configdir..'\\Scheduler\\'..item.name..'.json'
@@ -192,7 +195,9 @@ function ScanScheduler:IncludeScheduledScanItem(tb, schedid)
   <hr/>
   <li onclick="ScanScheduler:DoSchedulerAction('editsiteprefs','%i')">Edit Assigned Target Preferences...</li>
   <hr/>
-  <li onclick="ScanScheduler:DoSchedulerAction('test','%i')">Run Test Scan Now</li>  
+  <li onclick="ScanScheduler:DoSchedulerAction('test','%i')">Run Test Scan</li>  
+  <hr/>  
+  <li onclick="ScanScheduler:DoSchedulerAction('testhidden','%i')">Run Test Scan in Background</li>  
   <li>CLI Parameters
    <menu>
    <li onclick="ScanScheduler:DoSchedulerAction('copycmdln_filenamenparams','%i')">Copy Filename & Parameters</li>  
