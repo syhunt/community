@@ -1,0 +1,92 @@
+<html>
+<head>
+<title>New IcyDark Scan</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#icy\prefs_scan\prefs.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+      }
+ }
+ 
+ function set_targeturl() {
+    $(#targeturl).value = this.attributes["targeturl"];
+   Sandcat.Debug("Updating targeturl with new value: "+$(#targeturl).value);
+   Sandcat.PrefsSet("syhunt.icydark.options.target.url",$(#targeturl).value);    
+ }
+
+ $(#ok).onClick = function() { confirm_edit(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+ $(#edit_targetsdark).onClick = function() { Sandcat.RunLua("SyhuntIcy:ViewTargetList()"); cancel_edit(); }
+  
+for(var e in $$("li[class='urlsetter']")) e.onClick = set_targeturl;
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-scan" accesskey="S" selected><center><img #icon_scan><br>Scan</center></div>
+<div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
+</div>
+
+<!-- scan tab begin-->
+<div name="panel-scan" class="tab" selected>
+<fieldset><legend>Target</legend>
+<div .optgroup>
+Domain or URL:<br><input #targeturl type="text" style="width:350px;" cid="syhunt.icydark.options.target.url"> <button #btntargeticylist type="selector" menu="#targeticylist-items">..</button>
+    <menu id="targeticylist-items" style="display:none;">
+      <li #edit_targetsdark>Edit target list...</li> 
+      <hr/>
+      %dark_targets% 
+      <hr/>
+      <li>Dynamic Targets
+       <menu>
+       %dynamic_targets% 
+       </menu>
+      </li>      
+    </menu>    
+</div>
+</fieldset>
+<fieldset><legend>Hunt Method</legend>
+<div .optgroup>
+<select style="width:300px;" cid="syhunt.icydark.options.huntmethod">
+<option value="darkplus" selected>Dark Web Scan Plus (Default; SDK+)</option>
+<option value="darknosub">Dark Web Scan Plus - No SubDomains (SDK+n)</option>
+<option value="dark">Dark Web Scan (SDK)</option>
+<option value="deepndark">Deep'n'Dark Web Scan (DK)</option>
+<option value="deep">Deep Web Scan (SD)</option>
+<option value="surface">Surface Web Scan (S)</option>
+<option value="deeponly">Deep-Only (D)</option>
+<option value="darkonly">Dark-Only (K)</option>
+<option value="darknoid">Dark Web Scan Paranoid (Experimental; SDK++)</option>
+</select><br><br>
+<button type="checkbox" cid="syhunt.icydark.options.target.editdomprefs">Edit domain preferences before starting scan</button>
+</div>
+</fieldset>
+</div>
+<!-- scan tab end-->
+
+<!-- advanced tab begin-->
+<div name="panel-advanced" class="tab">
+<fieldset><br>
+<div .optgroup>
+<button type="checkbox" cid="syhunt.icydark.options.target.checksubdom">Check for breaches related to subdomains</button>
+</div>
+</fieldset>
+</div>
+<!-- advanced tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">Start Scan</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>

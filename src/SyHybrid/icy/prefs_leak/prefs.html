@@ -1,0 +1,174 @@
+<html>
+<head>
+<title>Data Breach Details Editor</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#icy\prefs_leak\prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#icy\prefs_leak\taglist.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+      }
+ }
+ 
+ function GoToRefURL(url, value) {
+  if (value != "") {
+    exit_to_url(url + value);
+  } else {
+    Sandcat.ShowMessage("Reference is empty!");
+  }
+ }
+
+ $(#ok).onClick = function() { confirm_edit(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+ $(#cancellink).onClick = function() { cancel_edit(); }
+ if ($(#replay) != undefined) {
+   $(#replay).onClick = function() { Sandcat.RunLua("VulnInfo:replayattack([["+$(#vulnfilename).value+"]])"); cancel_edit(); }
+ }
+ $(#btnrefcwe).onClick = function() { GoToRefURL("http://cwe.mitre.org/data/definitions/", $(#refcwe).value); }
+ $(#btnrefcve).onClick = function() { GoToRefURL("http://cve.mitre.org/cgi-bin/cvename.cgi?name=", $(#refcve).value); }
+ $(#btnlocation).onClick = function() { exit_to_url($(#locationurl).value); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-general" accesskey="G" selected><center><img #icon_info><br>General</center></div>
+<div panel="panel-guidance" accesskey="U"><center><img #icon_guidance><br>Guidance</center></div>
+<div panel="panel-passwords" accesskey="P"><center><img #icon_passwords><br>Passwords</center></div>
+<div panel="panel-files" accesskey="F"><center><img #icon_files><br>Files</center></div>
+<div panel="panel-log" accesskey="L"><center><img #icon_log><br>Log</center></div>
+<div panel="panel-references" accesskey="R"><center><img #icon_references><br>References</center></div>
+<div panel="panel-notes" accesskey="N"><center><img #icon_notes><br>Notes</center></div>
+</div>
+
+<!-- general tab begin-->
+<div name="panel-general" class="tab" selected>
+<button type="checkbox" cid="data.add_to_report"><b>Add Breach To Report</b></button>
+<fieldset><legend></legend>
+<div .optgroup>
+<input type="text" cid="data.check_name">
+<div .sep/>
+Web Layer: <select class="tag-list" type="select" cid="data.web_layer">
+<option value="Dark">Dark</option>
+<option value="Deep">Deep</option>
+<option value="Surface">Surface</option>
+<option value="Not Applicable">N/A</option>
+<option value="Undetermined" selected>Undetermined</option>
+</select>
+<div .sep/>
+Risk: <select class="tag-list" type="select" cid="data.risk">
+<option value="info" selected>Informational</option>
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+<div .sep/>
+Description: <plaintext cid="data.description" style="width:*;height:100px;"></plaintext>
+<div .sep/><br>
+Reference (URL): <input #locationurl type="text" cid="data.location">  <button #btnlocation>Go</button>
+</fieldset>
+</div>
+
+<!-- guidance tab begin-->
+<div name="panel-guidance" class="tab">
+<fieldset><legend>Guidance</legend><br>
+<div .optgroup>
+Recommendations: <plaintext cid="data.recommendations" style="width:*;height:120px;"></plaintext>
+</div>
+</fieldset>
+</div>
+
+<!-- notes tab begin-->
+<div name="panel-notes" class="tab">
+<fieldset><legend>User Notes</legend><br>
+<div .optgroup>
+<plaintext cid="data.user_notes" style="width:*;height:270px;"></plaintext>
+</div>
+</fieldset>
+</div>
+
+<!-- files tab begin-->
+<div name="panel-files" class="tab">
+<div style="margin:10px;width:100%%;height:100%%;">
+%exfil_files_notice%
+<widget type="select" style="padding:0;">
+<table name="reportview" width="100%" cellspacing=0px fixedrows=1>
+<tr .header><th style="width:350px;">Exfiltrated Filename</th><th style="width:*;">Size</th><th style="width:30px;"></th></tr>
+%exfil_files%
+</table>
+</widget>
+<div .sep/><br>
+Total Size: <input type="text" cid="data.exfil_sizedesc" style="width:50px;" readonly="true"> Bytes: <input type="text" cid="data.exfil_size" style="width:50px;" readonly="true">
+</div>
+</div>
+
+<!-- passwords tab begin-->
+<div name="panel-passwords" class="tab">
+<div style="margin:10px;width:100%%;height:100%%;">
+%exfil_passwords_notice%
+<widget type="select" style="padding:0;">
+<table name="reportview" width="100%" cellspacing=0px fixedrows=1>
+<tr .header><th style="width:200px;">Email</th><th style="width:*;">Password</th><th style="width:80px;">Leaked From</th><th style="width:30px;"></th></tr>
+%exfil_passwords%
+</table>
+</widget>
+</div>
+</div>
+<!-- response tab end-->
+
+<!-- log tab begin-->
+<div name="panel-log" class="tab">
+<fieldset><legend>Debug</legend>
+<div .optgroup>
+Log:
+<plaintext cid="data.check_log" style="width:*;height:240px;" readonly="true"></plaintext>
+<div .sep/>
+Filename: <input #vulnfilename type="text" value="%vulnfilename%" readonly="true">
+<div .sep/>
+<button type="checkbox" cid="data.sentto_tracker">Sent To Tracker</button>
+</div>
+</fieldset>
+</div>
+<!-- log tab end-->
+
+<!-- references tab begin-->
+<div name="panel-references" class="tab">
+<fieldset><legend>References</legend>
+<div .optgroup>
+Total Records (Lines/Files): <input type="text" cid="data.exfil_records" style="width:50px;" readonly="true" >
+<div .sep/><br>
+<table>
+<tr><td>CWE: </td><td><input #refcwe type="text" cid="data.references_cwe" style="width:50px;"> <button #btnrefcwe>Details...</button></td></tr>
+<tr><td>CVE: </td><td><input #refcve type="text" cid="data.references_cve" style="width:50px;"> <button #btnrefcve>Details...</button></td></tr>
+<tr><td>OSVDB: </td><td><input #refosvdb type="text" cid="data.references_osvdb" style="width:50px;"></td></tr>
+</table>
+</div>
+</fieldset>
+<fieldset><legend>Syhunt References</legend>
+<div .optgroup>
+<table>
+<tr><td>Check Category: </td><td><input type="text" cid="data.check_category" style="width:50px;" readonly="true"></td></tr>
+<tr><td>Check Module: </td><td><input type="text" cid="data.check_module" style="width:50px;" readonly="true"></td></tr>
+<tr><td>Unique Check ID: </td><td><input type="text" cid="data.check_id" style="width:50px;" readonly="true"></td></tr>
+<tr><td>Track ID: </td><td><input type="text" cid="data.tid" style="width:50px;" readonly="true"></td></tr>
+</table>
+</div>
+</fieldset>
+</div>
+<!-- references tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<!--%extra_buttons%-->
+<button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>

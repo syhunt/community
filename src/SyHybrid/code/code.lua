@@ -141,7 +141,7 @@ function SyhuntCode:NewScan()
       target.type = prefs.get('syhunt.code.options.target.type','dir')
       if target.type == 'url' then
         target.url = prefs.get('syhunt.code.options.target.url','')
-        target.branch = prefs.get('syhunt.code.options.target.branch','master')
+        target.branch = prefs.get('syhunt.code.options.target.branch','')
         target.tfsver = prefs.get('syhunt.code.options.target.tfsver','latest')
       end
       if target.type == 'dir' then
@@ -292,7 +292,7 @@ function SyhuntCode:ScanTarget(huntmethod, target)
   if target.file ~= '' then
     target.dir = ctk.file.getdir(target.file)
   end
-  target.branch = target.branch or 'master'
+  target.branch = target.branch or ''
   target.tfsver = target.tfsver or 'latest'
   local canscan = true
   if self:IsScanInProgress(true) == true then

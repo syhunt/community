@@ -105,10 +105,6 @@ function VulnList:loadtab()
 	self:addchecks(ds.options_checks)
 	self:addsection(h,'Application Checks - Fault Injection')
 	self:addchecks(ds.options_checksinj)
-    --[[
-	self:additem(h,'XSS / Cross-Site Scripting (HTML5)',symini.getrescount('DYN_CHK_XSS5'),'79',NA,NA,NA)
-	self:additem(h,'SQL Exposures',symini.getrescount('DYN_CHK_SQL'),'89',NA,NA,NA)
-	]]
 	ds:release()
 
     local cs = symini.code:new()
@@ -129,6 +125,14 @@ function VulnList:loadtab()
     self:additem(h,'Ruby',symini.getrescount('CODE_CHK_RUBY'),NA,NA,NA,NA)
 	self:additem(h,'Swift',symini.getrescount('CODE_CHK_SWIFT'),NA,NA,NA,NA)	
 	cs:release()
+	
+	local icy = symini.icydark:new()
+	icy:start()
+	self:addsection(h,'IcyDark Checks')
+	self:addchecks(icy.options_checks)
+	icy:release()	
+	
+	
 	self:closeinterface(h)
 	local j = {}
 	j.title = self.title

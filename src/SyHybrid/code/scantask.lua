@@ -15,7 +15,7 @@ if params.targettype == 'file' then
 end
 if params.targettype == 'url' then
   print('Scanning repository URL: '..params.codeurl)
-  if params.codebranch ~= 'master' then
+  if params.codebranch ~= '' then
     print('Branch: '..params.codebranch)
   end
   if params.codetfsver ~= 'latest' then

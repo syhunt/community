@@ -1,6 +1,6 @@
 <style>
 body { margin:0; }
-#logo { background-color: #323d4d #323d4d #3165ad #3165ad;} 
+#logo { background-color: #95b9d4 #95b9d4 #3d3d3d #3d3d3d;}  
 #stats { margin: 8px; }
 td.sub { padding-left:16px; }
 
@@ -34,31 +34,33 @@ progress.vuln-prog-info {
 }
 </style>
 <div id="logo" width="100%">
-<img src="SyHybrid.scx#images\misc\syhunt-logo-white.png"><!--logoplus-->
+<img src="SyHybrid.scx#images\misc\syhunt-logo-icydark.png"><!--logoplus-->
 </div>
 <div id="stats" width="100%">
 <table width="100%"><tr>
 <td width="50%" valign="top">
 
 <table width="100%">
-<tr><td><b>Vulnerabilities:<b></td><td><code .vuln-count></code></td><td></td></tr>
+<tr><td><b>Breaches:<b></td><td><code .vuln-count></code></td><td></td></tr>
 <tr><td .sub>High:</td><td><code .vuln-high></code></td><td><progress .vuln-prog-high maxvalue='100' value='0'/></td></tr>
 <tr><td .sub>Medium:</td><td><code .vuln-medium></code></td><td><progress .vuln-prog-medium maxvalue='100' value='0'/></td></tr>
 <tr><td .sub>Low:</td><td><code .vuln-low></code></td><td><progress .vuln-prog-low maxvalue='100' value='0'/></td></tr>
 <tr><td .sub>Info:</td><td><code .vuln-info></code></td><td><progress .vuln-prog-info maxvalue='100' value='0'/></td></tr>
-<tr><td><b>Vulnerable Scripts:</b></td><td><code .sast-files-vulnerable></code></td><td></td></tr>
 </table>
 
 </td><td width="50%" valign="top">
 
 <table width="100%">
-<tr><td><b>Code Analysis</b></td><td></td></tr>
-<tr><td .sub>Duration:</td><td><code .sast-duration></code></td></tr>
-<tr><td .sub>Total Scripts Analyzed:</td><td><code .sast-files-script></code></td></tr>
-<tr><td .sub>Total Lines Analyzed:</td><td><code .sast-line-count></code></td></tr>
-<tr><td .sub>Total Size Analyzed:</td><td><code .sast-files-sizedesc></code></td></tr>
-<tr><td .sub>Total Files Unsupported:</td><td><code .sast-files-unsup></code></td></tr>
-<tr><td .sub>Highlighted Code Areas:</td><td><code .sast-warn-count></code></td></tr>
+<tr><td><b>Breach Analysis</b></td><td></td></tr>
+<tr><td .sub>Score:</td><td><code .dark-leaks-score></code></td></tr>
+<tr><td .sub>Duration:</td><td><code .dark-duration></code></td></tr>
+<tr><td .sub>Total Passwords Leaked:</td><td><code .dark-leaks-password></code></td></tr>
+<tr><td .sub>Total Files Leaked:</td><td><code .dark-leaks-files></code></td></tr>
+<tr><td .sub>Total Incidents:</td><td><code .dark-incidents-total></code></td></tr>
+<tr><td .sub>Total Surface Leaks:</td><td><code .dark-leaks-surface></code></td></tr>
+<tr><td .sub>Total Deep Leaks:</td><td><code .dark-leaks-deep></code></td></tr>
+<tr><td .sub>Total Dark Leaks:</td><td><code .dark-leaks-dark></code></td></tr>
+<tr><td .sub>Total Leaks (All Layers):</td><td><code .dark-leaks-total></code></td></tr>
 </table>
 
 </td>

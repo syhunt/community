@@ -51,6 +51,7 @@ function SyHybrid:AfterInit()
 	self:dofile('insight/insight.lua')
 
 	-- Adds some additional credits to the about screen
+	browser.addlibinfo('7-Zip','file:7z.dll','<a href="#" onclick="browser.newtab([[https://www.7-zip.org/license.txt]])">Igor Pavlov and others</a>')
 	browser.addlibinfo('famfamfam flag icons','','Mark James')
 	--browser.addlibinfo('mmdblua library','','Daurnimator')
 	browser.addlibinfo('IP2Location LITE data','','<a href="#" onclick="browser.newtab([[http://www.ip2location.com]])">IP2Location</a>')

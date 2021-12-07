@@ -10,10 +10,12 @@ function VulnInfo:getvulndetails(jsonfile)
   return vuln
 end
 
-function VulnInfo:editvulnfile(jsonfile)
+function VulnInfo:editvulnfile_custom(jsonfile,htmlfile)
   local vuln = self:getvulndetails(jsonfile)
   local cvss3score = syutils.cvss3_vectortoscore(vuln.ref_cvss3_vector).basescoreseverity
-  local cvss2score = syutils.cvss2_vectortoscore(vuln.ref_cvss2_vector).basescoreseverity  
+  local cvss2score = syutils.cvss2_vectortoscore(vuln.ref_cvss2_vector).basescoreseverity
+  local sumpassleak = symini.icy_summaryzepassleak(vuln.exfilpwfile)
+  local sumfileleak = symini.icy_summaryzefileleak(vuln.exfilleakfile)
   local slp = ctk.string.loop:new()
   local hs = symini.hybrid:new()
   hs:start()
@@ -27,12 +29,16 @@ function VulnInfo:editvulnfile(jsonfile)
   end
   
   local t = {}
-  t.html = SyHybrid:getfile('hybrid/prefs_vuln/prefs.html')
+  t.html = SyHybrid:getfile(htmlfile)
   t.html = ctk.string.replace(t.html,'%vulnfilename%', ctk.html.escape(vuln.filename))  
   t.html = ctk.string.replace(t.html,'%response%', ctk.html.escape(vuln.response))  
   t.html = ctk.string.replace(t.html,'%request_header%', ctk.html.escape(vuln.request))  
   t.html = ctk.string.replace(t.html,'%response_header%', ctk.html.escape(vuln.responseheader))
   t.html = ctk.string.replace(t.html,'%exfil_data%', ctk.html.escape(vuln.exfildata))  
+  t.html = ctk.string.replace(t.html,'%exfil_passwords%', sumpassleak.resulthtml)  
+  t.html = ctk.string.replace(t.html,'%exfil_passwords_notice%', sumpassleak.resultdesc)  
+  t.html = ctk.string.replace(t.html,'%exfil_files%', sumfileleak.resulthtml) 
+  t.html = ctk.string.replace(t.html,'%exfil_files_notice%', sumfileleak.resultdesc)     
   t.html = ctk.string.replace(t.html,'%source_code%', ctk.html.escape(vuln.appsource))
   t.html = ctk.string.replace(t.html,'%cvss3_score%', cvss3score)
   t.html = ctk.string.replace(t.html,'%cvss2_score%', cvss2score)
@@ -43,6 +49,15 @@ function VulnInfo:editvulnfile(jsonfile)
   Sandcat.Preferences:EditCustomFile(t)
   hs:release()
   slp:release()
+end
+
+function VulnInfo:editvulnfile(jsonfile)
+  local scanmod = self:getvulndetails(jsonfile).checkmodule
+  if scanmod == 'icydark' then
+    self:editvulnfile_custom(jsonfile, 'icy/prefs_leak/prefs.html')
+  else
+    self:editvulnfile_custom(jsonfile, 'hybrid/prefs_vuln/prefs.html')
+  end
 end
 
 function VulnInfo:loadvulnfile(jsonfile)

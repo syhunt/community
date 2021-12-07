@@ -27,6 +27,14 @@ function SyHybridUser:CheckInst()
 	end
 end
 
+function SyHybridUser:IsCommunityEdition()
+  local r = false
+  if symini.info.modename == 'Community Edition' then
+    r = true
+  end
+  return r
+end
+
 function SyHybridUser:GetEditionLogo()
   local k = self.ptkdetails
   local logo = ''
@@ -36,6 +44,12 @@ function SyHybridUser:GetEditionLogo()
    if k.editionid == 3 then
      logo = '<img src="SyHybrid.scx#images\\misc\\syhunt-logo-platinum.png">'
    end   
+   if k.editionid == 4 then
+     logo = '<img src="SyHybrid.scx#images\\misc\\syhunt-logo-diamond.png">'
+   end  
+   if k.editionid == 5 then
+     logo = '<img src="SyHybrid.scx#images\\misc\\syhunt-logo-infinity.png">'
+   end    
   return logo
 end
 
@@ -44,7 +58,7 @@ function SyHybridUser:GenerateWebAPIKey()
     if k.result == true then
 	  app.showalerttext(k.key) 
 	else
-	  app.showalert('Make sure the web API server is running.')
+	  app.showalert(k.resultstr)
 	end
 end
 
@@ -128,7 +142,7 @@ function SyHybridUser:IsValidUser(user)
 end
 
 function SyHybridUser:Register(warnlimit)
-	local k = app.showinputdialog('Enter your Pen-Tester Key:','')
+	local k = app.showinputdialogml('','Enter your Pen-Tester Key:','','Pen-Tester Key')
 	if k ~= '' then
 	    local res = symini.setptk(k)
 		app.showmessagex(res.resulthtml)
