@@ -153,11 +153,15 @@ Password:<br><input type="password" style="width:150px;" cid="site.syhunt.dynami
 <select class="tag-list" type="select" cid="site.syhunt.dynamic.servauth.type">
 <option value="None" selected>None</option>
 <option value="Basic">Basic</option>
+<option value="Bearer">Bearer</option>
+<option value="Digest">Digest</option>
 <option value="NTLM">NTLM</option>
 </select><br><br>
 Username:<br><input type="text" style="width:150px;" cid="site.syhunt.dynamic.servauth.username">
 <div .sep/>
 Password:<br><input type="password" style="width:150px;" cid="site.syhunt.dynamic.servauth.password">
+<div .sep/>
+Note: if you use Bearer auth, leave username empty and enter the token in the password field.
 </div>
 </fieldset>
 </div>
