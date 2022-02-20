@@ -75,6 +75,36 @@ function dirscan(dir)
   end
 end
 
+function printscanresult()
+  if cs.vulnstatus == 'Vulnerable' then
+	  print('Vulnerable.')
+	  if cs.vulncount == 1 then
+	  	print('Found 1 vulnerability')
+	  else
+	  	print('Found '..cs.vulncount..' vulnerabilities')
+	  end
+	  printfailure(task.status)
+	  runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_red.png)')
+	  runtabcmd('treesetaffecteditems',cs.affectedscripts)
+	  runtabcmd('runtbtis','MarkAsVulnerable();')
+  end
+  if cs.vulnstatus == 'Secure' then
+  	print('Secure.')
+  	printsuccess(task.status)
+  	runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_green.png)')
+  	runtabcmd('runtbtis','MarkAsSecure();')
+  end
+
+  if cs.aborted == true then
+    print('Fatal Error.')
+    runtabcmd('seticon','@ICON_STOP')
+    if cs.vulnerable == false then
+       runtabcmd('runtbtis','MarkAsUndetermined();')
+    end
+    printfatalerror(cs.errorreason)
+  end
+end
+
 cs = symini.code:new()
 cs.debug = true
 cs.ondirscan = dirscan
@@ -82,6 +112,7 @@ cs.onlogmessage = log
 cs.onvulnfound = addvuln
 cs.onprogressupdate = updateprogress
 cs.onstatsupdate = statsupdate
+cs.ontimelimitreached = printscanresult
 cs.sessionname = params.sessionname
 cs.huntmethod = params.huntmethod
 if params.targettype == 'dir' then
@@ -99,34 +130,7 @@ if params.targettype == 'url' then
     })
 end
 task.status = 'Done.'
-
-if cs.vulnstatus == 'Vulnerable' then
-	print('Vulnerable.')
-	if cs.vulncount == 1 then
-		print('Found 1 vulnerability')
-	else
-		print('Found '..cs.vulncount..' vulnerabilities')
-	end
-	printfailure(task.status)
-	runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_red.png)')
-	runtabcmd('treesetaffecteditems',cs.affectedscripts)
-	runtabcmd('runtbtis','MarkAsVulnerable();')
-end
-if cs.vulnstatus == 'Secure' then
-	print('Secure.')
-	printsuccess(task.status)
-	runtabcmd('seticon','url(SyHybrid.scx#images\\16\\folder_green.png)')
-	runtabcmd('runtbtis','MarkAsSecure();')
-end
-
-if cs.aborted == true then
-  print('Fatal Error.')
-  runtabcmd('seticon','@ICON_STOP')
-  if cs.vulnerable == false then
-     runtabcmd('runtbtis','MarkAsUndetermined();')
-  end
-  printfatalerror(cs.errorreason)
-end
+printscanresult()
 
 if cs.warnings ~= '' then
   runcmd('showmsg',cs.warnings)

@@ -123,6 +123,7 @@ hs.onprogressupdate = updateprogress
 hs.onmapupdate = sitemapupdate
 hs.onstatsupdate = statsupdate
 hs.onrequestdone = requestdone
+hs.ontimelimitreached = printscanresult
 hs:start()
 hs.starturl_folre = false
 hs.starturl = params.starturl

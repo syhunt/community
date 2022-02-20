@@ -3,7 +3,10 @@
 <fieldset><br>
 <div .optgroup>
 <button type="checkbox" cid="syhunt.dynamic.options.usefastscan">Enable fast scan</button>(Uses more CPU)<br>
-<button type="checkbox" cid="syhunt.dynamic.options.signatures.enableusersigs">Enable user signatures</button>
+<button type="checkbox" cid="syhunt.dynamic.options.signatures.enableusersigs">Enable user signatures</button><br>
+<button .adv type="checkbox" cid="syhunt.dynamic.options.detect404">Automatically detect custom 404 errors</button> <button #btnaddsigs onclick="prefs.editlist('syhunt.dynamic.lists.fpsigs','Signatures','Example: 404 Not Found')">Custom Signatures...</button>
+<button .adv type="checkbox" cid="syhunt.dynamic.options.usefpreduct">Use intelligent false positive filters</button> <button #btnignvulns onclick="prefs.editlist('syhunt.dynamic.lists.ignore.vulnsbyrules','Vulnerabilities to ignore','Example: path=*/form.php,params=file')">Ignore Vulnerabilities...</button>
+<!--button type="checkbox" cid="syhunt.dynamic.cgiscan.detinvresp">Filter invalid server responses</button-->
 </div>
 </fieldset>
 <fieldset><legend>JNDIExploit Server</legend>
@@ -11,18 +14,11 @@
 Host without port: <input type="text" cid="syhunt.dynamic.options.augmented.jndiserver">
 </div>
 </fieldset>
-<fieldset><legend>False Positive Reduction</legend>
+<fieldset><legend>Time Limit</legend>
 <div .optgroup>
-<button .adv type="checkbox" cid="syhunt.dynamic.options.detect404">Automatically detect custom 404 errors</button> <button #btnaddsigs onclick="prefs.editlist('syhunt.dynamic.lists.fpsigs','Signatures','Example: 404 Not Found')">Signatures...</button>
-<div .sep/>
-<button type="checkbox" cid="syhunt.dynamic.options.usefpreduct">Use intelligent false positive filters</button>
-<div .sep/>
-<button type="checkbox" cid="syhunt.dynamic.cgiscan.detinvresp">Filter invalid server responses</button><br>
-</div>
-</fieldset>
-<fieldset><legend>Objects to ignore</legend>
-<div .optgroup>
-<button #btnignvulns onclick="prefs.editlist('syhunt.dynamic.lists.ignore.vulnsbyrules','Vulnerabilities to ignore','Example: path=*/form.php,params=file')">Vulnerabilities...</button>
+Scan time limit (Optional, examples: 1d, 3h, 2h30m, 50m):<br>
+<button type="checkbox" cid="syhunt.dynamic.options.timelimit.enabled">Enable time limit</button><br>
+<input type="text" style="width:350px;" cid="syhunt.dynamic.options.timelimit.value">
 </div>
 </fieldset>
 </div>

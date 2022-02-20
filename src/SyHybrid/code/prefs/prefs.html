@@ -64,6 +64,13 @@
 <button #btnignvulns onclick="prefs.editlist('syhunt.code.lists.ignore.vulnsbyrules','Vulnerabilities to ignore','Example: path=*/form.php,params=file')">Vulnerabilities...</button>
 </div>
 </fieldset>
+<fieldset><legend>Time Limit</legend>
+<div .optgroup>
+Scan time limit (Optional, examples: 1d, 3h, 2h30m, 50m):<br>
+<button type="checkbox" cid="syhunt.code.options.timelimit.enabled">Enable time limit</button><br>
+<input type="text" style="width:350px;" cid="syhunt.code.options.timelimit.value">
+</div>
+</fieldset>
 <include src="{$PluginsDir}SyHybrid.scx#code/prefs/tab_advanced.html"/>
 </div>
 <!-- advanced tab end-->
