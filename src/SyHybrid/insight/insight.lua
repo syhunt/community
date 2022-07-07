@@ -3,13 +3,13 @@ SyhuntInsight.logfilter = 'Web Server Log files|*.log;access_log*|All files (*.*
 
 function SyhuntInsight:Load()
     local mainexe = app.dir..'SyMini.dll'
-    local mainico = app.dir..'\\Packs\\Icons\\SyInsight.ico'
+    local mainico = app.dir..'\\Packs\\Icons\\SyForensic.ico'
 	self:NewTab()
 	app.seticonfromfile(mainico)
-	browser.info.fullname = 'Syhunt Insight'
-	browser.info.name = 'Insight'
+	browser.info.fullname = 'Syhunt Forensic'
+	browser.info.name = 'Forensic'
 	browser.info.exefilename = mainexe
-	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntInsight'
+	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntForensic'
 	browser.pagebar:eval('Tabs.RemoveAll()')
 	browser.pagebar:eval([[$("#tabstrip").insert("<include src='SyHybrid.scx#insight/pagebar.html'/>",1);]])
 	browser.pagebar:eval('SandcatUIX.Update();Tabs.Select("results");')
@@ -29,7 +29,7 @@ function SyhuntInsight:LoadAttackLog(filename)
 end
 
 function SyhuntInsight:LoadSession(sesname)
-  debug.print('Loading Insight session: '..sesname)
+  debug.print('Loading Forensic session: '..sesname)
   if self:NewTab() ~= '' then
    tab:userdata_set('session',sesname)
    tab:userdata_set('taskid','')
@@ -109,7 +109,7 @@ function SyhuntInsight:NewTab()
 	if browser.info.initmode == 'syhuntinsight' then
 	  j.icon = '@ICON_EMPTY'
 	else
-	  j.icon = 'url(SyHybrid.scx#images\\16\\insight.png)'
+	  j.icon = 'url(SyHybrid.scx#images\\16\\forensic.png)'
 	end
 	j.title = 'New Tab'
 	j.toolbar = 'SyHybrid.scx#insight\\toolbar\\toolbar.html'
@@ -155,13 +155,13 @@ function SyhuntInsight:SaveSessionFile(session,filename,filter,defext,sug)
 end
 
 function SyhuntInsight:SaveResults(session)
-  local flt = 'Insight results (*.txt)|*.txt'
+  local flt = 'Forensic results (*.txt)|*.txt'
   local sug = ctk.file.getname(self.ui.file.value)..'_attacks.txt'
   self:SaveSessionFile(session,'Attacks.log',flt,'txt',sug)
 end
 
 function SyhuntInsight:SaveAttackerList(session)
-  local flt = 'Insight list (*.lst)|*.lst'
+  local flt = 'Forensic attacker list (*.lst)|*.lst'
   local sug = ctk.file.getname(self.ui.file.value)..'_attackers.lst'
   self:SaveSessionFile(session,'Attackers.lst',flt,'lst',sug)
 end

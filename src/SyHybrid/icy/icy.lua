@@ -3,13 +3,13 @@ SyhuntIcy = {}
 
 function SyhuntIcy:Load()
     local mainexe = app.dir..'SyMini.dll'
-    local mainico = app.dir..'\\Packs\\Icons\\SyIcyDark.ico'
+    local mainico = app.dir..'\\Packs\\Icons\\SyBreach.ico'
 	self:NewTab()
     app.seticonfromfile(mainico)
-	browser.info.fullname = 'Syhunt IcyDark'
-	browser.info.name = 'Icy'
+	browser.info.fullname = 'Syhunt Breach Scanner'
+	browser.info.name = 'Breach'
 	browser.info.exefilename = mainexe
-	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntIcyDark'
+	browser.info.abouturl = 'http://www.syhunt.com/en/?n=Products.SyhuntBreach'
 	browser.pagebar:eval('Tabs.RemoveAll()')
 	browser.pagebar:eval([[$("#tabstrip").insert("<include src='SyHybrid.scx#code/pagebar.html'/>",1);]])
 	browser.pagebar:eval('SandcatUIX.Update();Tabs.Select("results");')
@@ -46,9 +46,9 @@ function SyhuntIcy:ConfirmFileHash(filename,hash)
   end
 end
 function SyhuntIcy:ImportDump()
-  local filename = app.openfile('Syhunt IcyDark Dump file (*.icyd)|*.icyd','icyd')
+  local filename = app.openfile('Syhunt Breach Dump file (*.icyd)|*.icyd','icyd')
   if filename ~= '' then
-    local id = symini.icydark:new()
+    local id = symini.breach:new()
     id:start()
     local imp = id:importdump(filename)
       if imp.b == false then
@@ -62,7 +62,7 @@ end
 
 function SyhuntIcy:CheckDepend()
    local success = false
-   local id = symini.icydark:new()
+   local id = symini.breach:new()
    id:start()
    success = id:checkdepend().b
    id:release()
@@ -114,7 +114,7 @@ end
 function SyhuntIcy:EditDomainPreferences(url)
     local res = false
 	local slp = ctk.string.loop:new()
-	local hs = symini.icydark:new()
+	local hs = symini.breach:new()
 	local jsonfile = hs:getdomainprefsfilename(url)
 	hs:start()
 	slp:load(hs.options)
@@ -136,7 +136,7 @@ function SyhuntIcy:EditPreferences(html)
 	html = html or SyHybrid:getfile('icy/prefs/prefs.html')
 	local slp = ctk.string.loop:new()
 	local t = {}
-	local cs = symini.icydark:new()
+	local cs = symini.breach:new()
 	cs:start()
 	slp:load(cs.options)
 	while slp:parsing() do
@@ -190,9 +190,6 @@ function SyhuntIcy:NewScan()
       if target.type == 'url' then
         target.url = prefs.get('syhunt.icydark.options.target.url','')
       end
-      if target.type == 'file' then
-        target.file = prefs.get('syhunt.icydark.options.target.file','')
-      end      
       local huntmethod = prefs.get('syhunt.icydark.options.huntmethod','darkplus')
       if editdomainprefs == true then
           ok = self:EditDomainPreferences(target.url)
@@ -210,9 +207,9 @@ function SyhuntIcy:NewTab()
     cr.columns = SyHybrid:getfile('icy/leakcols.lst')
 	local j = {}
 	if browser.info.initmode == 'syhunticy' then
-	  j.icon = 'url(SyHybrid.scx#images\\16\\icydark.png)'
+	  j.icon = 'url(SyHybrid.scx#images\\16\\breach.png)'
 	else
-	  j.icon = 'url(SyHybrid.scx#images\\16\\icydark2.png)'
+	  j.icon = 'url(SyHybrid.scx#images\\16\\breach.png)'
 	end
 	j.title = 'New Tab'
 	j.toolbar = 'SyHybrid.scx#icy\\toolbar\\toolbar.html'
@@ -231,7 +228,7 @@ function SyhuntIcy:NewTab()
 end
 
 function SyhuntIcy:NewScanDialog()
-  if self.CheckDepend() == true then
+  if self:CheckDepend() == true then
     local tab = self:NewTab()
     if tab ~= '' then
        self:NewScan()
@@ -286,19 +283,52 @@ function SyhuntIcy:ScanTarget(huntmethod, target)
   end
 end
 
-function SyhuntIcy:DoTargetListAction(action, itemid)
+function SyhuntIcy:IsDomainAuthorized(domain)
+  local b = symini.breach:new()
+  local resbool = b:getdomaindetails(domain).authorized
+  b:release()
+  return resbool
+end
+
+function SyhuntIcy:DoMonitorAction(action, itemid)
   local item = HistView:GetURLLogItem(itemid, 'Targets Dark')
   if item ~= nil then
     if action == 'scan' then
+      if self:IsDomainAuthorized(item.url) == false then
+        app.showmessage('Results will be redacted (Domain not authorized).')    
+      end
+      prefs.set('syhunt.icydark.options.target.checksubdom', true)
+      local tab = self:NewTab()
+      if tab ~= '' then      
+        self:ScanTarget('darkplus', item)
+      end
+    end        
+    if action == 'scancustom' then
       prefs.set('syhunt.icydark.options.target.url', item.url)
       self:NewScanDialog()
-    end        
+    end    
+    if action == 'viewpwdlist' then
+      if self:IsDomainAuthorized(item.url) == true then
+        self:NewPassTab('?domain='..item.url)
+      else
+        app.showalert('No permission to view password list for this domain.')
+      end
+    end   
+    if action == 'viewfilelist' then
+      self:ViewLeakedFiles('?domain='..item.url)
+    end               
     if action == 'editprefs' then
       local ok = self:EditDomainPreferences(item.url)
       if ok == true then
         self:ViewTargetList(false)
       end
     end
+    if action == 'delete' then
+      HistView:DeleteURLLogItem(itemid,symini.info.breachdomainlistname)
+      local jsonfile = symini.info.configdir..'\\Domain\\'..item.name..'.json'
+      ctk.file.delete(jsonfile)
+      self:ViewTargetList(false)
+    end    
   end
 end
 
@@ -320,7 +350,7 @@ end
 
 function SyhuntIcy:AddToTargetList()
   local d = {}
-  d.title = 'Add IcyDark Target'
+  d.title = 'Add Breach Target'
   d.name_caption = 'Name (eg: MySite)'
   d.value_caption = 'Domain (eg: syhunt.com)'
   local r = Sandcat.Preferences:EditNameValue(d)
@@ -331,25 +361,131 @@ function SyhuntIcy:AddToTargetList()
     item.repeaturlallow = false
     item.repeaturlwarn = true
     HistView:AddURLLogItem(item, 'Targets Dark')
-    self:ViewTargetList(false)
+    self:LoadTargetList()
+    --self:ViewTargetList(false)
   end
 end
 
-function SyhuntIcy:ViewTargetList(newtab)
- local t = {}
- t.newtab = newtab
- t.toolbar = 'SyHybrid.scx#icy/histview_tbtargets.html'
- t.histname = 'Targets Dark'
- t.tabicon = 'url(SyHybrid.scx#images\\16\\icydiver.png);'
- t.style = [[
-  ]]
- t.menu = [[
-  <li onclick="SyhuntIcy:DoTargetListAction('scan','%i')">Scan Domain...</li>
+function SyhuntIcy:GetMonitoredDomainList()
+  HistView = HistView or Sandcat:require('histview')  
+  return HistView:GetURLLogLists(symini.info.breachdomainlistname).idlist
+end
+
+function SyhuntIcy:GetMonitorIcons(d)
+  local icons = {}
+  icons.score = 'Resources.pak#16/icon_blank.png'
+  if d.score ~= 0 then 
+    icons.score = 'SyHybrid.scx#images/16/score_'..string.lower(d.scorename)..'.png'
+  end
+  return icons
+end
+
+function SyhuntIcy:IncludeMonitoredDomainItem(tb, id)
+  local histitem = HistView:GetURLLogItem(id, symini.info.breachdomainlistname)
+  local domname = histitem.name
+  local d = symini.icy_getdomaindetails(histitem.url)
+  local icons = self:GetMonitorIcons(d)
+  local title = d.name
+  if d.name == '' then
+    if ctk.string.matchx(domname, '#*-*#') == true then
+    title = 'Untitled: '..domname
+    else
+    title = domname
+    end
+  end
+  local menu =  [[
+  <menu.context id="menu%i">
+  <li onclick="SyhuntIcy:DoMonitorAction('scan','%i')">List All Breaches...</li>
+  <li onclick="SyhuntIcy:DoMonitorAction('viewpwdlist','%i')">View Leaked Passwords</li>
+  <li onclick="SyhuntIcy:DoMonitorAction('viewfilelist','%i')">View Leaked Files</li>
+  <hr/>  
+  <li onclick="SyhuntIcy:DoMonitorAction('editprefs','%i')">Edit Domain Preferences...</li>
+  <hr/>  
+  <li onclick="SyhuntIcy:DoMonitorAction('scancustom','%i')">List Breaches (Custom)...</li>
   <hr/>
-  <li onclick="HistView:DeleteURLLogItem('%i','Targets Dark')">Delete</li>
+  <li onclick="SyhuntIcy:DoMonitorAction('delete','%i')">Delete</li>
+  </menu>
   ]]  
- HistView = HistView or Sandcat:require('histview')  
- HistView:ViewURLLogFile(t)
+  local troption = '<tr role="option" style="context-menu: selector(#menu%i);" ondblclick="SyhuntIcy:DoMonitorAction([[editprefs]],[[%i]])">'
+  troption = ctk.string.replace(troption, '%i', id)
+  tb:add(troption)
+  tb:add('<td>'..ctk.html.escape(title)..'</td>')
+  tb:add('<td>'..ctk.html.escape(histitem.url)..'</td>')
+  tb:add('<td><img .lvfileicon src="'..icons.score..'"> '..d.scorename..' ('..tostring(d.score)..')</td><td>'..d.lastruntimedesc..'</td>')    
+  tb:add('</tr>')
+  menu = ctk.string.replace(menu, '%i', id)
+  tb:add(menu)
+end
+
+function SyhuntIcy:LoadIntroScreen(html)
+  local t = {}
+  t.title = 'Score & Breaches'
+  t.toolbar = 'SyHybrid.scx#icy/monitor/toolbar.html'
+  t.icon = 'url(SyHybrid.scx#images\\16\\icydiver.png);'
+  t.html = html
+  t.tag = 'breachmonitor'
+  browser.newtabx(t)    
+end
+
+function SyhuntIcy:LoadTargetList()
+  if self:CheckDepend() == true then
+    local dmcount = symini.info.breachdomainlistcount
+    if dmcount == 0 then
+      self:ViewTargetList(true)
+    else
+       -- Loads Splash screen
+       local html = [[
+       <center>
+       <img src="SyHybrid.scx#images\misc\syhunt-breach-icon.png"><br>
+       <h1>Checking score & breaches... Please, wait.</h1>
+       </center>]]
+       self:LoadIntroScreen(html)
+       -- Executes Sandcat task that updates Syhunt Breach Score info and alerts    
+      local tid = 0  	
+      local menu = ''	
+      local script = SyHybrid:getfile('icy/monitortask.lua')
+      local j = ctk.json.object:new()
+      j.runinbg = false
+      j.filename = filename
+      tid = tab:runtask(script,tostring(j),menu)
+      j:release()
+     end
+   end
+end
+
+function SyhuntIcy:ViewTargetList(newtab)
+ local html = SyHybrid:getfile('icy/monitor/list.html')
+ local tb = ctk.string.list:new()
+ local lp = ctk.string.loop:new()
+ lp:load(self:GetMonitoredDomainList())
+ while lp:parsing() do
+   self:IncludeMonitoredDomainItem(tb, lp.current)
+ end 
+ html = ctk.string.replace(html, '%monitoreddomains%', tb.text)
+ if newtab == false then
+   tab:loadx(html)
+ else
+   SyhuntIcy:LoadIntroScreen(html)
+ end
+ tb:release()
+ lp:release() 
+end
+
+function SyhuntIcy:ViewLeakedFiles(domain)
+  local b = symini.breach:new()
+  b:start()
+  local sumfileleak = b:summaryzefileleak(domain)
+  if sumfileleak.result == true then
+    local html = SyHybrid:getfile('icy/prefs_leak/filelist.html')
+    html = ctk.string.replace(html,'%exfil_files%', sumfileleak.resulthtml) 
+    html = ctk.string.replace(html,'%exfil_files_notice%', sumfileleak.resultdesc)      
+    html = ctk.string.replace(html,'%exfil_files_size%', tostring(sumfileleak.totalsize))
+    html = ctk.string.replace(html,'%exfil_files_sizedesc%', sumfileleak.totalsizedesc)   
+    app.showdialogx(html)
+  else
+    app.showalert(sumfileleak.resultdesc)
+  end
+  b:release()
 end
 
 function SyhuntIcy:NewPassTab(filename)

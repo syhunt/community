@@ -31,10 +31,11 @@ Name: <input type="text" cid="domain.name"><br><br>
 <button type="checkbox" cid="domain.enabled"><b>Enable Domain Preferences</b></button>
 <fieldset><legend>Extended Analysis (Optional)</legend>
 <div .optgroup>
-<button type="checkbox" cid="domain.syhunt.icydark.options.compscore">Enable domain risk score comparison</button><br><br>
+Company Registration Number (eg: UK08888880):<br><input type="text" style="width:350px;" cid="domain.syhunt.icydark.options.comreg.number"><br><br>
+<button type="checkbox" cid="domain.syhunt.icydark.options.compscore">Enable domain breach score comparison</button><br><br>
 <p align=right style="margin:0;padding:0;">
 <button #btndomains onclick="prefs.editlist('domain.syhunt.icydark.lists.compdomains','Domains','Example: somedomain.com')">Domains...</button>
-<button #btnprops onclick="prefs.editlist('domain.syhunt.icydark.lists.dmprops','Domain Properties','Example: cnpj:number')">Properties...</button>
+<button #btnprops onclick="prefs.editlist('domain.syhunt.icydark.lists.dmprops','Domain Properties','Example: creg:XXnumber')">Properties...</button>
 </p>
 </div>
 </fieldset>

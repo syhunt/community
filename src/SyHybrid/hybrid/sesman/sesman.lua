@@ -445,7 +445,6 @@ end
 
 function SessionManager:deleteallchecked()
  local e = self.ui.element
- local repdir=symini.info.sessionsdir
  local state = false
  local resp=app.ask_yn('Are you sure you want to delete the selected sessions?',self.title)
  if resp==true then 
@@ -455,7 +454,7 @@ function SessionManager:deleteallchecked()
    e:select('input[session="'..p.current..'"]')
    state=e.value
    if state==true then
-    ctk.dir.delete(repdir..'\\'..p.current)
+    symini.session_delete(p.current)
    end
   end
   p:release()
@@ -474,9 +473,12 @@ function SessionManager:import_session()
  local repdir=symini.info.sessionsdir
  local srcfile = app.openfile('Syhunt Session Export file (*.sse)|*.sse','sse')
  if ctk.file.exists(srcfile) == true then
-   local sesname = ctk.file.getname(srcfile)
-   sesname = ctk.string.before(sesname, '.sse')
-   ctk.dir.unpackfromtar(srcfile, repdir..'\\'..sesname)
+   symini.session_import(srcfile)
+   --local j = ctk.json.object:new()
+   --j:load(ctk.file.getfromtar(srcfile,'_Main.jrm'))
+   --local sesname = j['data.original_session_name']
+   --ctk.dir.unpackfromtar(srcfile, repdir..'\\'..sesname)
+   --j:release()
    self:refresh()
  end
 end
@@ -501,12 +503,9 @@ function SessionManager:export_session(sesname,mode)
 end
  
 function SessionManager:delsession(sesname)
- local repdir=symini.info.sessionsdir
  local resp=app.ask_yn("Are you sure you want to delete '"..sesname.."'?",self.title)
  if resp==true then 
-  if repdir ~= '' then
-   ctk.dir.delete(repdir..'\\'..sesname)
-  end
+   symini.session_delete(sesname)
   self:refresh()
  end
 end

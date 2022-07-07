@@ -59,7 +59,7 @@ function updateprogress(pos,max)
 	task:setprogress(pos,max)
 end
 
-task.caption = 'Syhunt Insight Task - '..ctk.file.getname(params.logfile)
+task.caption = 'Syhunt Forensic Task - '..ctk.file.getname(params.logfile)
 
 if params.huntmethod == 'reconstruct' then
   task.caption = task.caption..' Session Reconstruction'

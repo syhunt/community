@@ -1,0 +1,57 @@
+<html>
+<head>
+<title>Breach Leaked Files</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#icy\prefs_leak\prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#icy\prefs_leak\taglist.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       //importsettings();
+       sethandlers();
+      }
+ }
+ 
+ function GoToRefURL(url, value) {
+  if (value != "") {
+    exit_to_url(url + value);
+  } else {
+    Sandcat.ShowMessage("Reference is empty!");
+  }
+ }
+
+ $(#ok).onClick = function() { view.close(); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-files" accesskey="F" selected><center><img #icon_files><br>Files</center></div>
+</div>
+
+<!-- files tab begin-->
+<div name="panel-files" class="tab" selected>
+<div style="margin:10px;width:100%%;height:100%%;">
+%exfil_files_notice%
+<widget type="select" style="padding:0;">
+<table name="reportview" width="100%" cellspacing=0px fixedrows=1>
+<tr .header><th style="width:350px;">Exfiltrated Filename</th><th style="width:*;">Size</th><th style="width:30px;"></th></tr>
+%exfil_files%
+</table>
+</widget>
+<div .sep/><br>
+Total Size: <input type="text" style="width:50px;" readonly="true" value="%exfil_files_sizedesc%"> Bytes: <input type="text" style="width:50px;" readonly="true" value="%exfil_files_size%">
+</div>
+</div>
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>
+</p>
+
+</body>
+</html>

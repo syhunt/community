@@ -130,6 +130,7 @@ GIT Branch:<br>
 <option value="sqlinj">SQL Injection</option>
 <option value="xss">Cross-Site Scripting (XSS)</option>
 <option value="fileinc">File Inclusion</option>
+<option value="spring4shell">Spring4Shell Scan</option>
 <option value="log4shell">Log4Shell Scan</option>
 <option value="malscan">Malware Content</option>
 <option value="unvredir">Unvalited Redirects</option>
@@ -163,7 +164,11 @@ Export Filename 1 (Optional, eg: C:\Reports\Export_{$SN}.xml):<br>
 Export Filename 2 (Optional, eg: C:\Reports\Export_{$SN}.json):<br>
 <input type="text" style="width:350px;" cid="scheduledscan.export.outfilename2"><br><br>
 
-Note: {$SN} will be replaced by the scan session name
+Available variables:<br>
+{$SN} - Unique scan session name<br>
+{$DT} - Current date and time (ex: 2022-12-01_19-10-30)<br>
+{$DD} - Current date (ex: 2022-12-01)<br>
+{$TM} - Current time (ex: 19-10-30)
 </div>
 </fieldset>
 </div>
@@ -200,13 +205,12 @@ Subject:<br>
 <fieldset><br>
 <div .optgroup>
 <!--button type="checkbox" cid="scheduledscan.options.runinbg">Run scan in background (no window)</button><br-->
-<button type="checkbox" cid="scheduledscan.dynamic.emulator.js">Enable JavaScript emulation</button><br><br>
-
-Pass/Fail Condition (Optional, requires report or export generation enabled):<br>
-<input type="text" style="width:350px;" cid="scheduledscan.options.pfcond"><br><br>
-
+<button type="checkbox" cid="scheduledscan.dynamic.emulator.js">Enable JavaScript emulation</button><br>
+<button type="checkbox" cid="scheduledscan.chron.runonce">Run once</button><br><br>
 Scan time limit (Optional, examples: 1d, 3h, 2h30m, 50m):<br>
-<input type="text" style="width:350px;" cid="scheduledscan.options.timelimit.value">
+<input type="text" style="width:350px;" cid="scheduledscan.options.timelimit.value"><br><br>
+Pass/Fail Condition (Optional, requires report or export generation enabled):<br>
+<input type="text" style="width:350px;" cid="scheduledscan.options.pfcond">
 </div>
 </fieldset>
 </div>
@@ -217,7 +221,7 @@ Scan time limit (Optional, examples: 1d, 3h, 2h30m, 50m):<br>
 <fieldset><legend>Schedule Preferences</legend><br>
 <div .optgroup>
 Time (Hour/Minute/Second):<br>
-<input cid="scheduledscan.chron.hour" type="number" step=1 minvalue="0" maxvalue="23" value="0" size="5"> : <input cid="scheduledscan.chron.min" type="number" step=1 minvalue="0" maxvalue="59" value="0" size="5"> : <input cid="scheduledscan.chron.sec" type="number" step=1 minvalue="0" maxvalue="59" value="0" size="5"> &nbsp;&nbsp;<button type="checkbox" cid="scheduledscan.chron.runonce">Run once</button><br>
+<input cid="scheduledscan.chron.hour" type="number" step=1 minvalue="0" maxvalue="23" value="0" size="5"> : <input cid="scheduledscan.chron.min" type="number" step=1 minvalue="0" maxvalue="59" value="0" size="5"> : <input cid="scheduledscan.chron.sec" type="number" step=1 minvalue="0" maxvalue="59" value="0" size="5"><br>
 <br>
 Date:<br>
 <select cid="scheduledscan.chron.month">

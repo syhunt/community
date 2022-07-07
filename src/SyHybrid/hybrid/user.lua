@@ -141,8 +141,7 @@ function SyHybridUser:IsValidUser(user)
 	return v
 end
 
-function SyHybridUser:Register(warnlimit)
-	local k = app.showinputdialogml('','Enter your Pen-Tester Key:','','Pen-Tester Key')
+function SyHybridUser:RegisterKey(k, warnlimit)
 	if k ~= '' then
 	    local res = symini.setptk(k)
 		app.showmessagex(res.resulthtml)
@@ -157,5 +156,13 @@ function SyHybridUser:Register(warnlimit)
 			app.showmessagesmpl('Syhunt needs a valid key to run.')
 			browser.exit()
 		end
+	end
+end
+
+function SyHybridUser:Register(warnlimit)
+	--local k = app.showinputdialogml('','Enter your Product Key:','','Product Key')
+	local srcfile = app.openfile('Syhunt Product Key file (*.syk)|*.syk','syk')
+	if srcfile ~= '' then
+     	self:RegisterKey(srcfile, warnlimit)
 	end
 end

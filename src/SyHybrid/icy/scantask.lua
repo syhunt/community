@@ -95,7 +95,7 @@ function requestdone(r)
   end
 end
 
-task.caption = 'Syhunt IcyDark Task'
+task.caption = 'Syhunt Breach Task'
 task.tag = params.sessionname
 task:setscript('ondblclick',"browser.showbottombar('task messages')")
 task:setscript('onstop',"SessionManager:setsessionstatus([["..params.sessionname.."]], 'Canceled')")
@@ -114,7 +114,7 @@ print('Scanning for leaks related to domain: '..params.icyurl..'...')
 print('Hunt Method: '..params.huntmethod..'...')
 print('Session Name: '..params.sessionname)
 
-hs = symini.icydark:new()
+hs = symini.breach:new()
 hs.debug = true
 hs.monitor = params.monitor
 hs.onlogmessage = log

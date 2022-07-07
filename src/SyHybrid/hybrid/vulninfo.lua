@@ -53,7 +53,7 @@ end
 
 function VulnInfo:editvulnfile(jsonfile)
   local scanmod = self:getvulndetails(jsonfile).checkmodule
-  if scanmod == 'icydark' then
+  if scanmod == 'breachscanner' then
     self:editvulnfile_custom(jsonfile, 'icy/prefs_leak/prefs.html')
   else
     self:editvulnfile_custom(jsonfile, 'hybrid/prefs_vuln/prefs.html')

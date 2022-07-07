@@ -126,9 +126,9 @@ function VulnList:loadtab()
 	self:additem(h,'Swift',symini.getrescount('CODE_CHK_SWIFT'),NA,NA,NA,NA)	
 	cs:release()
 	
-	local icy = symini.icydark:new()
+	local icy = symini.breach:new()
 	icy:start()
-	self:addsection(h,'IcyDark Checks')
+	self:addsection(h,'Breach Checks')
 	self:addchecks(icy.options_checks)
 	icy:release()	
 	

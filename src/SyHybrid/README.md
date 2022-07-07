@@ -4,7 +4,7 @@ Syhunt Hybrid extension for the Syhunt Sandcat Browser.
 
 This extension is shipped with Syhunt Hybrid's Sandcat and allows to perform dynamic and static application security scans with Syhunt Dynamic and Syhunt Code from within the browser.
 
-This extension uses the Syhunt Hybrid Lua API. To use this API you need to have a Pen-Tester Key, which is currently only available to registered users.
+This extension uses the Syhunt Hybrid Lua API. To use this API you need to have a Product Key, which is currently only available to registered users.
 
 ## Directories
 

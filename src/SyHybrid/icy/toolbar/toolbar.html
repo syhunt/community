@@ -29,14 +29,14 @@ function MarkReset() {
 }
 function MarkAsScanning() {
  MarkReset();
- $(#scanstat).value="Scanning";
+ $(#scanstat).value="Checking";
 }
 function MarkAsDone() {
  MarkReset();
  $(#scanstat).value="Done";
 }
 function MarkAsStopped() {
- if($(#scanstat).value == "Scanning") {
+ if($(#scanstat).value == "Checking") {
   MarkReset();
   $(#scanstat).value="Stopped";
  }
@@ -67,7 +67,7 @@ $(#search).onKey = function(evt) {
 	<div .sepv />
 	<div #srcmenu .button style="foreground-image: url(Resources.pak#16\icon_page.png); behavior: ~ popup-menu;" titleid="for-srcmenu">6
    <menu.popup id="srcmenu-list">
-   <li style="foreground-image: url(SyHybrid.scx#images\16\dynamicscan.png);" onclick="SyhuntIcy:NewScan(false)">Scan Domain...</li>
+   <li style="foreground-image: url(SyHybrid.scx#images\16\dynamicscan.png);" onclick="SyhuntIcy:NewScan(false)">Check Domain...</li>
    <hr/>
    <li style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" onclick="SyhuntDynamic:GenerateReport()">Generate Report...</li>
    </menu>
@@ -81,7 +81,7 @@ $(#search).onKey = function(evt) {
 <popup id="for-navbarmenu">Menu</popup>
 <popup id="for_new">New Scan</popup>
 <popup id="for_rescan">Re-Scan URL</popup>
-<popup id="for_scanurl">Scan Domain...</popup>
+<popup id="for_scanurl">Check Domain...</popup>
 <popup id="for_clear">Clear</popup>
 <popup id="for_save">Generate Report...</popup>
 <popup id="for_undo">Undo</popup>

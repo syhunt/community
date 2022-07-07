@@ -4,15 +4,15 @@
 <div .sepv />
 <div #setmanmenu .button style="foreground-image: url(Resources.pak#16\icon_settings_man.png); behavior: ~ popup-menu;" titleid="for-setmanmenu" >6
   <menu.popup id="setmanmenu-list">
-  <li onclick="HistView:ImportURLLogFile('Targets Dark','SyhuntIcy:ViewTargetList(false)')">Import targets from file...</li>
+  <li onclick="HistView:ImportURLLogFile('Targets Dark','SyhuntIcy:ViewTargetList(false)')">Import domains from file...</li>
   <hr/>
-  <li onclick="HistView:ExportURLLogFile('Targets Dark')">Export targets to file...</li>
+  <li onclick="HistView:ExportURLLogFile('Targets Dark')">Export domains to file...</li>
   <hr/>  
-  <li onclick="HistView:ClearURLLogFile('Targets Dark','SyhuntIcy:ViewTargetList(false)')">Clear target list</li>  
+  <li onclick="HistView:ClearURLLogFile('Targets Dark','SyhuntIcy:ViewTargetList(false)')">Clear domains list</li>  
   </menu>
 </div>
 </div>
 
 <popup id="for-reload">Reload</popup>
 <popup id="for-add">Add Domain...</popup>
-<popup id="for-setmanmenu">Import/Export Targets...</popup>
+<popup id="for-setmanmenu">Import/Export Domains...</popup>
