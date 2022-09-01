@@ -27,6 +27,7 @@ function ScanScheduler:EditSchedulePreferences(name)
   t.html = ctk.string.replace(t.html,'%dynamic_targets%',SyhuntDynamic:GetTargetListHTML())
   t.html = ctk.string.replace(t.html,'%code_targets%',SyhuntCode:GetTargetListHTML())
   t.html = ctk.string.replace(t.html,'%email_trackers%',TrackerManager:gettrackeroptionlist('EMAIL'))
+  t.html = ctk.string.replace(t.html,'%all_trackers%',TrackerManager:gettrackeroptionlist())
   t.id = 'syhuntschedulerprefs'
   t.options = hs.options
   t.jsonfile = jsonfile

@@ -118,6 +118,7 @@ Database:<br>
 <fieldset><legend>Crawling Reach</legend>
 <div .optgroup>
 <button type="checkbox" cid="site.syhunt.dynamic.advanced.forcewebrootstruct">Always target web root during structure brute forcing</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.crawling.autofollowinstarturl">Auto handle off-domain redirect in Start URL</button><br>
 <button type="checkbox" cid="site.syhunt.dynamic.crawling.limitdepth">Use depth limit</button><br>
 &nbsp;&nbsp;&nbsp;Maximum depth: <input cid="site.syhunt.dynamic.crawling.maxdepth" type="number" step=1 minvalue="0" value="0" size="10"><br>
 <button .adv type="checkbox" cid="site.syhunt.dynamic.crawling.limittobase">Limit crawling to start URL path and specific allowed URLs</button> <button #btncrlexp onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.allowedpaths','Paths to crawl','Example: /store/login.php')">Allowed URLs...</button> 

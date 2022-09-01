@@ -347,6 +347,16 @@ function SessionManager:checkuncheckall(state)
  p:release()
 end
 
+function SessionManager:export_sessionvulnsource(sesname)
+  local srcfile = symini.getsessionvulnsource(sesname)
+  local fn = sesname..'_source.txt'
+  local destfile = app.savefile('Cached Source (*.txt)|*.txt','txt',fn)
+  if destfile ~= '' then  
+    ctk.file.copy(srcfile, destfile)
+    ctk.file.delete(srcfile)
+  end
+end
+
 function SessionManager:getcounticon(i)
  function getnumberext(n)
   if n < 10 then
@@ -403,6 +413,7 @@ function SessionManager:add_session(r, sesname)
  r:add('<li>Debug')
  r:add('<menu>')
  r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[','dbgfull')">Export Full Data</li>]])
+ r:add([[<li onclick="SessionManager:export_sessionvulnsource(']]..sesname..[[')">Export Cached Source</li>]])
  r:add('<hr/>')
  r:add([[<li onclick="SessionManager:export_session(']]..sesname..[[','dbglog')">Export Log Only</li>]])
  r:add('</menu>')

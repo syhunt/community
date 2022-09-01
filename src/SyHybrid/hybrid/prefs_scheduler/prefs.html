@@ -60,9 +60,9 @@
 <div class="icontabs">
 <div #mainstrip class="strip">
 <div panel="panel-scan" accesskey="S" selected><center><img #icon_scan><br>Scan</center></div>
+<div panel="panel-sched" accesskey="C"><center><img #icon_sched><br>Schedule</center></div>
 <div panel="panel-report" accesskey="R"><center><img #icon_report><br>Report</center></div>
-<div panel="panel-email" accesskey="E"><center><img #icon_email><br>Email</center></div>
-<div panel="panel-sched" accesskey="J"><center><img #icon_sched><br>Schedule</center></div>
+<div panel="panel-email" accesskey="E"><center><img #icon_email><br>Notifications</center></div>
 <div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
 </div>
 
@@ -189,11 +189,31 @@ Subject:<br>
 <input type="text" style="width:350px;" cid="scheduledscan.report.email.subject">
 </div>
 </fieldset>
+<fieldset><legend>Tracker Notification</legend><br>
+<div .optgroup>
+<select cid="scheduledscan.report.tracker.first">
+<option value="" selected>Select Tracker</option>
+%all_trackers%
+</select><br><br>
+<select cid="scheduledscan.report.tracker.second">
+<option value="" selected>Select Tracker</option>
+%all_trackers%
+</select><br><br>
+Note: if you select the same tracker of type email in email notification and here, two emails will be sent.
+</div>
+</fieldset>
 </div>
 <!-- email tab end-->
 
 <!-- advanced tab begin-->
 <div name="panel-advanced" class="tab">
+<fieldset><br>
+<div .optgroup>
+<!--button type="checkbox" cid="scheduledscan.options.runinbg">Run scan in background (no window)</button><br-->
+<button type="checkbox" cid="scheduledscan.chron.runonce">Run once</button><br>
+<button type="checkbox" cid="scheduledscan.dynamic.emulator.js">Enable JavaScript emulation</button><br><br>
+</div>
+</fieldset>
 <fieldset><legend>Incremental Scan</legend>
 <div .optgroup>
 <select class="tag-list" type="select" cid="scheduledscan.options.incrementalscan">
@@ -202,15 +222,18 @@ Subject:<br>
 </select>
 </div>
 </fieldset>
-<fieldset><br>
+<fieldset><legend>Fail Condition (Optional)</legend>
 <div .optgroup>
-<!--button type="checkbox" cid="scheduledscan.options.runinbg">Run scan in background (no window)</button><br-->
-<button type="checkbox" cid="scheduledscan.dynamic.emulator.js">Enable JavaScript emulation</button><br>
-<button type="checkbox" cid="scheduledscan.chron.runonce">Run once</button><br><br>
-Scan time limit (Optional, examples: 1d, 3h, 2h30m, 50m):<br>
-<input type="text" style="width:350px;" cid="scheduledscan.options.timelimit.value"><br><br>
-Pass/Fail Condition (Optional, requires report or export generation enabled):<br>
-<input type="text" style="width:350px;" cid="scheduledscan.options.pfcond">
+Minimum Severity:<br>
+<select class="tag-list" type="select" cid="scheduledscan.options.pfminseverity">
+<option value="none" selected>None</option>
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+<!--option value="rule">Custom Rule</option-->
+</select>
+<!--Custom Rule:<br>
+<input type="text" style="width:350px;" cid="scheduledscan.options.pfcond"-->
 </div>
 </fieldset>
 </div>
@@ -319,7 +342,9 @@ Day in Week:<br>
 <button type="checkbox" cid="scheduledscan.chron.dayweek.thu">Thu</button>
 <button type="checkbox" cid="scheduledscan.chron.dayweek.fri">Fri</button>
 <button type="checkbox" cid="scheduledscan.chron.dayweek.sat">Sat</button>
-<button type="checkbox" cid="scheduledscan.chron.dayweek.sun">Sun</button>
+<button type="checkbox" cid="scheduledscan.chron.dayweek.sun">Sun</button><br><br>
+Scan time limit (Optional, examples: 1d, 3h, 2h30m, 50m):<br>
+<input type="text" style="width:350px;" cid="scheduledscan.options.timelimit.value">
 </div>
 </fieldset>
 </div>

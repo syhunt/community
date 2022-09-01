@@ -290,10 +290,8 @@ function SyhuntIcy:IsDomainAuthorized(domain)
   return resbool
 end
 
-function SyhuntIcy:DoMonitorAction(action, itemid)
-  local item = HistView:GetURLLogItem(itemid, 'Targets Dark')
-  if item ~= nil then
-    if action == 'scan' then
+function SyhuntIcy:ScanTargetItem(item)
+      --app.showmessage(item.url)
       if self:IsDomainAuthorized(item.url) == false then
         app.showmessage('Results will be redacted (Domain not authorized).')    
       end
@@ -302,6 +300,13 @@ function SyhuntIcy:DoMonitorAction(action, itemid)
       if tab ~= '' then      
         self:ScanTarget('darkplus', item)
       end
+end
+
+function SyhuntIcy:DoMonitorAction(action, itemid)
+  local item = HistView:GetURLLogItem(itemid, 'Targets Dark')
+  if item ~= nil then
+    if action == 'scan' then
+       self:ScanTargetItem(item)
     end        
     if action == 'scancustom' then
       prefs.set('syhunt.icydark.options.target.url', item.url)
@@ -313,7 +318,14 @@ function SyhuntIcy:DoMonitorAction(action, itemid)
       else
         app.showalert('No permission to view password list for this domain.')
       end
-    end   
+    end
+    if action == 'viewdomlist' then
+      if self:IsDomainAuthorized(item.url) == true then
+        self:NewDomainEnuTab(item.url)
+      else
+        app.showalert('No permission to view subdomain list for this domain.')
+      end
+    end    
     if action == 'viewfilelist' then
       self:ViewLeakedFiles('?domain='..item.url)
     end               
@@ -398,6 +410,7 @@ function SyhuntIcy:IncludeMonitoredDomainItem(tb, id)
   <li onclick="SyhuntIcy:DoMonitorAction('scan','%i')">List All Breaches...</li>
   <li onclick="SyhuntIcy:DoMonitorAction('viewpwdlist','%i')">View Leaked Passwords</li>
   <li onclick="SyhuntIcy:DoMonitorAction('viewfilelist','%i')">View Leaked Files</li>
+  <li onclick="SyhuntIcy:DoMonitorAction('viewdomlist','%i')">View Breached Subdomains</li>
   <hr/>  
   <li onclick="SyhuntIcy:DoMonitorAction('editprefs','%i')">Edit Domain Preferences...</li>
   <hr/>  
@@ -487,6 +500,16 @@ function SyhuntIcy:ViewLeakedFiles(domain)
   end
   b:release()
 end
+ 
+function SyhuntIcy:ScanTargetFromEnuTab(url)
+   local target = {}
+   target.type = 'url'
+   target.url = url
+   local tab = self:NewTab()
+   if tab ~= '' then
+     self:ScanTargetItem(target)
+   end
+end
 
 function SyhuntIcy:NewPassTab(filename)
   local cr = {}
@@ -515,6 +538,38 @@ function SyhuntIcy:NewPassTab(filename)
   local j = ctk.json.object:new()
   j.runinbg = false
   j.filename = filename
+  tid = tab:runtask(script,tostring(j),menu)
+  tab:userdata_set('taskid',tid)
+  j:release()
+  browser.setactivepage('results')
+end
+
+function SyhuntIcy:NewDomainEnuTab(domain)
+  local cr = {}
+  cr.dblclickfunc = 'SyhuntIcy:ScanTargetFromEnuTab'
+  cr.columns = SyHybrid:getfile('icy/domenucols.lst')
+	local j = {}
+	if browser.info.initmode == 'syhunticydark' then
+	  j.icon = '@ICON_EMPTY'
+	else
+	  j.icon = 'url(SyHybrid.scx#images\\16\\icydark.png)'
+	end
+	j.title = 'Breached Domains'
+	j.table = 'SyhuntIcy.ui'
+	j.activepage = 'results'
+	j.showpagestrip = false
+	local newtab = browser.newtabx(j)
+	if newtab ~= '' then 
+	  tab:results_customize(cr)
+	  browser.setactivepage(j.activepage)
+	end
+   -- Executes Sandcat task
+  local tid = 0  	
+  local menu = ''	
+  local script = SyHybrid:getfile('icy/domenutask.lua')
+  local j = ctk.json.object:new()
+  j.runinbg = false
+  j.domain = domain
   tid = tab:runtask(script,tostring(j),menu)
   tab:userdata_set('taskid',tid)
   j:release()

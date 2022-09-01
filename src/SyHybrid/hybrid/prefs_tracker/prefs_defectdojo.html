@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>Issue Tracker Preferences</title>
+<link rel="stylesheet" type="text/css" href="Resources.pak#dialog_prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#hybrid\prefs_tracker\prefs.css">
+<link rel="stylesheet" type="text/css" href="SyHybrid.scx#hybrid\prefs_vuln\taglist.css">
+<script type="text/tiscript" src="{$PluginsDir}Resources.pak#dialog_prefs.tis"/>
+<script type="text/tiscript">
+ self.onControlEvent = function(evt)
+ {
+      if( evt.type == Event.DOCUMENT_COMPLETE ) {
+       importsettings();
+       sethandlers();
+       Sandcat.PrefsSet("tracker.defaultapp","defectdojo");
+      }
+ }
+
+ $(#ok).onClick = function() { confirm_edit(); }
+ $(#cancel).onClick = function() { cancel_edit(); }
+</script>
+</head>
+<body marginwidth="0" marginheight="0">
+<div class="icontabs">
+<div #mainstrip class="strip">
+<div panel="panel-dd" accesskey="G" selected><center><img #icon_defectdojo><br>DefectDojo</center></div>
+<div panel="panel-context" accesskey="T"><center><img #icon_advanced><br>Context</center></div>
+<div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
+</div>
+
+<!-- defectdojo tab begin-->
+<div name="panel-dd" class="tab" selected>
+<fieldset><legend>DefectDojo Preferences</legend>
+<div .optgroup>
+DefectDojo Server URL:<br><input type="text" cid="tracker.api.url"><br><br>
+Minimum Severity: <select class="tag-list" type="select" cid="tracker.scan.minseverity">
+<option value="Info" selected>Informational</option>
+<option value="Low">Low</option>
+<option value="Medium">Medium</option>
+<option value="High">High</option>
+</select><br><br>
+<p align=right style="margin:0;padding:0;">
+<button #btncustlabels onclick="prefs.editlist('tracker.custom.labels','Tags','Example: scan')">Edit Tags...</button>
+</p>
+</div>
+</fieldset>
+<fieldset><legend>Tracker Authentication</legend>
+<div .optgroup>
+Token:<br><input type="password" style="width:*;" cid="tracker.auth.token.encrypted">
+</div>
+</fieldset>
+</div>
+<!-- defectdojo end-->
+
+<!-- context tab begin-->
+<div name="panel-context" class="tab">
+<fieldset><legend>Context Preferences</legend>
+<div .optgroup>
+Test Title:<br><input type="text" cid="tracker.scan.testtitle"><br><br>
+Engagement Name:<br><input type="text" cid="tracker.scan.engagementname"><br><br>
+Product Type Name: <input type="text" cid="tracker.scan.producttypename" style="width:150px;">&nbsp;&nbsp;&nbsp;Product Name: <input type="text" cid="tracker.scan.productname" style="width:150px;"><br><br>
+<button type="checkbox" cid="tracker.scan.autocreatecontext"><b>Auto Create Context</b></button>
+</div>
+</fieldset>
+</div>
+<!-- context tab end-->
+
+<!-- advanced tab begin-->
+<div name="panel-advanced" class="tab">
+<fieldset><legend>Additional Preferences</legend>
+<div .optgroup>
+<button type="checkbox" cid="tracker.scan.active"><b>Active</b></button><br>
+<button type="checkbox" cid="tracker.scan.verified"><b>Verified</b></button><br>
+<button type="checkbox" cid="tracker.scan.closeoldfindings"><b>Close Old Findings</b></button><br>
+<button type="checkbox" cid="tracker.scan.pushtojira"><b>Push To Jira</b></button><br>
+</div>
+</fieldset>
+<include src="{$PluginsDir}SyHybrid.scx#hybrid/prefs_tracker/tab_advanced.html"/>
+</div>
+<!-- advanced tab end-->
+
+<!--tabs end-->
+</div>
+
+<p style="text-align:right">
+<button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>
+<button #cancel style="width:50px;margin-right:10px;">Cancel</button>
+</p>
+
+</body>
+</html>

@@ -10,7 +10,7 @@
       if( evt.type == Event.DOCUMENT_COMPLETE ) {
        importsettings();
        sethandlers();
-       Sandcat.PrefsSet("tracker.defaultapp","email");
+       Sandcat.PrefsSet("tracker.defaultapp","faraday");
       }
  }
 
@@ -21,41 +21,35 @@
 <body marginwidth="0" marginheight="0">
 <div class="icontabs">
 <div #mainstrip class="strip">
-<div panel="panel-email" accesskey="E" selected><center><img #icon_email><br>Email</center></div>
+<div panel="panel-faraday" accesskey="J" selected><center><img #icon_faraday><br>Faraday</center></div>
 <div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
 </div>
 
-<!-- email tab begin-->
-<div name="panel-email" class="tab" selected>
-<fieldset><legend>Sender/Recipient</legend>
+<!-- faraday tab begin-->
+<div name="panel-faraday" class="tab" selected>
+<fieldset><legend>Faraday Preferences</legend><br>
 <div .optgroup>
-From (eg: robot@yourdomain.com):<br><input type="text" style="width:250px;" cid="tracker.message.from">
+Faraday Server URL:<br><input type="text" cid="tracker.api.url">
 <div .sep/>
-To (eg: security@yourdomain.com or comma-separated list):<br><input type="text" style="width:100%;" cid="tracker.message.tolist">
-<div .sep/>
-Subject:<br><input type="text" style="width:100%;" cid="tracker.message.subject">
+Workspace name:<br><input type="text" style="width:250px;" cid="tracker.project.name"><br>
+Note: If empty, my_workspace will be used.
 </div>
 </fieldset>
-<fieldset><legend>SMTP Authentication</legend>
+<fieldset><legend>Tracker Authentication</legend>
 <div .optgroup>
-Host:<br><input type="text" style="width:250px;" cid="tracker.auth.targethost"> : <input cid="tracker.smtp.targetport" type="number" step=1 minvalue="1" maxvalue="65525" value="587" size="10">
-<div .sep/>
 Username:<br><input type="text" style="width:150px;" cid="tracker.auth.username">
 <div .sep/>
 Password:<br><input type="password" style="width:150px;" cid="tracker.auth.password">
 </div>
 </fieldset>
 </div>
-<!-- email tab end-->
+<!-- faraday tab end-->
 
 <!-- advanced tab begin-->
 <div name="panel-advanced" class="tab">
 <include src="{$PluginsDir}SyHybrid.scx#hybrid/prefs_tracker/tab_advanced.html"/>
 </div>
 <!-- advanced tab end-->
-
-<!--tabs end-->
-</div>
 
 <p style="text-align:right">
 <button #ok role="default-button" style="width:50px;margin-right:5px;">OK</button>

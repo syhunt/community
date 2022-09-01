@@ -29,7 +29,7 @@ print('Generating report for session: '..params.session_name)
 print('Template: '..params.template_name)
 print('Output filename: '..ctk.file.getname(params.filename))
 --print('Template Selection: '..params.template_selection)
-rm:savereport()
+rm:savereport(params.filename)
 if ctk.file.exists(params.filename) then
   printsuccess('Report saved to: '..params.filename)
   task.status = 'Report saved.'

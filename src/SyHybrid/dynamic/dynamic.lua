@@ -56,7 +56,10 @@ function SyhuntDynamic:SetURLCookie(t)
     prefs.set('syhunt.dynamic.emulation.forceuseragent', true)
   end
   -- Saves to site preferences
-  symini.prefs_set('site.syhunt.dynamic.lists.cookies', t.cookie, t.url)
+  --app.showmessage(t.cookie)
+  --app.showmessage(t.url)
+  symini.prefs_set('dynamic.lists.cookies', t.cookie, t.url)
+  symini.prefs_set('dynamic.crawling.autofollowinstarturl', false, t.url)
   tab.status = 'Page session details saved.'
 end
 
@@ -271,9 +274,10 @@ function SyhuntDynamic:NewScan(runinbg)
       local targeturl = prefs.get('syhunt.dynamic.options.target.url','')
       local huntmethod = prefs.get('syhunt.dynamic.options.huntmethod','appscan')
       local editsiteprefs = prefs.get('syhunt.dynamic.options.target.editsiteprefs',false)
-      local autofollow = prefs.get('syhunt.dynamic.emulation.redirect.autofollowinstarturl', true)
       if targeturl ~= '' then
-        targeturl = self:NormalizeTargetURLEx(targeturl, autofollow)
+        local targeturl_original = self:NormalizeTargetURLEx(targeturl, false)
+        local autofollow = symini.prefs_get('dynamic.crawling.autofollowinstarturl', true, targeturl_original)
+        targeturl = self:NormalizeTargetURLEx(targeturl, autofollow, false)
         prefs.set('syhunt.dynamic.options.target.url',targeturl)
         if editsiteprefs == true then
           ok = self:EditSitePreferences(targeturl)
@@ -331,15 +335,18 @@ function SyhuntDynamic:LoadProgressPanel()
   tab:results_updatehtml(defstats)
 end
 
-function SyhuntDynamic:NormalizeTargetURLEx(url, autofollow)
+function SyhuntDynamic:NormalizeTargetURLEx(url, autofollow, askfollow)
+  askfollow = askfollow or false
   url = self:NormalizeTargetURL(url)
     local redir = symini.checkurlredir(url)
     if redir.result == true and redir.ondomain == false then
       if autofollow == true then
         url = redir.url
       else
-        if app.ask_yn('Follow redirect (recommended) to ['..redir.url..']?') == true then
-          url = redir.url
+        if askfollow == true then
+          if app.ask_yn('Follow redirect (recommended) to ['..redir.url..']?') == true then
+            url = redir.url
+          end
         end
       end
     end

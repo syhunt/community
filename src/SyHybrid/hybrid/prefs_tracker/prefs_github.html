@@ -22,6 +22,7 @@
 <div class="icontabs">
 <div #mainstrip class="strip">
 <div panel="panel-github" accesskey="G" selected><center><img #icon_github><br>GitHub</center></div>
+<div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
 </div>
 
 <!-- github tab begin-->
@@ -36,11 +37,17 @@ Project Name (owner/repo):<br><input type="text" style="width:250px;" cid="track
 </fieldset>
 <fieldset><legend>Tracker Authentication</legend>
 <div .optgroup>
-Personal Access Token:<br><input type="password" style="width:150px;" cid="tracker.auth.token.encrypted">
+Personal Access Token:<br><input type="password" style="width:*;" cid="tracker.auth.token.encrypted">
 </div>
 </fieldset>
 </div>
 <!-- auth tab end-->
+
+<!-- advanced tab begin-->
+<div name="panel-advanced" class="tab">
+<include src="{$PluginsDir}SyHybrid.scx#hybrid/prefs_tracker/tab_advanced.html"/>
+</div>
+<!-- advanced tab end-->
 
 <!--tabs end-->
 </div>
