@@ -4,28 +4,76 @@
 <div .button onclick="SessionManager:checkuncheckall(1)" style="foreground-image: url(SyHybrid.scx#images\16\box_check.png);" titleid="for-checkall"/>
 <div .button onclick="SessionManager:checkuncheckall(0)" style="foreground-image: url(SyHybrid.scx#images\16\box_uncheck.png);" titleid="for-uncheckall"/>
 <div .sepv />
+<div .button onclick=" SessionManager:generatereportbulk()" style="foreground-image: url(SyHybrid.scx#images\16\saverep.png);" titleid="for-genreportbulk"/>
 <div .button onclick="SessionManager:comparechecked()" style="foreground-image: url(SyHybrid.scx#images\16\diff.png);" titleid="for-comparechk"/>
+<div #summarizeallmenu .button style="foreground-image: url(SyHybrid.scx#images\16\session_resultlist.png); behavior: ~ popup-menu;" titleid="for-summarizeall">6
+  <menu.popup id="summarizeall-list">
+  <li onclick="SessionManager:summarizeall('')">All methodologies</li>
+  <hr/>    
+  <li onclick="SessionManager:summarizeall('DAST')">DAST (Dynamic)</li>
+  <li onclick="SessionManager:summarizeall('SAST')">SAST/MAST (Code)</li>  
+  <li onclick="SessionManager:summarizeall('DWET')">DWET (Breach)</li>    
+  <li onclick="SessionManager:summarizeall('FAST')">FAST (Forensic)</li>    
+  </menu> 
+</div>  
 <div .button onclick="SessionManager:deleteallchecked()" style="foreground-image: url(Resources.pak#16\icon_remove.png);" titleid="for-deletechk"/>
 <div .sepv />
 <div .button onclick="SessionManager:import_session()" style="foreground-image: url(SyHybrid.scx#images\16\import.png);" titleid="for-importses"/>
 <div .sepv />
 <div #listspecific .button style="foreground-image: url(SyHybrid.scx#images\16\date_magnify.png); behavior: ~ popup-menu;" titleid="for-listspecific" >6
   <menu.popup id="listspecific-list">
-  <li onclick="SessionManager:listbyperiod(0)">Today</li>    
-  <li onclick="SessionManager:listbyperiod(1)">Today and Yesterday</li>      
+  <li onclick="SessionManager:listbyperiod('0')">Today</li>    
+  <li onclick="SessionManager:listbyperiod('1')">Today and Yesterday</li>  
   <hr/>  
-  <li onclick="SessionManager:listbyperiod(7)">Last 7 Days</li>  
-  <li onclick="SessionManager:listbyperiod(30)">Last 15 Days</li>  
-  <li onclick="SessionManager:listbyperiod(30)">Last 30 Days</li>
-  <li onclick="SessionManager:listbyperiod(45)">Last 45 Days</li>  
-  <li onclick="SessionManager:listbyperiod(60)">Last 60 Days</li>
-  <li onclick="SessionManager:listbyperiod(90)">Last 90 Days</li>
+  <li onclick="SessionManager:listbyperiod('7')">Last 7 Days</li>  
+  <li onclick="SessionManager:listbyperiod('30')">Last 15 Days</li>  
+  <li onclick="SessionManager:listbyperiod('30')">Last 30 Days</li>
+  <li onclick="SessionManager:listbyperiod('45')">Last 45 Days</li>  
+  <li onclick="SessionManager:listbyperiod('60')">Last 60 Days</li>
+  <li onclick="SessionManager:listbyperiod('90')">Last 90 Days</li>
   <hr/>  
-  <li onclick="SessionManager:listbyperiod(-2)">All Time</li>
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-%m'))">This Month</li>
+  <li>Specific Month
+  <menu>
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-01'))">January</li>
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-02'))">February</li>
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-03'))">March</li>  
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-04'))">April</li>
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-05'))">May</li>
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-06'))">June</li>
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-07'))">July</li>
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-08'))">August</li> 
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-09'))">September</li>
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-10'))">October</li>  
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-11'))">November</li>   
+  <li onclick="SessionManager:listbyperiod(os.date('%Y-12'))">December</li>  
+  <hr>
+  <li>Last Year
+  <menu>
+  <li onclick="SessionManager:listbyperiod_lastyear('12')">December</li>    
+  <li onclick="SessionManager:listbyperiod_lastyear('11')">November</li>     
+  <li onclick="SessionManager:listbyperiod_lastyear('10')">October</li>   
+  <li onclick="SessionManager:listbyperiod_lastyear('09')">September</li> 
+  <li onclick="SessionManager:listbyperiod_lastyear('08')">August</li>       
+  <li onclick="SessionManager:listbyperiod_lastyear('07')">July</li>  
+  <li onclick="SessionManager:listbyperiod_lastyear('06')">June</li>  
+  <li onclick="SessionManager:listbyperiod_lastyear('05')">May</li> 
+  <li onclick="SessionManager:listbyperiod_lastyear('04')">April</li>  
+  <li onclick="SessionManager:listbyperiod_lastyear('03')">March</li>    
+  <li onclick="SessionManager:listbyperiod_lastyear('02')">February</li>  
+  <li onclick="SessionManager:listbyperiod_lastyear('01')">January</li>
+  </menu> 
+  </li>    
+  </menu> 
+  </li>
+  <hr/>  
+  <li onclick="SessionManager:listbyperiod('all')">All Time</li>
   </menu>
 </div>
 </div>
 
+<popup id="for-genreportbulk">Generate Scan Report(s)</popup>
+<popup id="for-summarizeall">Generate Summary Report</popup>
 <popup id="for-comparechk">Compare Checked</popup>
 <popup id="for-deletechk">Delete All Checked</popup>
 <popup id="for-checkall">Check All</popup>

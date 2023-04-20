@@ -1,14 +1,18 @@
 SessionManager = {
  title = 'Session Manager',
- lastdays = 7
+ listquery = '7'
 }
+
+function SessionManager:listbyperiod_lastyear(month)
+  self:listbyperiod(tostring(tonumber(os.date('%Y')-1))..'-'..month)
+end
 
 function SessionManager:refresh()
   self:loadtab(false)
 end
 
 function SessionManager:listbyperiod(p)
-  self.lastdays = p
+  self.listquery = p
   self:refresh()
 end
 
@@ -297,12 +301,24 @@ function SessionManager:comparesessions(basesesname,secondsesname)
   r:release()
 end
 
+function SessionManager:summarizeall(method)
+  local r = ctk.string.list:new()
+  r.text =  symini.getsessionlistsummary(self.listquery, method)
+  local fn = symini.info.outputdir..'\\Scan Results Summary ('..os.date("%Y-%m-%d")..', '..method..' '..tostring(self.listquery)..').html'
+  local destfile = app.savefile('Scan results summary (*.html)|*.html','html', fn)
+  if destfile ~= '' then  
+    r:savetofile(destfile) 
+    browser.newtab(destfile)
+  end
+  r:release()  
+end
+
 function SessionManager:comparechecked()
  local e = self.ui.element
  local state = false
  local p = ctk.string.loop:new()
  local sl = ctk.string.list:new()
- p:load(symini.getsessionlist(self.lastdays))
+ p:load(symini.getsessionlist(self.listquery))
  while p:parsing() do
    e:select('input[session="'..p.current..'"]')
    state=e.value
@@ -314,6 +330,42 @@ function SessionManager:comparechecked()
    self:comparesessions(sl:get(0),sl:get(1))
  else
    app.showmessage('Two sessions must be selected!')
+ end
+ sl:release()
+ p:release()
+end
+
+function SessionManager:generatereportbulk()
+ local e = self.ui.element
+ local state = false
+ local p = ctk.string.loop:new()
+ local sl = ctk.string.list:new()
+ p:load(symini.getsessionlist(self.listquery))
+ while p:parsing() do
+   e:select('input[session="'..p.current..'"]')
+   state=e.value
+   if state==true then
+    sl:add(p.current)
+   end
+  end
+ if sl.count == 0 then
+   app.showmessage('At least 1 session must be selected!') 
+ else
+   if sl.count == 1 then
+    ReportMaker:loadtab(sl:get(0))
+   else 
+    local script = SyHybrid:getfile('hybrid/repmaker/repgenbulktask.lua')
+    local j = ctk.json.object:new()
+    j.sessionlist = sl.text
+    j.outputext = prefs.get('syhunt.hybrid.report.defaultext','html')
+    j.template = prefs.get('syhunt.hybrid.report.defaulttemplate','Standard')
+    j.outputdir = app.selectdir('Select an output directory')
+    --j.template_name = self.template_name
+    if j.outputdir ~= '' then
+      tid = tab:runtask(script,tostring(j))
+    end
+    j:release()
+   end
  end
  sl:release()
  p:release()
@@ -339,7 +391,7 @@ function SessionManager:checkuncheckall(state)
  local boolstate = false
  if state==1 then boolstate=true end
  local p = ctk.string.loop:new()
- p:load(symini.getsessionlist(self.lastdays))
+ p:load(symini.getsessionlist(self.listquery))
  while p:parsing() do
   e:select('input[session="'..p.current..'"]')
   e.value = boolstate
@@ -430,7 +482,7 @@ function SessionManager:loadtab(newtab)
  local html = SyHybrid:getfile('hybrid/sesman/list.html')
  local r = ctk.string.list:new()
  local p = ctk.string.loop:new()
- p:load(symini.getsessionlist(self.lastdays))
+ p:load(symini.getsessionlist(self.listquery))
  p:reverse()
 
  while p:parsing() do
@@ -460,7 +512,7 @@ function SessionManager:deleteallchecked()
  local resp=app.ask_yn('Are you sure you want to delete the selected sessions?',self.title)
  if resp==true then 
   local p = ctk.string.loop:new()
-  p:load(symini.getsessionlist(self.lastdays))
+  p:load(symini.getsessionlist(self.listquery))
   while p:parsing() do
    e:select('input[session="'..p.current..'"]')
    state=e.value

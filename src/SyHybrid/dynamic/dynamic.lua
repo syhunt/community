@@ -1,5 +1,6 @@
 SyhuntDynamic = {}
 SyhuntDynamic.waitlogin = false
+SyhuntDynamic.title = 'Syhunt Dynamic'
 
 function dynamictargetchanged(t)
     --if app.ask_yn('Do you wish to scan logged URL: '..t.url..'?') == true then
@@ -50,6 +51,11 @@ function SyhuntDynamic:SetURLCookieFromSandcat()
 end
 
 function SyhuntDynamic:SetURLCookie(t)
+  local ldiff = {}
+  ldiff.ua = t.useragent
+  ldiff.source = tab.source
+  ldiff.url = t.url
+  local ldiffres = symini.checklogindiff(ldiff)
   prefs.set('syhunt.dynamic.options.target.url', t.url)
   if t.useragent ~= '' then
     prefs.set('syhunt.dynamic.emulation.useragent', t.useragent)
@@ -58,6 +64,7 @@ function SyhuntDynamic:SetURLCookie(t)
   -- Saves to site preferences
   --app.showmessage(t.cookie)
   --app.showmessage(t.url)
+  symini.prefs_set('dynamic.formauth.logindiff', ldiffres, t.url)  
   symini.prefs_set('dynamic.lists.cookies', t.cookie, t.url)
   symini.prefs_set('dynamic.crawling.autofollowinstarturl', false, t.url)
   tab.status = 'Page session details saved.'
@@ -145,8 +152,14 @@ function SyhuntDynamic:EditSitePreferences(url)
 		while slp:parsing() do
 			prefs.regdefault(slp.current,hs:prefs_getdefault(slp.current))
 		end
+		local css = ''
+		if prefs.get('syhunt.hybrid.advanced.ai.chatgpt.apikey.encrypted','') == '' then
+		  css = '.aioption { display:none; }'
+		end
+		local html = SyHybrid:getfile('dynamic/prefs_site/prefs.html')
+		html = ctk.string.replace(html,'%css%',css)
 		local t = {}
-		t.html = SyHybrid:getfile('dynamic/prefs_site/prefs.html')
+		t.html = html
 		t.id = 'syhuntsiteprefs'
 		t.options = hs.options
 		t.jsonfile = jsonfile
@@ -453,6 +466,42 @@ function SyhuntDynamic:AddToTargetList()
   end
 end
 
+function SyhuntDynamic:AugmentedLoginConfirmSuccess(url)
+  browser.options.showbottombar = false
+  symini.login_runcmd(url,'applylast')
+  app.showmessage('Confirmed!')
+end
+
+function SyhuntDynamic:AugmentedLoginPreview(ltype,url,screenshot_url)
+  local html = ''
+  if ltype == 'AI' then
+    html = html..'<button onclick=SyhuntDynamic:AugmentedLoginConfirmSuccess(ctk.base64.decode("'..url..'"))>Confirm Success</button>'
+    html = html..'&nbsp;&nbsp;<button onclick=SyhuntDynamic:AugmentedLoginStep(ctk.base64.decode("'..url..'"))>Add New Step</button><br>'
+  end
+  html = html..'<img src="'..screenshot_url..'">'
+  browser.loadpagex({name='ailoginpreview', html=html})
+end
+
+function SyhuntDynamic:AugmentedLoginStep(url)
+  local action = app.showinputdialog('Describe next action:')
+  if action ~= '' then
+    self:AugmentedLogin('AI', url, action)
+  end
+end
+
+function SyhuntDynamic:AugmentedLogin(ltype, url,newstep)
+  newstep = newstep or ''
+  ltype = ltype or 'AI'
+  local script = SyHybrid:getfile('dynamic/logintask.lua')
+  local j = ctk.json.object:new()
+  j.url = url  
+  j.newstep = newstep
+  j.type = ltype  
+  j.headless = true
+  tid = tab:runtask(script,tostring(j),'')
+  j:release()
+end
+
 function SyhuntDynamic:ClearIncrementalData(tag)
   local d = symini.getincdetails(tag)
   if ctk.file.exists(d.filename) == true then
@@ -473,6 +522,22 @@ function SyhuntDynamic:DoTargetListAction(action, itemid)
     if action == 'manuallogin' then
       SyhuntDynamic:ManualLogin(item.url)
     end    
+    if action == 'ailogin' then
+      SyhuntDynamic:AugmentedLogin('AI', item.url)
+    end      
+    if action == 'seleniumlogin' then
+      SyhuntDynamic:AugmentedLogin('Selenium', item.url)
+    end      
+    if action == 'seleniumloginui' then
+      SyhuntDynamic:AugmentedLogin('SeleniumUI', item.url)
+    end          
+    if action == 'loginreset' then
+      local resp=app.ask_yn('Are you sure you want to reset the AI login cache?',self.title)
+      if resp == true then
+        symini.login_runcmd(item.url,'resetcache')
+        app.showmessage('Done!')
+      end
+    end       
     if action == 'clearinc' then
       SyhuntDynamic:ClearIncrementalData(item.url)
     end        
@@ -497,7 +562,22 @@ function SyhuntDynamic:ViewTargetList(newtab)
  t.menu = [[
   <li onclick="SyhuntDynamic:DoTargetListAction('scan','%i')">Scan Site...</li>
   <li onclick="SyhuntDynamic:DoTargetListAction('editprefs','%i')">Edit Site Preferences...</li>
-  <li onclick="SyhuntDynamic:DoTargetListAction('manuallogin','%i')">Manual Login (External)...</li>
+  <hr/>    
+  <li>AI-Powered Login
+  <menu>
+  <li onclick="SyhuntDynamic:DoTargetListAction('ailogin','%i')">Run Test</li>  
+  <hr>
+  <li onclick="SyhuntDynamic:DoTargetListAction('loginreset','%i')">Reset</li>  
+  </menu>
+  </li>
+  <li>Selenium Script Login  
+  <menu>  
+  <li onclick="SyhuntDynamic:DoTargetListAction('seleniumlogin','%i')">Run Test (Headless)</li>  
+  <hr>  
+  <li onclick="SyhuntDynamic:DoTargetListAction('seleniumloginui','%i')">Run Test (GUI)</li>    
+  </menu>  
+  </li>  
+  <li onclick="SyhuntDynamic:DoTargetListAction('manuallogin','%i')">Manual Login (External)...</li>  
   <hr/>  
   <li onclick="SyhuntDynamic:DoTargetListAction('clearinc','%i')">Clear Incremental Cache</li>  
   <hr/>

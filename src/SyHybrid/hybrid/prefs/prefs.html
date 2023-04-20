@@ -27,7 +27,30 @@
 <div name="panel-general" class="tab" selected>
 <fieldset><legend>Report Customization</legend>
 <div .optgroup>
-Organization Logo URL (eg. http://www.mycompany.com/logo.png):<br><input type="text" style="width:*;" cid="syhunt.hybrid.report.company.logo.url">
+Organization Logo URL (eg. http://www.mycompany.com/logo.png):<br><input type="text" style="width:*;" cid="syhunt.hybrid.report.company.logo.urldark"><br><br>
+<!--Organization Logo URL for white bg (eg. http://www.mycompany.com/logo.png):<br><input type="text" style="width:*;" cid="syhunt.hybrid.report.company.logo.url"-->
+Default Output Format (in save dialog and bulk save):<br>
+<select style="width:300px;" cid="syhunt.hybrid.report.defaultext">
+%report_formats%
+</select><br><br>
+Default Report Template (when bulk saving):<br>
+<select class="tag-list" type="select" cid="syhunt.hybrid.report.defaulttemplate">
+<option value="Standard" selected>Standard</option>
+<option value="Comparison">Comparison</option>
+<option value="Compliance">Compliance</option>
+<option value="Complete">Complete</option>
+</select><br><br>
+Report Language:<br>
+<select class="tag-list" type="select" cid="syhunt.hybrid.report.defaultlanguage">
+<option value="DE">DE</option>
+<option value="EN" selected>EN</option>
+<option value="ES">ES</option>
+<option value="FR">FR</option>
+<option value="IT">IT</option>
+<option value="JP">JP</option>
+<option value="KR">KR</option>
+<option value="PT">PT</option>
+</select>
 </div>
 </fieldset>
 </div>

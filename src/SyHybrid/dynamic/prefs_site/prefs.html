@@ -17,6 +17,7 @@
  $(#cancel).onClick = function() { cancel_edit(); }
  $(#btnadvguess).onClick = function() { this.popup( $(popup#advguess)); }
 </script>
+<style>%css%</style>
 </head>
 <body marginwidth="0" marginheight="0">
 <div class="icontabs">
@@ -24,6 +25,7 @@
 <div panel="panel-general" accesskey="G" selected><center><img #icon_general><br>General</center></div>
 <div panel="panel-tech" accesskey="T"><center><img #icon_tech><br>Technologies</center></div>
 <div panel="panel-auth" accesskey="U"><center><img #icon_auth><br>Authentication</center></div>
+<div panel="panel-selenium" accesskey="L"><center><img #icon_selenium><br>Selenium</center></div>
 <div panel="panel-certs" accesskey="C"><center><img #icon_certs><br>Certificates</center></div>
 <div panel="panel-spider" accesskey="S"><center><img #icon_crawling><br>Crawling</center></div>
 <div panel="panel-advanced" accesskey="A"><center><img #icon_advanced><br>Advanced</center></div>
@@ -38,6 +40,7 @@ Name: <input type="text" cid="site.name"><br><br>
 <button type="checkbox" cid="site.syhunt.dynamic.augmented.detectoob">Perform OAST with Syhunt Signal (Recommended)</button><br>
 <button type="checkbox" cid="site.syhunt.dynamic.augmented.scanclisource">Perform SAST in client-side JavaScript with Syhunt Code</button><br>
 <button type="checkbox" cid="site.syhunt.dynamic.advanced.performdos">Perform DoS (Denial of Service) tests</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.advanced.performauthforce">Perform authentication brute force</button><br>
 </div>
 </fieldset>
 <fieldset><legend>Extended Hybrid Analysis (Optional)</legend>
@@ -119,6 +122,7 @@ Database:<br>
 <div .optgroup>
 <button type="checkbox" cid="site.syhunt.dynamic.advanced.forcewebrootstruct">Always target web root during structure brute forcing</button><br>
 <button type="checkbox" cid="site.syhunt.dynamic.crawling.autofollowinstarturl">Auto handle off-domain redirect in Start URL</button><br>
+<button type="checkbox" cid="site.syhunt.dynamic.crawling.analyzerobots">Analyze robots.txt (if available)</button><br>
 <button type="checkbox" cid="site.syhunt.dynamic.crawling.limitdepth">Use depth limit</button><br>
 &nbsp;&nbsp;&nbsp;Maximum depth: <input cid="site.syhunt.dynamic.crawling.maxdepth" type="number" step=1 minvalue="0" value="0" size="10"><br>
 <button .adv type="checkbox" cid="site.syhunt.dynamic.crawling.limittobase">Limit crawling to start URL path and specific allowed URLs</button> <button #btncrlexp onclick="prefs.editlist('site.syhunt.dynamic.lists.ignore.allowedpaths','Paths to crawl','Example: /store/login.php')">Allowed URLs...</button> 
@@ -144,10 +148,16 @@ Database:<br>
 <div name="panel-auth" class="tab">
 <fieldset><legend>Form Authentication</legend>
 <div .optgroup>
-<button type="checkbox" cid="site.syhunt.dynamic.formauth.enabled">Enable form authentication</button><br><br>
+<select class="tag-list" type="select" cid="site.syhunt.dynamic.formauth.type">
+<option value="None" selected>None</option>
+<option value="Standard">Standard</option>
+<option value="AI">AI-Powered</option>
+<option value="Selenium">Selenium Script</option>
+</select><br><br>
 Username:<br><input type="text" style="width:150px;" cid="site.syhunt.dynamic.formauth.username">
 <div .sep/>
 Password:<br><input type="password" style="width:150px;" cid="site.syhunt.dynamic.formauth.password">
+<div .aioption><div .sep/>Extended Instructions for AI:<br><input type="text" style="width:*;" cid="site.syhunt.dynamic.formauth.script.commandex"></div>
 </div>
 </fieldset>
 <fieldset><legend>Server Authentication</legend>
@@ -194,6 +204,17 @@ CA Directory:<br><input type="folder-path" novalue="Select Folder..." style="wid
 </fieldset>
 </div>
 <!-- certs tab end-->
+
+<!-- selenium tab begin-->
+<div name="panel-selenium" class="tab">
+<fieldset><legend>Selenium Python Script for Authentication</legend><br>
+<div .optgroup>
+<plaintext cid="site.syhunt.dynamic.formauth.script.selenium.encrypted" style="width:*;height:270px;"></plaintext>
+</select>
+</div>
+</fieldset>
+</div>
+<!-- selenium tab begin-->
 
 <!-- advanced tab begin-->
 <div name="panel-advanced" class="tab">

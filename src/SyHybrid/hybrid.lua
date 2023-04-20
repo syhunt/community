@@ -122,10 +122,18 @@ function SyHybrid:ImportPreferences()
   end
 end
 
+function SyHybrid:EditPreferencesAI()
+  html = SyHybrid:getfile('hybrid/prefs/prefs_ai.html')
+  if SyHybridUser:IsOptionAvailable(true) == true then
+    self:EditPreferences(html)
+  end
+end
+
 function SyHybrid:EditPreferences(html)
 	html = html or SyHybrid:getfile('hybrid/prefs/prefs.html')
 	local slp = ctk.string.loop:new()
 	local t = {}
+	local rm = symini.repmaker:new()
 	local hs = symini.hybrid:new()
 	hs:start()
 	slp:load(hs.options)
@@ -133,14 +141,14 @@ function SyHybrid:EditPreferences(html)
 		prefs.regdefault(slp.current,hs:prefs_getdefault(slp.current))
 	end
 	t.html = html
-	--t.html = ctk.string.replace(t.html,'%code_checks%',SyHybrid:GetOptionsHTML(rm.options_checks))
-	--t.html = ctk.string.replace(t.html,'%code_mapping_checks%',SyHybrid:GetOptionsHTML(rm.options_checksmap))
+	t.html = ctk.string.replace(t.html,'%report_formats%',rm.filter_menu)
 	t.id = 'syhuntrepmaker'
 	t.options = hs.options
 	t.options_disabled = hs.options_locked
 	local res = Sandcat.Preferences:EditCustom(t)
 	hs:release()
 	slp:release()
+	rm:release()
 	return res
 end
 

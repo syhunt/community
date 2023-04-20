@@ -1,6 +1,8 @@
+body { height:500px; }
 #icon_auth { foreground-image:url(SyHybrid.scx#images\32\key.png);}
 #icon_tech { foreground-image:url(SyHybrid.scx#images\32\components.png);}
 #icon_fingerprint { foreground-image:url(SyHybrid.scx#images\32\fingerprint.png);}
 #icon_certs { foreground-image:url(SyHybrid.scx#images\32\certificates.png);}
 #icon_ignore { foreground-image:url(SyHybrid.scx#images\32\ignore.png);}
 #icon_crawling { foreground-image:url(SyHybrid.scx#images\32\crawling.png);}
+#icon_selenium { foreground-image:url(SyHybrid.scx#images\32\script_edit.png);}

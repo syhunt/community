@@ -33,7 +33,7 @@ rm:savereport(params.filename)
 if ctk.file.exists(params.filename) then
   printsuccess('Report saved to: '..params.filename)
   task.status = 'Report saved.'
- if params.canopenreport == 'true' then
+ if params.canopenreport == true then
    print('Opening report...')
    if rm.CanOpenInBrowser == true then
      task:browsernewtab(params.filename)

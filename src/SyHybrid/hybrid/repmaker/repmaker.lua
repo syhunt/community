@@ -74,7 +74,8 @@ function ReportMaker:gen_report()
     ctk.dir.create(symini.info.outputdir)
 	rm = symini.repmaker:new()
 	local ui = self.ui
-	local filename = app.savefile(rm.Filter,'html',symini.info.outputdir..'Report_'..self.session_name)
+	local ext = prefs.get('syhunt.hybrid.report.defaultext','html')
+	local filename = app.savefile(rm.Filter,ext,symini.info.outputdir..'Report_'..self.session_name..'_'..self.template_name)
 	local reptitle = ui.report_title.value
 	debug.print('file:'..filename)
 	if filename ~= '' then
