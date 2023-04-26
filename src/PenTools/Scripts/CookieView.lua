@@ -2,7 +2,11 @@ CookieView = {}
 
 function CookieView:display()
   local cktable = ''
-  local cookie = tab.lastjslogmsg
+  local cookie = tab.lastjsexecresult --tab.lastjslogmsg
+  local j = ctk.json.object:new()
+  j:load(cookie)
+  cookie = j.cookie
+  j:release()
   cookie = ctk.string.replace(cookie,'; ','\n')
   if cookie ~= '' then
    cktable = '<table border=1 width="100%"><tr style="color:gray;"><td>Cookie</td><td>Value</td></tr>'
@@ -30,7 +34,10 @@ end
 
 function CookieView:load()
  if tab:hasloadedurl(true) then
-  tab:runluaonlog('done','CookieView:display()')
-  tab:runjs("console.log(document.cookie);console.log('done');",tab.url,0)
+  --[[tab:runjs("console.log(document.cookie);console.log('done');",tab.url,0)]]
+  --tab:runluaonlog('"done"','CookieView:display()')
+  --tab:runjs("results={};results.cookie=document.cookie;window.chrome.webview.postMessage(results);window.chrome.webview.postMessage('done');")
+  tab:runluaafterjs('CookieView:display()','results={};results.cookie=document.cookie;JSON.stringify(results)')
+  
  end
 end

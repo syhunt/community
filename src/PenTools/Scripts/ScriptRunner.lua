@@ -17,7 +17,7 @@ end
 
 function ScriptRunner:javascript_browser(script)
  local ui = self.ui
- tab:runjs(script,tab.url,ui.startline.value)
+ tab:runjs(script)
 end
 
 function ScriptRunner:canrunext(ext)

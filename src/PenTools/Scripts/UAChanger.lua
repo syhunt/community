@@ -1,8 +1,8 @@
 UAChanger = {}
 UAChanger.msg_restart = 'This change will take effect when you restart the Sandcat browser.'
 
-UAChanger.chrome  = '' -- must be blank
-UAChanger.edge    = 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240'
+UAChanger.chrome  = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
+UAChanger.edge    = '' -- must be blank 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240'
 UAChanger.firefox = 'Mozilla/5.0 (Windows NT 5.1; rv:23.0) Gecko/20100101 Firefox/23.0'
 UAChanger.ie      = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)'
 UAChanger.opera   = 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36 OPR/15.0.1147.148'
@@ -22,7 +22,7 @@ function UAChanger:ApplyUserAgent(s)
  if ua ~= '' then
   app.showmessage('User-Agent changed to '..s..': '..ua)
  else
-  app.showmessage('User-Agent changed to default (Chrome)')
+  app.showmessage('User-Agent changed to default (Edge)')
  end
   app.showmessage(UAChanger.msg_restart)
 end
@@ -35,8 +35,9 @@ function UAChanger:ApplyCustomUserAgent()
 end
 
 function UAChanger:DisplayUserAgent()
- tab:runluaonlog('done','UAChanger:ShowAgent()')
- tab:runjs("console.log(navigator.userAgent);console.log('done');",tab.url,0)
+ --tab:runluaonlog('"done"','UAChanger:ShowAgent()')
+ --tab:runjs("results={};results.ua=navigator.userAgent;window.chrome.webview.postMessage(results);window.chrome.webview.postMessage('done');")
+ tab:runluaafterjs('UAChanger:ShowAgent()','results={};results.ua=navigator.userAgent;JSON.stringify(results)')
 end
 
 function UAChanger:DisplayUserAgentList()
@@ -103,7 +104,11 @@ function UAChanger:SetUserAgent(agent)
 end
 
 function UAChanger:ShowAgent()
- local agent = tab.lastjslogmsg
+ local agent = tab.lastjsexecresult
+ local j = ctk.json.object:new()
+ j:load(agent)
+ agent = ctk.html.escape(j.ua)
+ j:release()
  app.showmessagex('Your current User-Agent is:<br><br><b>'..agent..'</b>')
 end
 

@@ -34,20 +34,21 @@ end
 function SyhuntDynamic:CaptureCookie(onlogscript)
  if tab:hasloadedurl(true) then
   local onlogscript = onlogscript or ''
-  tab:runluaonlog('done','SyhuntDynamic:SetURLCookieFromSandcat() '..onlogscript)
-  tab:runjs([[console.log('ck='+btoa(document.cookie)+',ua='+btoa(navigator.userAgent));console.log('done');]],tab.url,0)
+  --tab:runluaonlog('"done"','SyhuntDynamic:SetURLCookieFromSandcat() '..onlogscript)
+  --tab:runjs([[results={};results.ck=document.cookie;results.ua=navigator.userAgent;window.chrome.webview.postMessage(results);window.chrome.webview.postMessage('done');]])
+  tab:runluaafterjs('SyhuntDynamic:SetURLCookieFromSandcat() '..onlogscript,[[results={};results.ck=document.cookie;results.ua=navigator.userAgent;JSON.stringify(results)]])
  end
 end
 
 function SyhuntDynamic:SetURLCookieFromSandcat()
-  local sl = ctk.string.list:new()
-  sl.commatext = tab.lastjslogmsg
+  local j = ctk.json.object:new()
+  j:load(tab.lastjsexecresult)
   local t = {}
   t.url = tab.url
-  t.cookie = ctk.base64.decode(sl:getvalue('ck'))
-  t.useragent = ctk.base64.decode(sl:getvalue('ua'))
+  t.cookie = j.ck
+  t.useragent = j.ua
   self:SetURLCookie(t)
-  sl:release()  
+  j:release()  
 end
 
 function SyhuntDynamic:SetURLCookie(t)
@@ -153,7 +154,7 @@ function SyhuntDynamic:EditSitePreferences(url)
 			prefs.regdefault(slp.current,hs:prefs_getdefault(slp.current))
 		end
 		local css = ''
-		if prefs.get('syhunt.hybrid.advanced.ai.chatgpt.apikey.encrypted','') == '' then
+		if prefs.get('syhunt.hybrid.advanced.ai.openai.apikey.encrypted','') == '' then
 		  css = '.aioption { display:none; }'
 		end
 		local html = SyHybrid:getfile('dynamic/prefs_site/prefs.html')
@@ -577,7 +578,7 @@ function SyhuntDynamic:ViewTargetList(newtab)
   <li onclick="SyhuntDynamic:DoTargetListAction('seleniumloginui','%i')">Run Test (GUI)</li>    
   </menu>  
   </li>  
-  <li onclick="SyhuntDynamic:DoTargetListAction('manuallogin','%i')">Manual Login (External)...</li>  
+  <!--li onclick="SyhuntDynamic:DoTargetListAction('manuallogin','%i')">Manual Login (External)...</li-->  
   <hr/>  
   <li onclick="SyhuntDynamic:DoTargetListAction('clearinc','%i')">Clear Incremental Cache</li>  
   <hr/>

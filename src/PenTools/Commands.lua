@@ -57,7 +57,7 @@ function SyCommands:RunScript(filename)
  if ctk.file.exists(fullfile) then
   local script = ctk.file.getcontents(fullfile)
   if ext == '.js' then
-   tab:runjs(script,tab.url,0)
+   tab:runjs(script)
   elseif ext == '.lua' then
    assert(loadstring(script))()
   else
